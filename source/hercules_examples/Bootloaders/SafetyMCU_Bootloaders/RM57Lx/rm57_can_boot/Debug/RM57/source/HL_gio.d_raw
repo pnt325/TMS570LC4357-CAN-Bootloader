@@ -1,0 +1,16 @@
+RM57/source/HL_gio.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/HALCoGen/RM57/source/HL_gio.c
+RM57/source/HL_gio.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/HALCoGen/RM57/include/HL_gio.h
+RM57/source/HL_gio.obj: C:\Users\a0324020\workspace_v9_Bootloaders\SafetyMCU_Bootloaders\HALCoGen\RM57\include\HL_reg_gio.h
+RM57/source/HL_gio.obj: C:\Users\a0324020\workspace_v9_Bootloaders\SafetyMCU_Bootloaders\HALCoGen\RM57\include\HL_sys_common.h
+RM57/source/HL_gio.obj: C:\Users\a0324020\workspace_v9_Bootloaders\SafetyMCU_Bootloaders\HALCoGen\RM57\include\HL_hal_stdtypes.h
+RM57/source/HL_gio.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h
+RM57/source/HL_gio.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_stdint40.h
+RM57/source/HL_gio.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h
+RM57/source/HL_gio.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
+RM57/source/HL_gio.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
+RM57/source/HL_gio.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h
+RM57/source/HL_gio.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h
+RM57/source/HL_gio.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h
+RM57/source/HL_gio.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h
+RM57/source/HL_gio.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/HALCoGen/RM57/include/HL_sys_vim.h
+RM57/source/HL_gio.obj: C:\Users\a0324020\workspace_v9_Bootloaders\SafetyMCU_Bootloaders\HALCoGen\RM57\include\HL_reg_vim.h

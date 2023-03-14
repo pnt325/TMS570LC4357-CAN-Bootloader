@@ -1,0 +1,7 @@
+
+!CONFIGURATION: 'com.ti.ccstudio.buildDefinitions.TMS470.Debug.1209519812' [Wed Aug 14 17:44:44 CDT 2019]
+
+	!TOOL: 'com.ti.ccstudio.buildDefinitions.TMS470_16.9.exe.linkerDebug.1020047885'
+
+		!WARNING: Unresolved option: com.ti.ccstudio.buildDefinitions.TMS470_16.9.linkerID.ECC
+

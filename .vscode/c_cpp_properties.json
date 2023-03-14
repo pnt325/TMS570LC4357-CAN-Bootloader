@@ -1,0 +1,30 @@
+{
+    "env": {
+        "StdLibPath": "C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS",
+        "compiler": "C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl"
+    },
+    "configurations": [
+        {
+            "name": "TI",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${StdLibPath}/include"
+            ],
+            "browse": {
+                "path": [
+                    "${StdLibPath}/**"
+                ]
+            },
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "${compiler}",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

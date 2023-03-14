@@ -1,0 +1,353 @@
+<!-- --COPYRIGHT--,BSD
+ *  Copyright (c) 2012, Texas Instruments Incorporated
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ * 
+ *  *  Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ * 
+ *  *  Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ * 
+ *  *  Neither the name of Texas Instruments Incorporated nor the names of
+ *     its contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ *  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ *  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * --/COPYRIGHT-- -->
+<!DOCTYPE html>
+<html>
+	<head data-gc-version="1.0.0001">
+		<meta charset="utf-8"/>
+		<title>Untitled</title>
+		<style>@import "themes/claro/claro.css";@import "lib/dojo/dojo/resources/dojo.css";@import "lib/gc/dijit/libs/css/jquery.jqplot.min.css";@import "app.css";
+
+			#Content {
+				position:absolute;
+				width:680px;
+				height:530px;
+				top:2px;
+				left:261px;
+				border-width:1px;
+			} 
+
+		</style>
+
+		<style type="text/css">
+			body {background-image:url('images/Main_FOC_Big_Background.PNG');}
+		</style>
+		
+		<script type="text/javascript" src="maqetta/maqetta.js"></script>
+		<script type="text/javascript" data-dojo-config="'async':true,'parseOnLoad':true,'packages':[{'name':'gc','location':'../../gc'}]" src="lib/dojo/dojo/dojo.js"></script>
+		<script type="text/javascript" src="lib/gc/backplane/guiComposer.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/steelseries.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/tween.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/jquery.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/jquery.jqplot.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.cursor.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasTextRenderer.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+		<script type="text/javascript" src="maqetta/States.js"></script>
+		<script type="text/javascript">
+			require(["dijit/dijit"]);
+			require(["dojo/parser"]);
+			require(["gc/dijit/TabContainer"]);
+			require(["gc/dijit/ContentPane"]);
+			require(["gc/dijit/NumberSpinner"]);
+			require(["gc/dijit/CheckBox"]);
+			require(["gc/dijit/Label"]);
+			require(["gc/dijit/ComboBox"]);
+			require(["gc/dijit/DigitalMeter"]);
+			require(["gc/dijit/TextBox"]);
+			require(["gc/dijit/Image"]);
+			require(["gc/dijit/LineGraph"]);
+			require(["gc/dijit/ScalarLineGraph"]);
+			require(["gc/dijit/Dial"]);
+			require(["gc/dijit/HorizontalSlider"]);
+			require(["gc/dijit/HorizontalRule"]);
+			require(["gc/dijit/HorizontalRuleLabels"]);
+			require(["gc/dijit/VerticalSlider"]);
+			require(["gc/dijit/VerticalRule"]);
+			require(["gc/dijit/VerticalRuleLabels"]);
+			require(["gc/dijit/ValueButton"]);
+			require(["gc/dijit/Select"]);
+		</script>
+		
+
+
+
+
+
+
+		<script type="text/javascript">
+
+			global_var_one = 0; // declared globally 
+			global_var_two = 0; // declared globally 
+			global_var_three = 0; // declared globally 
+			global_var_four = 0; // declared globally 
+
+
+			global_var_one_two = 0; // declared globally 
+			global_var_two_two = 0; // declared globally 
+			global_var_three_two = 0; // declared globally 
+			global_var_four_two = 0; // declared globally 
+
+			
+			// this fixes an issue with the old method, ambiguous values 
+			// with this test document.cookie.indexOf( name + "=" ); 
+			function Get_Cookie( check_name ) 
+			{ 
+				// first we'll split this cookie up into name/value pairs 
+				// note: document.cookie only returns name=value, not the other components 
+				var a_all_cookies = document.cookie.split( ';' ); 
+				var a_temp_cookie = ''; 
+				var cookie_name = ''; 
+				var cookie_value = ''; 
+				var b_cookie_found = false; // set boolean t/f default f 
+
+				for ( i = 0; i < a_all_cookies.length; i++ ) 
+				{ 
+					// now we'll split apart each name=value pair 
+					a_temp_cookie = a_all_cookies[i].split( '=' ); 
+			
+					// and trim left/right whitespace while we're at it 
+					cookie_name = a_temp_cookie[0].replace(/^\s+|\s+$/g, ''); 
+
+					// if the extracted name matches passed check_name 
+					if ( cookie_name == check_name ) 
+					{ 
+						b_cookie_found = true; 
+						// we need to handle case where cookie has no value but exists (no = sign, that is): 
+						if ( a_temp_cookie.length > 1 ) 
+						{ 
+							cookie_value = unescape( a_temp_cookie[1].replace(/^\s+|\s+$/g, '') ); 
+						} 
+						// note that in cases where cookie is initialized but no value, null is returned 
+						return 1;
+						//return cookie_value; 
+						break; 
+					} 
+					a_temp_cookie = null; 
+					cookie_name = ''; 
+				} 
+				if ( !b_cookie_found ) 
+				{ 
+					return 0; 
+				} 
+			} 
+
+
+			// this deletes the cookie when called 
+			function Delete_Cookie( name, path, domain ) { 
+				if ( Get_Cookie( name ) ) document.cookie = name + "=" + 
+					( ( path ) ? ";path=" + path : "") + 
+					( ( domain ) ? ";domain=" + domain : "" ) + 
+					";expires=Thu, 01-Jan-1970 00:00:01 GMT"; 
+			} 
+
+
+			function Set_Cookie( name, value, expires, path, domain, secure ) 
+			{ 
+				// set time, it's in milliseconds 
+				var today = new Date(); 
+				today.setTime( today.getTime() ); 
+				
+				/* if the expires variable is set, make the correct 
+				expires time, the current script below will set 
+				it for x number of days, to make it for hours, 
+				delete * 24, for minutes, delete * 60 * 24 
+				*/ 
+				
+				if ( expires ) 
+				{ 
+				expires = expires * 1000 * 60 * 60 * 24; 
+				} 
+				var expires_date = new Date( today.getTime() + (expires) ); 
+
+				document.cookie = name + "=" +escape( value ) + 
+				( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + ( ( path ) ? ";path=" + path : "" ) + 
+				( ( domain ) ? ";domain=" + domain : "" ) + 
+				( ( secure ) ? ";secure" : "" ); 
+			} 
+
+
+			function Load_Graph_States(){
+				global_var_one =  Get_Cookie( 'Big_Graph_buff_1_Flag' );
+				global_var_one_two = Get_Cookie( 'Big_Graph_buff_1_Static_dynamic_Flag' );
+				global_var_two =  Get_Cookie( 'Big_Graph_buff_2_Flag' );
+				global_var_two_two = Get_Cookie( 'Big_Graph_buff_2_Static_dynamic_Flag' );
+				global_var_three =  Get_Cookie( 'Big_Graph_buff_3_Flag' );
+				global_var_three_two = Get_Cookie( 'Big_Graph_buff_3_Static_dynamic_Flag' );
+				global_var_four =  Get_Cookie( 'Big_Graph_buff_4_Flag' );
+				global_var_four_two = Get_Cookie( 'Big_Graph_buff_4_Static_dynamic_Flag' );
+				
+			
+				dijit.byId("Enable_Big_Graph_buff_1").set("value",(global_var_one==1)?true:false);
+				dijit.byId("Static_dynamic_Graph_buff_1").set("value",(global_var_one_two==1)?true:false);
+				dijit.byId("Enable_Big_Graph_buff_2").set("value", (global_var_two==1)?true:false);
+				dijit.byId("Static_dynamic_Graph_buff_2").set("value", (global_var_two_two==1)?true:false);
+				dijit.byId("Enable_Big_Graph_buff_3").set("value", (global_var_three==1)?true:false);
+				dijit.byId("Static_dynamic_Graph_buff_3").set("value", (global_var_three_two==1)?true:false);
+				dijit.byId("Enable_Big_Graph_buff_4").set("value", (global_var_four==1)?true:false);
+				dijit.byId("Static_dynamic_Graph_buff_4").set("value", (global_var_four_two==1)?true:false);
+			}
+			
+			function Save_Graph_States(){
+				if(global_var_one==0)Delete_Cookie( 'Big_Graph_buff_1_Flag', '/', '');
+				else Set_Cookie( 'Big_Graph_buff_1_Flag', 'it works', '', '/', '', '' );
+				
+				if (global_var_one_two == 0) Delete_Cookie( 'Big_Graph_buff_1_Static_dynamic_Flag', '/', '');
+				else Set_Cookie( 'Big_Graph_buff_1_Static_dynamic_Flag', 'it works', '', '/', '', '' );
+				
+				if(global_var_two==0)Delete_Cookie( 'Big_Graph_buff_2_Flag', '/', '');
+				else Set_Cookie( 'Big_Graph_buff_2_Flag', 'it works', '', '/', '', '' );
+				
+				if (global_var_two_two == 0) Delete_Cookie( 'Big_Graph_buff_2_Static_dynamic_Flag', '/', '');
+				else Set_Cookie( 'Big_Graph_buff_2_Static_dynamic_Flag', 'it works', '', '/', '', '' );
+				
+				if(global_var_three==0)Delete_Cookie( 'Big_Graph_buff_3_Flag', '/', '');
+				else Set_Cookie( 'Big_Graph_buff_3_Flag', 'it works', '', '/', '', '' );
+				
+				if (global_var_three_two == 0) Delete_Cookie( 'Big_Graph_buff_3_Static_dynamic_Flag', '/', '');
+				else Set_Cookie( 'Big_Graph_buff_3_Static_dynamic_Flag', 'it works', '', '/', '', '' );
+				
+				if(global_var_four==0)Delete_Cookie( 'Big_Graph_buff_4_Flag', '/', '');
+				else Set_Cookie( 'Big_Graph_buff_4_Flag', 'it works', '', '/', '', '' );
+				
+				if (global_var_four_two == 0) Delete_Cookie( 'Big_Graph_buff_4_Static_dynamic_Flag', '/', '');
+				else Set_Cookie( 'Big_Graph_buff_4_Static_dynamic_Flag', 'it works', '', '/', '', '' );
+				
+			}
+
+			function Enable_Disable_Big_Graph_buff_1(){			
+				if (global_var_one == 0) global_var_one = 1;
+				else global_var_one = 0;
+			}
+
+			function Enable_Disable_Big_Graph_buff_2(){			
+				if (global_var_two == 0) global_var_two = 1;
+				else global_var_two = 0;
+			}
+
+			function Enable_Disable_Big_Graph_buff_3(){			
+				if (global_var_three == 0) global_var_three = 1;
+				else global_var_three = 0;
+			}
+
+			function Enable_Disable_Big_Graph_buff_4(){			
+				if (global_var_four == 0) global_var_four = 1;
+				else global_var_four = 0;
+			}
+
+			function Static_dynamic_Big_Graph_buff_1(){			
+				if (global_var_one_two == 0) global_var_one_two = 1;
+				else global_var_one_two = 0;
+			}
+
+			function Static_dynamic_Big_Graph_buff_2(){			
+				if (global_var_two_two == 0) global_var_two_two = 1;
+				else global_var_two_two = 0;
+			}
+
+			function Static_dynamic_Big_Graph_buff_3(){			
+				if (global_var_three_two == 0) global_var_three_two = 1;
+				else global_var_three_two = 0;
+			}
+
+			function Static_dynamic_Big_Graph_buff_4(){			
+				if (global_var_four_two == 0) global_var_four_two = 1;
+				else global_var_four_two = 0;
+			}
+
+
+		</script>
+
+
+		<script type="text/javascript">
+			
+			
+			var $ConversionHelpers = 
+			{
+
+				Display_DLOG_4CH_buff1_One_Big_Graph: function (oldValue)
+				{				
+					if (global_var_one_two==1) return;
+					else if (global_var_one==1) return oldValue; 
+					else return 0;
+				},
+
+				Display_DLOG_4CH_buff2_One_Big_Graph: function (oldValue)
+				{				
+					if (global_var_two_two==1) return;
+					else if (global_var_two==1) return oldValue; 
+					else return 0;			
+				},
+				Display_DLOG_4CH_buff3_One_Big_Graph: function (oldValue)
+				{				
+					if (global_var_three_two==1) return;
+					else if (global_var_three==1) return oldValue; 
+					else return 0;
+				},
+				Display_DLOG_4CH_buff4_One_Big_Graph: function (oldValue)
+				{				
+					if (global_var_four_two==1) return;
+					else if (global_var_four==1) return oldValue; 
+					else return 0;
+				}
+				
+			}
+		</script>
+
+
+
+
+
+
+
+
+
+	</head>
+
+	<body class="claro" dvFlowLayout="false" data-davinci-ws="collapse" id="myapp" onload="Load_Graph_States()" onunload="Save_Graph_States()">	
+					
+
+		<div id="main_graph_Top_Top"    data-dojo-type="gc.dijit.LineGraph" data-dojo-props="seriesColors: ['#FF0000']," style="z-index: 9999; position: absolute; left: 54px; top: 0px; width: 598px; height: 119px;"></div> 
+		<div id="main_graph_Top_Bottom" data-dojo-type="gc.dijit.LineGraph" data-dojo-props="seriesColors: ['#00FF00']," style="z-index: 9999; position: absolute; left: 54px; top: 109px; width: 598px; height: 119px;"></div> 
+
+		<input id="Enable_Big_Graph_buff_1" onclick="Enable_Disable_Big_Graph_buff_1()" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left:  40px; top: 498px;"></input> 
+		<input id="Enable_Big_Graph_buff_2" onclick="Enable_Disable_Big_Graph_buff_2()" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left: 193px; top: 498px;"></input> 
+		<input id="Enable_Big_Graph_buff_3" onclick="Enable_Disable_Big_Graph_buff_3()" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left: 347px; top: 498px;"></input>
+		<input id="Enable_Big_Graph_buff_4" onclick="Enable_Disable_Big_Graph_buff_4()" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left: 500px; top: 498px;"></input> 
+		
+
+		<div id="main_graph_Bottom_Top"    data-dojo-type="gc.dijit.LineGraph" data-dojo-props="seriesColors: ['#0000FF']," style="z-index: 9999; position: absolute; left: 54px; top: 218px; width: 598px; height: 119px;"></div> 
+		<div id="main_graph_Bottom_Bottom" data-dojo-type="gc.dijit.LineGraph" data-dojo-props="seriesColors: ['#000000']," style="z-index: 9999; position: absolute; left: 54px; top: 327px; width: 598px; height: 119px;"></div> 
+
+		<input id="Static_dynamic_Graph_buff_1" onclick="Static_dynamic_Big_Graph_buff_1()" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left:  40px; top: 469px;"></input>
+		<input id="Static_dynamic_Graph_buff_2" onclick="Static_dynamic_Big_Graph_buff_2()" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left: 193px; top: 469px;"></input> 
+		<input id="Static_dynamic_Graph_buff_3" onclick="Static_dynamic_Big_Graph_buff_3()" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left: 347px; top: 469px;"></input> 
+		<input id="Static_dynamic_Graph_buff_4" onclick="Static_dynamic_Big_Graph_buff_4()" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left: 500px; top: 469px;"></input>  
+
+
+
+
+
+	</body>
+</html>
+

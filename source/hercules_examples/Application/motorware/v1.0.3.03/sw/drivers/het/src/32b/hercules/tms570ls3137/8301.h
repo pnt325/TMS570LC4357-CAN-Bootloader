@@ -1,0 +1,292 @@
+/* --COPYRIGHT--,BSD
+ * Copyright (c) 2012, Texas Instruments Incorporated
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * --/COPYRIGHT--*/
+#ifndef __8301_h
+#define __8301_h
+
+#define HET_v2 1
+#define AID1_7
+
+#include "std_nhet.h"
+
+#define HET_START_0	(e_HETPROGRAM0_UN.Program0_ST.START_0)
+#define pHET_START_0  	0
+
+#define HET_hetlabel_29_0	(e_HETPROGRAM0_UN.Program0_ST.hetlabel_29_0)
+#define pHET_hetlabel_29_0  	1
+
+#define HET_COMPARE_0	(e_HETPROGRAM0_UN.Program0_ST.COMPARE_0)
+#define pHET_COMPARE_0  	2
+
+#define HET_FINISH_0	(e_HETPROGRAM0_UN.Program0_ST.FINISH_0)
+#define pHET_FINISH_0  	3
+
+#define HET_CSOFF_0	(e_HETPROGRAM0_UN.Program0_ST.CSOFF_0)
+#define pHET_CSOFF_0  	4
+
+#define HET_CLKOFF_0	(e_HETPROGRAM0_UN.Program0_ST.CLKOFF_0)
+#define pHET_CLKOFF_0  	5
+
+#define HET_StartSPI_0	(e_HETPROGRAM0_UN.Program0_ST.StartSPI_0)
+#define pHET_StartSPI_0  	6
+
+#define HET_CS0_LOW_0	(e_HETPROGRAM0_UN.Program0_ST.CS0_LOW_0)
+#define pHET_CS0_LOW_0  	7
+
+#define HET_DELAYCS_0	(e_HETPROGRAM0_UN.Program0_ST.DELAYCS_0)
+#define pHET_DELAYCS_0  	8
+
+#define HET_L00_0	(e_HETPROGRAM0_UN.Program0_ST.L00_0)
+#define pHET_L00_0  	9
+
+#define HET_SPICLK_0	(e_HETPROGRAM0_UN.Program0_ST.SPICLK_0)
+#define pHET_SPICLK_0  	10
+
+#define HET_SPIMO_0	(e_HETPROGRAM0_UN.Program0_ST.SPIMO_0)
+#define pHET_SPIMO_0  	11
+
+#define HET_L02_0	(e_HETPROGRAM0_UN.Program0_ST.L02_0)
+#define pHET_L02_0  	12
+
+#define HET_SPIMI_0	(e_HETPROGRAM0_UN.Program0_ST.SPIMI_0)
+#define pHET_SPIMI_0  	13
+
+#define HET_INT_0	(e_HETPROGRAM0_UN.Program0_ST.INT_0)
+#define pHET_INT_0  	14
+
+#define HET_End_0	(e_HETPROGRAM0_UN.Program0_ST.End_0)
+#define pHET_End_0  	15
+
+#define HET_CS0_HI_0	(e_HETPROGRAM0_UN.Program0_ST.CS0_HI_0)
+#define pHET_CS0_HI_0  	16
+
+#define HET_WAIT_0	(e_HETPROGRAM0_UN.Program0_ST.WAIT_0)
+#define pHET_WAIT_0  	17
+
+#define HET_BUFF2_0	(e_HETPROGRAM0_UN.Program0_ST.BUFF2_0)
+#define pHET_BUFF2_0  	18
+
+#define HET_BUFF1_0	(e_HETPROGRAM0_UN.Program0_ST.BUFF1_0)
+#define pHET_BUFF1_0  	19
+
+#define HET_BUFF0_0	(e_HETPROGRAM0_UN.Program0_ST.BUFF0_0)
+#define pHET_BUFF0_0  	20
+
+#define HET_BUFF_0	(e_HETPROGRAM0_UN.Program0_ST.BUFF_0)
+#define pHET_BUFF_0  	21
+
+#define HET_SPI_0	(e_HETPROGRAM0_UN.Program0_ST.SPI_0)
+#define pHET_SPI_0  	22
+
+#define HET_UPWAIT_0	(e_HETPROGRAM0_UN.Program0_ST.UPWAIT_0)
+#define pHET_UPWAIT_0  	23
+
+#define HET_UPDELAY_0	(e_HETPROGRAM0_UN.Program0_ST.UPDELAY_0)
+#define pHET_UPDELAY_0  	24
+
+#define HET_COUNTER_0	(e_HETPROGRAM0_UN.Program0_ST.COUNTER_0)
+#define pHET_COUNTER_0  	25
+
+#define HET_Lm00_0	(e_HETPROGRAM0_UN.Program0_ST.Lm00_0)
+#define pHET_Lm00_0  	26
+
+#define HET_Lm11_0	(e_HETPROGRAM0_UN.Program0_ST.Lm11_0)
+#define pHET_Lm11_0  	27
+
+#define HET_Lm12_0	(e_HETPROGRAM0_UN.Program0_ST.Lm12_0)
+#define pHET_Lm12_0  	28
+
+#define HET_UPD_Am1_0	(e_HETPROGRAM0_UN.Program0_ST.UPD_Am1_0)
+#define pHET_UPD_Am1_0  	29
+
+#define HET_UPD_Cm1_0	(e_HETPROGRAM0_UN.Program0_ST.UPD_Cm1_0)
+#define pHET_UPD_Cm1_0  	30
+
+#define HET_UPD_Am2_0	(e_HETPROGRAM0_UN.Program0_ST.UPD_Am2_0)
+#define pHET_UPD_Am2_0  	31
+
+#define HET_UPD_Cm2_0	(e_HETPROGRAM0_UN.Program0_ST.UPD_Cm2_0)
+#define pHET_UPD_Cm2_0  	32
+
+#define HET_UPD_Am3_0	(e_HETPROGRAM0_UN.Program0_ST.UPD_Am3_0)
+#define pHET_UPD_Am3_0  	33
+
+#define HET_UPD_Cm3_0	(e_HETPROGRAM0_UN.Program0_ST.UPD_Cm3_0)
+#define pHET_UPD_Cm3_0  	34
+
+#define HET_TRIG1_0	(e_HETPROGRAM0_UN.Program0_ST.TRIG1_0)
+#define pHET_TRIG1_0  	35
+
+#define HET_Lm15_0	(e_HETPROGRAM0_UN.Program0_ST.Lm15_0)
+#define pHET_Lm15_0  	36
+
+#define HET_Lm25_0	(e_HETPROGRAM0_UN.Program0_ST.Lm25_0)
+#define pHET_Lm25_0  	37
+
+#define HET_Lm35_0	(e_HETPROGRAM0_UN.Program0_ST.Lm35_0)
+#define pHET_Lm35_0  	38
+
+#define HET_Lm16_0	(e_HETPROGRAM0_UN.Program0_ST.Lm16_0)
+#define pHET_Lm16_0  	39
+
+#define HET_Lm26_0	(e_HETPROGRAM0_UN.Program0_ST.Lm26_0)
+#define pHET_Lm26_0  	40
+
+#define HET_Lm36_0	(e_HETPROGRAM0_UN.Program0_ST.Lm36_0)
+#define pHET_Lm36_0  	41
+
+#define HET_IND1_0	(e_HETPROGRAM0_UN.Program0_ST.IND1_0)
+#define pHET_IND1_0  	42
+
+#define HET_CLRCNT1_0	(e_HETPROGRAM0_UN.Program0_ST.CLRCNT1_0)
+#define pHET_CLRCNT1_0  	43
+
+#define HET_AFE1_0	(e_HETPROGRAM0_UN.Program0_ST.AFE1_0)
+#define pHET_AFE1_0  	44
+
+#define HET_AFL1_0	(e_HETPROGRAM0_UN.Program0_ST.AFL1_0)
+#define pHET_AFL1_0  	45
+
+#define HET_ARE1_0	(e_HETPROGRAM0_UN.Program0_ST.ARE1_0)
+#define pHET_ARE1_0  	46
+
+#define HET_ARL1_0	(e_HETPROGRAM0_UN.Program0_ST.ARL1_0)
+#define pHET_ARL1_0  	47
+
+#define HET_BFE1_0	(e_HETPROGRAM0_UN.Program0_ST.BFE1_0)
+#define pHET_BFE1_0  	48
+
+#define HET_BFL1_0	(e_HETPROGRAM0_UN.Program0_ST.BFL1_0)
+#define pHET_BFL1_0  	49
+
+#define HET_BRE1_0	(e_HETPROGRAM0_UN.Program0_ST.BRE1_0)
+#define pHET_BRE1_0  	50
+
+#define HET_BRL1_0	(e_HETPROGRAM0_UN.Program0_ST.BRL1_0)
+#define pHET_BRL1_0  	51
+
+#define HET_FOR1_0	(e_HETPROGRAM0_UN.Program0_ST.FOR1_0)
+#define pHET_FOR1_0  	52
+
+#define HET_BAC1_0	(e_HETPROGRAM0_UN.Program0_ST.BAC1_0)
+#define pHET_BAC1_0  	53
+
+#define HET_LIM1_0	(e_HETPROGRAM0_UN.Program0_ST.LIM1_0)
+#define pHET_LIM1_0  	54
+
+#define HET_HIL1_0	(e_HETPROGRAM0_UN.Program0_ST.HIL1_0)
+#define pHET_HIL1_0  	55
+
+#define HET_SSUB1_0	(e_HETPROGRAM0_UN.Program0_ST.SSUB1_0)
+#define pHET_SSUB1_0  	56
+
+#define HET_TRIG_HTU0_0	(e_HETPROGRAM0_UN.Program0_ST.TRIG_HTU0_0)
+#define pHET_TRIG_HTU0_0  	57
+
+#define HET_TRIG_HTU1_0	(e_HETPROGRAM0_UN.Program0_ST.TRIG_HTU1_0)
+#define pHET_TRIG_HTU1_0  	58
+
+
+
+typedef union 
+{ 
+ 	HET_MEMORY	Memory0_PST[59];
+	struct
+	{
+		SUB_INSTRUCTION START_0;
+		BR_INSTRUCTION hetlabel_29_0;
+		SUB_INSTRUCTION COMPARE_0;
+		BR_INSTRUCTION FINISH_0;
+		SHFT_INSTRUCTION CSOFF_0;
+		SHFT_INSTRUCTION CLKOFF_0;
+		DJZ_INSTRUCTION StartSPI_0;
+		SHFT_INSTRUCTION CS0_LOW_0;
+		DJZ_INSTRUCTION DELAYCS_0;
+		CNT_INSTRUCTION L00_0;
+		MCMP_INSTRUCTION SPICLK_0;
+		SHFT_INSTRUCTION SPIMO_0;
+		BR_INSTRUCTION L02_0;
+		SHFT_INSTRUCTION SPIMI_0;
+		SHFT_INSTRUCTION INT_0;
+		BR_INSTRUCTION End_0;
+		SHFT_INSTRUCTION CS0_HI_0;
+		DJZ_INSTRUCTION WAIT_0;
+		MOV32_INSTRUCTION BUFF2_0;
+		MOV32_INSTRUCTION BUFF1_0;
+		MOV32_INSTRUCTION BUFF0_0;
+		MOV32_INSTRUCTION BUFF_0;
+		MOV32_INSTRUCTION SPI_0;
+		MOV32_INSTRUCTION UPWAIT_0;
+		MOV32_INSTRUCTION UPDELAY_0;
+		CNT_INSTRUCTION COUNTER_0;
+		CNT_INSTRUCTION Lm00_0;
+		BR_INSTRUCTION Lm11_0;
+		DJZ_INSTRUCTION Lm12_0;
+		MOV32_INSTRUCTION UPD_Am1_0;
+		MOV32_INSTRUCTION UPD_Cm1_0;
+		MOV32_INSTRUCTION UPD_Am2_0;
+		MOV32_INSTRUCTION UPD_Cm2_0;
+		MOV32_INSTRUCTION UPD_Am3_0;
+		MOV32_INSTRUCTION UPD_Cm3_0;
+		MCMP_INSTRUCTION TRIG1_0;
+		ECMP_INSTRUCTION Lm15_0;
+		ECMP_INSTRUCTION Lm25_0;
+		ECMP_INSTRUCTION Lm35_0;
+		ECMP_INSTRUCTION Lm16_0;
+		ECMP_INSTRUCTION Lm26_0;
+		ECMP_INSTRUCTION Lm36_0;
+		ECNT_INSTRUCTION IND1_0;
+		MOV32_INSTRUCTION CLRCNT1_0;
+		BR_INSTRUCTION AFE1_0;
+		BR_INSTRUCTION AFL1_0;
+		BR_INSTRUCTION ARE1_0;
+		BR_INSTRUCTION ARL1_0;
+		BR_INSTRUCTION BFE1_0;
+		BR_INSTRUCTION BFL1_0;
+		BR_INSTRUCTION BRE1_0;
+		BR_INSTRUCTION BRL1_0;
+		CNT_INSTRUCTION FOR1_0;
+		MOV32_INSTRUCTION BAC1_0;
+		ECMP_INSTRUCTION LIM1_0;
+		ADM32_INSTRUCTION HIL1_0;
+		ADM32_INSTRUCTION SSUB1_0;
+		ECMP_INSTRUCTION TRIG_HTU0_0;
+		ECMP_INSTRUCTION TRIG_HTU1_0;
+	} Program0_ST; 
+
+} HETPROGRAM0_UN;
+
+extern volatile HETPROGRAM0_UN e_HETPROGRAM0_UN;
+
+extern const HET_MEMORY HET_INIT0_PST[59];
+
+#endif
+

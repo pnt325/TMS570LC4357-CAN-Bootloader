@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Build-TMS570LC43x</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder</name>
+			<triggers>full,incremental,</triggers>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.ti.ccstudio.core.ccsNature</nature>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>HALCoGen-TMS570LC43x</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/HALCoGen-TMS570LC43x</locationURI>
+		</link>
+		<link>
+			<name>example</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/example</locationURI>
+		</link>
+		<link>
+			<name>lwip-1.4.1</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/lwip-1.4.1</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

@@ -1,0 +1,16 @@
+RM42/source/esm.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/HALCoGen/RM42/source/esm.c
+RM42/source/esm.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/HALCoGen/RM42/include/esm.h
+RM42/source/esm.obj: C:\Users\a0324020\workspace_v9_Bootloaders\SafetyMCU_Bootloaders\HALCoGen\RM42\include\reg_esm.h
+RM42/source/esm.obj: C:\Users\a0324020\workspace_v9_Bootloaders\SafetyMCU_Bootloaders\HALCoGen\RM42\include\sys_common.h
+RM42/source/esm.obj: C:\Users\a0324020\workspace_v9_Bootloaders\SafetyMCU_Bootloaders\HALCoGen\RM42\include\hal_stdtypes.h
+RM42/source/esm.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdint.h
+RM42/source/esm.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/_stdint40.h
+RM42/source/esm.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/stdint.h
+RM42/source/esm.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/cdefs.h
+RM42/source/esm.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_types.h
+RM42/source/esm.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_types.h
+RM42/source/esm.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/machine/_stdint.h
+RM42/source/esm.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/sys/_stdint.h
+RM42/source/esm.obj: C:/ti/ccs900/ccs/tools/compiler/ti-cgt-arm_18.12.1.LTS/include/stdbool.h
+RM42/source/esm.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/HALCoGen/RM42/include/sys_vim.h
+RM42/source/esm.obj: C:\Users\a0324020\workspace_v9_Bootloaders\SafetyMCU_Bootloaders\HALCoGen\RM42\include\reg_vim.h

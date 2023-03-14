@@ -1,0 +1,138 @@
+<!-- --COPYRIGHT--,BSD
+ *  Copyright (c) 2012, Texas Instruments Incorporated
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ * 
+ *  *  Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ * 
+ *  *  Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ * 
+ *  *  Neither the name of Texas Instruments Incorporated nor the names of
+ *     its contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ *  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ *  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * --/COPYRIGHT-- -->
+<!DOCTYPE html>
+<html>
+	<head data-gc-version="1.0.0001">
+		<meta charset="utf-8"/>
+		<title>Untitled</title>
+		<style>
+		@import "themes/claro/claro.css";@import "lib/dojo/dojo/resources/dojo.css";@import "lib/gc/dijit/libs/css/jquery.jqplot.min.css";@import "app.css";
+
+
+			#Header {
+			position:absolute;
+			left:0px;
+			top: 0px;
+			width:100%;
+			padding:0px 0px 0px 0px;
+			height:100%; /* 14px + 17px + 2px = 33px */
+			border-style:ridge;
+			border-width:0px 0px; /* top and bottom borders: 1px; left and right borders: 0px */
+			line-height:0px;
+			background-color:#FFFFFF;
+			margin: 0px;
+			}
+			
+			#Content {
+			position:absolute;
+			top:20px;
+			left:0px;
+			margin: 0px;
+			}
+
+
+		</style>
+		<script type="text/javascript" src="maqetta/maqetta.js"></script>
+		<script type="text/javascript" data-dojo-config="'async':true,'parseOnLoad':true,'packages':[{'name':'gc','location':'../../gc'}]" src="lib/dojo/dojo/dojo.js"></script>
+				
+		<script type="text/javascript" src="lib/gc/backplane/guiComposer.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/steelseries.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/tween.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/jquery.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/jquery.jqplot.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.cursor.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasTextRenderer.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+		<script type="text/javascript" src="maqetta/States.js"></script>
+		<script type="text/javascript">
+			require(["dijit/dijit"]);
+			require(["dojo/parser"]);
+			require(["gc/dijit/TabContainer"]);
+			require(["gc/dijit/ContentPane"]);
+			require(["gc/dijit/NumberSpinner"]);
+			require(["gc/dijit/CheckBox"]);
+			require(["gc/dijit/Label"]);
+			require(["gc/dijit/ComboBox"]);
+			require(["gc/dijit/DigitalMeter"]);
+			require(["gc/dijit/TextBox"]);
+			require(["gc/dijit/Image"]);
+			require(["gc/dijit/LineGraph"]);
+			require(["gc/dijit/ScalarLineGraph"]);
+			require(["gc/dijit/Dial"]);
+			require(["gc/dijit/HorizontalSlider"]);
+			require(["gc/dijit/HorizontalRule"]);
+			require(["gc/dijit/HorizontalRuleLabels"]);
+			require(["gc/dijit/VerticalSlider"]);
+			require(["gc/dijit/VerticalRule"]);
+			require(["gc/dijit/VerticalRuleLabels"]);
+			require(["gc/dijit/ValueButton"]);
+			require(["gc/dijit/Select"]);
+		</script>
+
+	</head>
+	<body class="claro" dvFlowLayout="false" data-davinci-ws="collapse" id="myapp">
+		<div id="Header">
+			<table>
+				<tr>
+					<td>
+						<a href="Main_UI_BLDC.html" target="common">
+						<div style="position: relative; width: 100%; left:2px; top:0px;">
+							<img src="images/Mainbutton.PNG" height="19px" width="41px" 
+						</div>
+						</a>
+					</td>
+					<td>
+						<a href="Main_UI_BLDC_Settings.html" target="common">
+						<div style="position: relative; width: 100%; left:1px; top:0px;">
+							<img src="images/Settingsbutton.PNG" height="19px" width="49px">
+						</div>
+						</a>
+					</td>
+					<td>
+						<a href="Main_UI_BLDC_D3_Engineering.html" target="common">
+						<div style="position: relative; width: 100%; left:1px;">
+							<img src="images/D3Engineeringbutton.PNG" height="19px" width="84px">
+						</div>
+						</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div id="Content"  border-width:0px; background-color: #FFFFFF;" >
+			<iframe name="common" src="Main_UI_BLDC.html" frameborder="0" width="948px" height="598px"></iframe>
+		</div>
+
+	</body>
+</html>

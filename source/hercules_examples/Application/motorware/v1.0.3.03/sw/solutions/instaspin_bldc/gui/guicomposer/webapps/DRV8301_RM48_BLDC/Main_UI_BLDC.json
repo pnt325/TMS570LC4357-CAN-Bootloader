@@ -1,0 +1,208 @@
+{
+	widgetBindings : [
+
+
+
+	{
+		widgetId 		: "control_mode_combobox", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.CtrlType",
+		options : 
+		{
+			dataType		: "Double", 
+
+		},
+	},
+
+		
+
+
+
+
+
+
+	{
+		widgetId 		: "motor_speed_rpm", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.SpeedRPM",
+		options : 
+		{
+			dataType		: "Long",  
+		},
+	},
+	{
+		widgetId 		: "Main_Dial", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.SpdCmd",
+		options : 
+		{
+			dataType		: "Double", 			 
+		},
+	},
+	{
+		widgetId 		: "Main_Dial", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.TorqueCmd",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+	{
+		widgetId 		: "Main_Dial", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.DutyCmd",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+
+	{
+		widgetId 		: "spinner_for_guiRef", 
+		propertyName 	: "value", 
+		serverBindName : "value:pm.active.gGUIObj.SpdCmd",
+		options : 
+		{ 
+			dataType		: "Double", 
+
+		},
+	},
+	
+	
+	{
+		widgetId 		: "motor_current_meter", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.CurrentDisplay",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+
+
+	{
+		widgetId 		: "motorcurrent", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.CurrentDisplay",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+
+
+
+	/*{
+		widgetId 		: "threshold_slider", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.CommThreshold",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},*/
+
+
+	
+	{
+		widgetId 		: "enable_motor_checkbox", 
+		propertyName 	: "checked", 
+		serverBindName 	: "value:pm.active.gGUIObj.EnableFlg",
+		options : 
+		{
+			dataType		: "Boolean", 
+		},
+	},
+
+	{
+		widgetId 		: "reset_fault_status_image", 
+		propertyName 	: "selection", 
+		serverBindName 	: "value:pm.active.gGUIObj.FaultMotor",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+	
+	{
+		widgetId 		: "reset_fault_status_button", 
+		propertyName 	: "value", 
+		serverBindName : "value:pm.active.gGUIObj.RstFault",
+		options : 
+		{
+			dataType		: "String",  
+
+		},
+	},
+	
+	{
+		widgetId 		: "dc_bus_meter", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.VBus",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+	
+	{
+		widgetId 		: "dc_bus_status_image", 
+		propertyName 	: "selection", 
+		serverBindName 	: "value:pm.active.gGUIObj.OVFlg",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+	
+	{
+		widgetId 		: "over_temp_status_image", 
+		propertyName 	: "selection", 
+		serverBindName 	: "value:pm.active.gGUIObj.OTFlg",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+	
+	
+	{
+		widgetId 		: "dc_bus_voltage_number", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.VBus",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+	{
+		widgetId 		: "threshold_slider", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.CommThreshold",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+
+	{
+		widgetId 		: "spinner_for_guiRef_two", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.CommThreshold",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	}
+
+
+
+
+
+
+
+	]
+}
+
+

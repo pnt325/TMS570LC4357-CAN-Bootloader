@@ -1,0 +1,3 @@
+TMS570LS04x/source/errata_SSWF021_45.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/HALCoGen/TMS570LS04x/source/errata_SSWF021_45.c
+TMS570LS04x/source/errata_SSWF021_45.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/HALCoGen/TMS570LS04x/include/errata_SSWF021_45_defs.h
+TMS570LS04x/source/errata_SSWF021_45.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/HALCoGen/TMS570LS04x/include/errata_SSWF021_45.h

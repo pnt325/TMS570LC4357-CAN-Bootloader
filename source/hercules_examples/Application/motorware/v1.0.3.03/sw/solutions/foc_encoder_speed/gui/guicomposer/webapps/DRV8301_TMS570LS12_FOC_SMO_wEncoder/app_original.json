@@ -1,0 +1,110 @@
+{"widgetBindings": [
+    {
+        "propertyName": "checked",
+        "serverBindName": "value:pm.active.gui.EnableFlg",
+        "widgetId": "widget_1791",
+        "options": {"dataType": "Boolean"}
+    },
+    {
+        "propertyName": "value",
+        "serverBindName": "value:pm.active.gui.SpdCmd",
+        "widgetId": "widget_1909",
+        "options": {"dataType": "Double"}
+    },
+    {
+        "propertyName": "value",
+        "serverBindName": "value:pm.active.gui.SpdMotor",
+        "widgetId": "widget_1864",
+        "options": {"dataType": "String"}
+    },
+    {
+        "propertyName": "series0",
+        "serverBindName": "value:pm.active.gDLog4CHBuff1",
+        "widgetId": "widget_1041",
+        "options": {"dataType": "Array"}
+    },
+    {
+        "propertyName": "series0",
+        "serverBindName": "value:pm.active.gDLog4CHBuff2",
+        "widgetId": "widget_1748",
+        "options": {"dataType": "Array"}
+    },
+    {
+        "propertyName": "series0",
+        "serverBindName": "value:pm.active.gDLog4CHBuff3",
+        "widgetId": "widget_1890",
+        "options": {"dataType": "Array"}
+    },
+    {
+        "propertyName": "series0",
+        "serverBindName": "value:pm.active.gDLog4CHBuff4",
+        "widgetId": "widget_2033",
+        "options": {"dataType": "Array"}
+    },
+    {
+        "propertyName": "checked",
+        "serverBindName": "value:pm.active.gui.calibrateEnable",
+        "widgetId": "widget_507",
+        "options": {"dataType": "Boolean"}
+    },
+    {
+        "propertyName": "selection",
+        "serverBindName": "value:pm.active.gui.CtrlType",
+        "widgetId": "widget_580",
+        "options": {"dataType": "Long"}
+    },
+    {
+        "propertyName": "selection",
+        "serverBindName": "value:pm.active.gui.GraphInput",
+        "widgetId": "widget_154",
+        "options": {"dataType": "Long"}
+    },
+    {
+        "propertyName": "selection",
+        "serverBindName": "value:pm.active.gui.FaultMotor",
+        "widgetId": "reset_fault_status_image",
+        "options": {"dataType": "Long"}
+    },
+    {
+        "propertyName": "selection",
+        "serverBindName": "value:pm.active.gui.OTFlg",
+        "widgetId": "over_temp_status_image",
+        "options": {"dataType": "Long"}
+    },
+    {
+        "propertyName": "selection",
+        "serverBindName": "value:pm.active.gui.OVFlg",
+        "widgetId": "dc_bus_status_image",
+        "options": {"dataType": "Long"}
+    },
+    {
+        "propertyName": "selection",
+        "serverBindName": "value:pm.active.gui.FaultEncoder",
+        "widgetId": "encoder_status_image",
+        "options": {"dataType": "Long"}
+    },
+    {
+        "propertyName": "value",
+        "serverBindName": "value:pm.active.gui.LogScalar",
+        "widgetId": "widget_537",
+        "options": {"dataType": "Long"}
+    },
+    {
+        "propertyName": "value",
+        "serverBindName": "value:pm.active.gui.CommAngleOffset",
+        "widgetId": "widget_1753",
+        "options": {"dataType": "String"}
+    },
+    {
+        "propertyName": "value",
+        "serverBindName": "value:pm.active.gui.RstFault",
+        "widgetId": "widget_737",
+        "options": {"dataType": "String"}
+    },
+    {
+        "propertyName": "value",
+        "serverBindName": "value:pm.active.gui.VBus",
+        "widgetId": "widget_768",
+        "options": {"dataType": "Double"}
+    }
+]}

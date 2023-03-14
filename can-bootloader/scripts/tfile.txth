@@ -1,0 +1,25 @@
+/**
+ * @file      <fname>.h
+ * @brief     <finfo>
+ * @date      <datetime>
+ * @author    Phat Nguyen <phat.nt@hotmail.com>
+ */
+
+#ifndef <FNAME>_H_
+#define <FNAME>_H_
+
+#include <stdint.h>
+#include <stdio.h>
+#include <stdbool.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* <FNAME>_H_ */

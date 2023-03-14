@@ -1,0 +1,126 @@
+<!-- --COPYRIGHT--,BSD
+ *  Copyright (c) 2012, Texas Instruments Incorporated
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ * 
+ *  *  Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ * 
+ *  *  Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ * 
+ *  *  Neither the name of Texas Instruments Incorporated nor the names of
+ *     its contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ *  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ *  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * --/COPYRIGHT-- -->
+<!DOCTYPE html>
+<html>
+	<head data-gc-version="1.0.0001">
+		<meta charset="utf-8"/>
+		<title>Untitled</title>
+		<style>@import "themes/claro/claro.css";@import "lib/dojo/dojo/resources/dojo.css";@import "lib/gc/dijit/libs/css/jquery.jqplot.min.css";@import "app.css";
+
+			#Content {
+				position:absolute;
+				width:680px;
+				height:530px;
+				top:2px;
+				left:261px;
+				border-width:1px;
+			} 
+
+		</style>
+
+		<style type="text/css">
+			body {background-image:url('images/Board_Layout_FOC_Background.PNG');}
+		</style>
+		
+		<script type="text/javascript" src="maqetta/maqetta.js"></script>
+		<script type="text/javascript" data-dojo-config="'async':true,'parseOnLoad':true,'packages':[{'name':'gc','location':'../../gc'}]" src="lib/dojo/dojo/dojo.js"></script>
+		<script type="text/javascript" src="lib/gc/backplane/guiComposer.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/steelseries.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/tween.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/jquery.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/jquery.jqplot.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.cursor.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasTextRenderer.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+		<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+		<script type="text/javascript" src="maqetta/States.js"></script>
+		<script type="text/javascript">
+			require(["dijit/dijit"]);
+			require(["dojo/parser"]);
+			require(["gc/dijit/TabContainer"]);
+			require(["gc/dijit/ContentPane"]);
+			require(["gc/dijit/NumberSpinner"]);
+			require(["gc/dijit/CheckBox"]);
+			require(["gc/dijit/Label"]);
+			require(["gc/dijit/ComboBox"]);
+			require(["gc/dijit/DigitalMeter"]);
+			require(["gc/dijit/TextBox"]);
+			require(["gc/dijit/Image"]);
+			require(["gc/dijit/LineGraph"]);
+			require(["gc/dijit/ScalarLineGraph"]);
+			require(["gc/dijit/Dial"]);
+			require(["gc/dijit/HorizontalSlider"]);
+			require(["gc/dijit/HorizontalRule"]);
+			require(["gc/dijit/HorizontalRuleLabels"]);
+			require(["gc/dijit/VerticalSlider"]);
+			require(["gc/dijit/VerticalRule"]);
+			require(["gc/dijit/VerticalRuleLabels"]);
+			require(["gc/dijit/ValueButton"]);
+			require(["gc/dijit/Select"]);
+		</script>
+		
+
+
+
+
+
+
+	</head>
+
+	<body class="claro" dvFlowLayout="false" data-davinci-ws="collapse" id="myapp">
+	
+
+				
+		<input id="Calibrate_enable" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left: 26px; top: 575px;"></input> 
+		<input id="Commutation_Angle_Offset" data-dojo-type="gc.dijit.TextBox" style=" z-index: 9999; position: absolute; left: 82px; top: 573px;width:7em;height=2em;background-color:transparent; border-width:1px;" ></input> 
+		<img id="Encoder_status_image" data-dojo-type="gc.dijit.Image" data-dojo-props="images:['images/Green_icon.PNG','images/Red_icon.PNG','images/Yellow_icon.PNG'], displayStatus:'HideWidget'" style="z-index: 9999; position: absolute; left: 188px; top: 563px;"/> 
+
+
+
+
+
+		<img id="reset_fault_status_image" data-dojo-type="gc.dijit.Image" data-dojo-props="images:['images/Green_icon.PNG','images/Red_icon.PNG','images/Yellow_icon.PNG'], displayStatus:'HideWidget'"  style="z-index: 9999; position: absolute; left: 281px; top: 562px;"/>
+		<button id="reset_fault_status_button" style="z-index: 9999; position: absolute; left: 347px; top: 563px;" data-dojo-type="gc.dijit.ValueButton" data-dojo-props="label:'Reset Fault', value: 1"></button>		
+
+
+		<canvas id="dc_bus_meter" data-dojo-type="gc.dijit.DigitalMeter" style="z-index: 9999; position: absolute; left: 502px; top: 547px;" data-dojo-props="titleString: 'DC Bus', minValue: 0,maxValue: 63, width : 171, height : 31,maxNoOfMajorTicks: 7,maxNoOfMinorTicks:1,"></canvas>
+		<textarea type="text" id="dc_bus_voltage_number" data-dojo-type="gc.dijit.TextBox" style="height: 20px; z-index: 9999; position: absolute; left: 570px; top: 576px; width: 38px; background-color:transparent; border-width:0px;" value="0"></textarea>
+		<img id="dc_bus_status_image"  data-dojo-type="gc.dijit.Image" data-dojo-props="images:['images/Green_icon.PNG','images/Red_icon.PNG','images/Yellow_icon.PNG'], displayStatus:'HideWidget'" style="z-index: 9999; position: absolute; left: 680px; top: 554px;"/>	
+
+		<img id="over_temp_status_image"  data-dojo-type="gc.dijit.Image" data-dojo-props="images:['images/Green_icon.PNG','images/Red_icon.PNG','images/Yellow_icon.PNG'], displayStatus:'HideWidget'"  style="z-index: 9999; position: absolute; left: 810px; top: 555px;"/>
+
+
+
+
+	</body>
+</html>

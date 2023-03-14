@@ -1,0 +1,14 @@
+Filename: setup.txt
+
+The following setup is required to run the test projects
+
+1. Host environment variable - The MW_INSTALL_DIR environment variable must be defined in the host environment to denote the home directory of the DMC installation.  (e.g. MW_INSTALL_DIR c:\users\user_X\dmc).  On a PC, this variable can be configured using the Control Panel ->System->Advanced->Environment Variables->User variables for user_X.   Click New and set the Variable name (MW_INSTALL_DIR) and the Variable value (c:\users\users_X\dmc).   Then Click OK.
+
+Notes: 
+a. It is recommended that each user on a particular system have their own library installation and variable definition so that they can modify their installation as needed without interfering with other users on the system.
+b. The directory (c:\users\user_X\dmc) is arbitrary and should be changed to reflect the real library installation directory.
+
+2. CCS4.x Linked Resources  THE MW_INSTALL_DIR path variable must be defined in CCS4.x.  This variable can be configured in CCS using Window->Preferences->General->Workspace->Linked Resources.  Click New  and set the Name (MW_INSTALL_DIR) and the Location (c:\users\users_X\dmc).   Then Click OK.
+
+
+

@@ -1,0 +1,64 @@
+{
+	widgetBindings : [
+
+ 	{
+		widgetId : "main_graph_Top_Top", 
+		propertyName : "series0", 
+		serverBindName : "value:pm.active.gDLog4CHBuff1",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff1_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	}, 
+
+	{
+		widgetId : "main_graph_Top_Bottom", 
+		propertyName : "series1", 
+		serverBindName : "value:pm.active.gDLog4CHBuff2",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff2_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	}, 
+
+	{
+		widgetId : "main_graph_Bottom_Top", 
+		propertyName : "series2", 
+		serverBindName : "value:pm.active.gDLog4CHBuff3",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff3_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	},
+
+	{
+		widgetId : "main_graph_Bottom_Bottom", 
+		propertyName : "series3", 
+		serverBindName : "value:pm.active.gDLog4CHBuff4",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff4_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	}
+	]
+}
+
+
+
+

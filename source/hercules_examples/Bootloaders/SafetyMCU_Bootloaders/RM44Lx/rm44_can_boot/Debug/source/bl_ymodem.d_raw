@@ -1,0 +1,2 @@
+source\bl_ymodem.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/source/bl_ymodem.c
+source\bl_ymodem.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/RM44Lx/rm44_can_boot/bl_config.h

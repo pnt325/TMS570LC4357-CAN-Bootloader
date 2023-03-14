@@ -1,0 +1,143 @@
+{
+	widgetBindings : [
+
+	{
+		widgetId : "main_graph_bottom", 
+		propertyName : "series0", 
+		serverBindName : "value:pm.active.gDLog4CHBuff1",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff1_3_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	}, 
+
+	{
+		widgetId : "main_graph_bottom", 
+		propertyName : "series1", 
+		serverBindName : "value:pm.active.gDLog4CHBuff2",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff2_3_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	},
+
+	{
+		widgetId : "main_graph_bottom", 
+		propertyName : "series2", 
+		serverBindName : "value:pm.active.gDLog4CHBuff3",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff3_3_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	},
+
+	{
+		widgetId : "main_graph_bottom", 
+		propertyName : "series3", 
+		serverBindName : "value:pm.active.gDLog4CHBuff4",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff4_3_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	},
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+	{
+		widgetId : "main_graph_top", 
+		propertyName : "series0", 
+		serverBindName : "value:pm.active.gDLog4CHBuff1",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff1_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	}, 
+
+	{
+		widgetId : "main_graph_top", 
+		propertyName : "series1", 
+		serverBindName : "value:pm.active.gDLog4CHBuff2",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff2_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	},
+
+	{
+		widgetId : "main_graph_top", 
+		propertyName : "series2", 
+		serverBindName : "value:pm.active.gDLog4CHBuff3",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff3_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	},
+
+
+	{
+		widgetId : "main_graph_top", 
+		propertyName : "series3", 
+		serverBindName : "value:pm.active.gDLog4CHBuff4",
+		options : 
+		{  
+			dataType		: "Array",
+			inPreProcessingFunction: $ConversionHelpers.Display_DLOG_4CH_buff4_One_Big_Graph,
+dropUpdate : 1000, 
+forceUpdate : 3000,
+
+		},
+	}
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+	]
+}

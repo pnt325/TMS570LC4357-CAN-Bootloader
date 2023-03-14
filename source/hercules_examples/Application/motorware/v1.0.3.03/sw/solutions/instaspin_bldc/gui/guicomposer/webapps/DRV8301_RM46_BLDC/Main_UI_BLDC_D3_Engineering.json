@@ -1,0 +1,98 @@
+{
+	widgetBindings : [
+	
+	{
+		widgetId 		: "enable_motor_checkbox", 
+		propertyName 	: "checked", 
+		serverBindName 	: "value:pm.active.gGUIObj.EnableFlg",
+		options : 
+		{
+			dataType		: "Boolean", 
+		},
+	},
+
+
+	{
+		widgetId 		: "enable_TPS_checkbox", 
+		propertyName 	: "checked", 
+		serverBindName 	: "value:pm.active.gGUIObj.TPSFlag",
+		options : 
+		{
+			dataType		: "Boolean", 
+		},
+	},
+
+	{
+		widgetId 		: "control_mode_combobox", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.CtrlType",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+
+	{
+		widgetId 		: "reset_fault_status_image", 
+		propertyName 	: "selection", 
+		serverBindName 	: "value:pm.active.gGUIObj.FaultMotor",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+	
+	{
+		widgetId 		: "reset_fault_status_button", 
+		propertyName 	: "value", 
+		serverBindName : "value:pm.active.gGUIObj.RstFault",
+		options : 
+		{
+			dataType		: "String",  
+		},
+	},
+	
+	{
+		widgetId 		: "dc_bus_meter", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.VBus",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+	
+	{
+		widgetId 		: "dc_bus_status_image", 
+		propertyName 	: "selection", 
+		serverBindName 	: "value:pm.active.gGUIObj.OVFlg",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+	
+	{
+		widgetId 		: "over_temp_status_image", 
+		propertyName 	: "selection", 
+		serverBindName 	: "value:pm.active.gGUIObj.OTFlg",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+		
+	{
+		widgetId 		: "dc_bus_voltage_number", 
+		propertyName 	: "value", 
+		serverBindName 	: "value:pm.active.gGUIObj.VBus",
+		options : 
+		{
+			dataType		: "Double",  
+		},
+	},
+
+	]
+}
+
+

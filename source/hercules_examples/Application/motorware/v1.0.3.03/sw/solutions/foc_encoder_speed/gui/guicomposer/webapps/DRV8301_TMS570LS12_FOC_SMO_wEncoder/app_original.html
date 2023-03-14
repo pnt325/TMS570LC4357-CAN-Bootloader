@@ -1,0 +1,140 @@
+<!-- --COPYRIGHT--,BSD
+ *  Copyright (c) 2012, Texas Instruments Incorporated
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ * 
+ *  *  Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ * 
+ *  *  Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ * 
+ *  *  Neither the name of Texas Instruments Incorporated nor the names of
+ *     its contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ *  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ *  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * --/COPYRIGHT-- -->
+<!DOCTYPE html>
+<html>
+<head data-gc-version="1.0.mmddyyyy">
+<meta charset="utf-8"/>
+<title>Untitled</title>
+<style>@import "themes/claro/claro.css";@import "lib/dojo/dojo/resources/dojo.css";@import "lib/gc/dijit/libs/css/jquery.jqplot.min.css";@import "app.css";
+</style>
+<script type="text/javascript" src="maqetta/maqetta.js"></script>
+<script type="text/javascript" data-dojo-config="'async':true,'parseOnLoad':true,'packages':[{'name':'gc','location':'../../gc'}]" src="lib/dojo/dojo/dojo.js"></script>
+<script type="text/javascript" src="lib/gc/backplane/guiComposer.js"></script>
+<script type="text/javascript" src="lib/gc/dijit/libs/steelseries.min.js"></script>
+<script type="text/javascript" src="lib/gc/dijit/libs/tween.min.js"></script>
+<script type="text/javascript" src="lib/gc/dijit/libs/jquery.min.js"></script>
+<script type="text/javascript" src="lib/gc/dijit/libs/jquery-ui.min.js"></script>
+<script type="text/javascript" src="lib/gc/dijit/libs/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.cursor.min.js"></script>
+<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+<script type="text/javascript" src="lib/gc/dijit/libs/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+<script type="text/javascript" src="maqetta/States.js"></script>
+<script type="text/javascript">
+require(["dijit/dijit"]);
+require(["dojo/parser"]);
+require(["gc/dijit/TabContainer"]);
+require(["gc/dijit/ContentPane"]);
+require(["gc/dijit/Dial"]);
+require(["gc/dijit/TextArea"]);
+require(["gc/dijit/Label"]);
+require(["gc/dijit/DigitalMeter"]);
+require(["gc/dijit/NumberSpinner"]);
+require(["gc/dijit/Div"]);
+require(["gc/dijit/CheckBox"]);
+require(["gc/dijit/ValueButton"]);
+require(["gc/dijit/LineGraph"]);
+require(["gc/dijit/Select"]);
+require(["gc/dijit/RadioButtonGroup"]);
+require(["gc/dijit/Image"]);</script>
+</head>
+<body class="claro" dvFlowLayout="false" data-davinci-ws="collapse" id="myapp">
+ <!-- [TI_FIX: selcomb] >> begin --><script type="text/javascript">
+		if (top != self && typeof $TI_isDebugMode != 'undefined') {
+			var fbl = document.createElement('script');
+	        fbl.setAttribute("type", "text/javascript");
+	        fbl.setAttribute("src", "https://getfirebug.com/firebug-lite.js#overrideConsole=true,startInNewWindow=false,startOpened=false,enableTrace=true");
+	        document.getElementsByTagName("head")[0].appendChild(fbl);
+		}
+	</script>
+ <!-- [TI_FIX: selcomb] << end --><span id="widget_1087" data-dojo-type="gc.dijit.TabContainer" style="z-index: 9999; min-width: 1em; min-height: 1em; position: absolute; left: 6px; top: 6px; width: 1104px; height: 582px;" controllerWidget="dijit.layout.TabController">
+<div id="widget_131" data-dojo-type="gc.dijit.ContentPane" title="Main" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" selected="selected" closable="false" style="width: 1086px; height: 509px;" doLayout="false">
+ <canvas id="widget_1909" data-dojo-type="gc.dijit.Dial" title="Speed Reference" size="230" minValue="-1" maxValue="1" setValueOnDrag="false" value="0" labelNumberFormat="fractional" fractionalScaleDecimals="1" frameDesign="tiltedBlack" dialDesign="anthracite" style="z-index: 9999; position: absolute; left: 51px; top: 112px;"></canvas>
+ <textarea type="text" id="widget_1864" data-dojo-type="gc.dijit.TextArea" style="height: 25px; z-index: 9999; position: absolute; left: 123.5px; top: 371px; width: 85px;"></textarea>
+ <label id="widget_1257" data-dojo-type="gc.dijit.Label" label="Motor Speed (RPM)" style="z-index: 9999; position: absolute; left: 111px; top: 348px;"></label>
+ <canvas id="widget_412" data-dojo-type="gc.dijit.DigitalMeter" title="Motor Current (A)" height="90" width="280" maxValue="9" labelNumberFormat="standard" fractionalScaleDecimals="1" gradientRatio="0.65,0.8,0.98" frameDesign="tiltedBlack" backgroundDesign="anthracite" style="z-index: 9999; position: absolute; left: 26px; top: 417px;"></canvas>
+ <input id="widget_537" type="text" data-dojo-type="gc.dijit.NumberSpinner" value="0" style="z-index: 9999; position: absolute; left: 197px; top: 522px; width: 49px;"></input>
+ <label id="widget_993" data-dojo-type="gc.dijit.Label" label="Graph Time Scaler" style="z-index: 9999; position: absolute; left: 72px; top: 525px;"></label>
+ <div id="widget_1256" data-dojo-type="gc.dijit.Div" style="height: 265px; background-image: -webkit-gradient(linear, left top, left bottom, from(#d5cfcf), to(#7c7a7a)); background-image: -o-linear-gradient(#d5cfcf, #7c7a7a); background-image: -ms-linear-gradient(#d5cfcf, #7c7a7a); background-image: -moz-linear-gradient(#d5cfcf, #7c7a7a); background-image: -webkit-linear-gradient(#d5cfcf, #7c7a7a); background-image: linear-gradient(#d5cfcf, #7c7a7a); z-index: 9999; position: absolute; left: 333px; top: 5px; width: 750px;">
+  <div id="widget_1041" data-dojo-type="gc.dijit.LineGraph" height="130" width="600" xShowTicks="true" yShowTicks="true" showLegend="false" showGridLines="true" style="height: 130px;width: 600px; z-index: 9999; position: absolute; left: 25px; top: -1.5px;;"></div>
+  <div id="widget_1748" data-dojo-type="gc.dijit.LineGraph" height="130" width="600" xShowTicks="true" yShowTicks="true" showLegend="false" showGridLines="true" style="z-index: 9999;width: 600px;height: 130px; position: absolute; left: 25px; top: 129px;;"></div>
+  <label id="widget_829" data-dojo-type="gc.dijit.Label" label="DLog Buff1" style="z-index: 9999; position: absolute; left: 638px; top: 37px;"></label>
+  <label id="widget_1722" data-dojo-type="gc.dijit.Label" label="DLog Buff2" style="z-index: 9999; position: absolute; left: 645px; top: 172px;"></label>
+</div>
+ <div id="widget_1666" data-dojo-type="gc.dijit.Div" style="background-image: -webkit-gradient(linear, left top, left bottom, from(#dad7d7), to(#838181)); background-image: -o-linear-gradient(#dad7d7, #838181); background-image: -ms-linear-gradient(#dad7d7, #838181); background-image: -moz-linear-gradient(#dad7d7, #838181); background-image: -webkit-linear-gradient(#dad7d7, #838181); background-image: linear-gradient(#dad7d7, #838181); z-index: 9999; position: absolute; left: 333px; top: 271.5px; width: 750px; height: 270px;">
+<div id="widget_1890" data-dojo-type="gc.dijit.LineGraph" height="130" width="600" xShowTicks="true" yShowTicks="true" showLegend="false" showGridLines="true" style="z-index: 9999;width: 600px;height: 130px; position: absolute; left: 25px; top: 5.5px;;"></div>
+<div id="widget_2033" data-dojo-type="gc.dijit.LineGraph" height="130" width="600" xShowTicks="true" yShowTicks="true" showLegend="false" showGridLines="true" style="z-index: 9999;width: 600px;height: 130px; position: absolute; left: 24px; top: 131.5px;;"></div>
+<label id="widget_341" data-dojo-type="gc.dijit.Label" label="DLog Buff3" style="z-index: 9999; position: absolute; left: 636px; top: 48.5px;"></label>
+<label id="widget_583" data-dojo-type="gc.dijit.Label" label="DLog Buff4" style="z-index: 9999; position: absolute; left: 642px; top: 174.5px;"></label>
+</div>
+ <div id="widget_871" data-dojo-type="gc.dijit.Div" style="border: 1px solid black; z-index: 9999; position: absolute; left: 25px; top: 11px; width: 118px; height: 82px;">
+  <label id="widget_1633" data-dojo-type="gc.dijit.Label" label="Motor Mode" style="z-index: 9999; position: absolute; left: 26px; top: 5px;"></label>
+</div>
+ <div id="widget_800" data-dojo-type="gc.dijit.Div" style="border: 1px solid black; z-index: 9999; position: absolute; left: 152px; top: 11px; width: 133px; height: 82px;">
+  <label id="widget_994" data-dojo-type="gc.dijit.Label" label="Logging Mode" style="z-index: 9999; position: absolute; left: 27.5px; top: 2.5px;"></label>
+</div>
+</div>
+<div id="widget_1397" data-dojo-type="gc.dijit.ContentPane" title="Board Layout" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" selected="selected" closable="false" style="width: 282px; height: 251px;" doLayout="false"></div>
+<div id="widget_32" data-dojo-type="gc.dijit.ContentPane" title="D3 Engineering"></div>
+<div id="widget_1356" data-dojo-type="gc.dijit.ContentPane" title="More..."></div>
+</span>
+<div id="widget_718" data-dojo-type="gc.dijit.Div" style="border: 1px solid black; z-index: 9999; position: absolute; left: 7px; top: 600px; width: 302px; height: 62px;">
+<input id="widget_1791" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left: 10px; top: 9px;"></input>
+<input id="widget_507" type="checkbox" data-dojo-type="gc.dijit.CheckBox" style="z-index: 9999; position: absolute; left: 10px; top: 28px;"></input>
+<label id="widget_1288" data-dojo-type="gc.dijit.Label" label="Enable Motor" style="z-index: 9999; position: absolute; left: 40px; top: 9px;"></label>
+<label id="widget_1196" data-dojo-type="gc.dijit.Label" label="CalibrateEnable" style="z-index: 9999; position: absolute; left: 40px; top: 28px;"></label>
+<textarea type="text" id="widget_1753" data-dojo-type="gc.dijit.TextArea" style="height: 20px; z-index: 9999; position: absolute; left: 185px; top: 22.5px; width: 49px;"></textarea>
+<label id="widget_219" data-dojo-type="gc.dijit.Label" label="Commutation Angle Offset" style="z-index: 9999; position: absolute; left: 150px; top: 2px;"></label>
+</div>
+<div id="widget_1409" data-dojo-type="gc.dijit.Div" style="border: 1px solid black; z-index: 9999; position: absolute; left: 321px; top: 602px; width: 189px; height: 62px;">
+<label id="widget_574" data-dojo-type="gc.dijit.Label" label="Fault Status" style="z-index: 9999; position: absolute; left: 11px; top: 9px;"></label>
+<img id="reset_fault_status_image" data-dojo-type="gc.dijit.Image" data-dojo-props="images:['images/green.png','images/yellow.png','images/red.png']" style="z-index: 9999; position: absolute; left: 32px; top: 28px;"/>
+<input id="widget_737" type="button" data-dojo-type="gc.dijit.ValueButton" value="1" intermediateChanges="false" label="Reset Fault" iconClass="dijitNoIcon" style="z-index: 9999; position: absolute; left: 94.5px; top: 18.75px;"></input>
+</div>
+<div id="widget_1515" data-dojo-type="gc.dijit.Div" style="border: 1px solid black; z-index: 9999; position: absolute; left: 518.5px; top: 602px; width: 285px; height: 62px;">
+<label id="widget_205" data-dojo-type="gc.dijit.Label" label="DC Bus" style="z-index: 9999; position: absolute; left: 10px; top: 23.5px;"></label>
+<canvas id="widget_768" data-dojo-type="gc.dijit.DigitalMeter" height="50" width="180" maxValue="35" labelNumberFormat="standard" fractionalScaleDecimals="1" gradientRatio="0.65,0.8,0.98" frameDesign="tiltedBlack" backgroundDesign="anthracite" style="z-index: 9999; position: absolute; left: 62px; top: 7px;"></canvas>
+<img id="dc_bus_status_image" data-dojo-type="gc.dijit.Image" data-dojo-props="images:['images/green.png','images/yellow.png','images/red.png']" style="z-index: 9999; position: absolute; left: 252px; top: 19.5px;"/>
+</div>
+<div id="widget_1785" data-dojo-type="gc.dijit.Div" style="border: 1px solid black; z-index: 9999; position: absolute; left: 812px; top: 602px; width: 178px; height: 62px;">
+<label id="widget_1289" data-dojo-type="gc.dijit.Label" label="Driver Over Temperature Warning" style="z-index: 9999; position: absolute; left: 13px; top: 9px;"></label>
+<img id="over_temp_status_image" data-dojo-type="gc.dijit.Image" data-dojo-props="images:['images/green.png','images/yellow.png','images/red.png']" style="z-index: 9999; position: absolute; left: 95.5px; top: 30px;"/>
+</div>
+<div id="widget_580" data-dojo-type="gc.dijit.RadioButtonGroup" data-dojo-props="labels: ['Disabled','Torque','Speed']" style="z-index: 9999; position: absolute; left: 58px; top: 74px;"></div>
+<div id="widget_154" data-dojo-type="gc.dijit.RadioButtonGroup" data-dojo-props="labels: ['Disabled','Graphs 1','Graphs 2']" style="z-index: 9999; position: absolute; left: 187.5px; top: 74.5px;"></div>
+<div id="widget_938" data-dojo-type="gc.dijit.Div" style="border: 1px solid black; z-index: 9999; position: absolute; left: 999px; top: 602px; width: 104px; height: 60px;">
+ <label id="widget_1738" data-dojo-type="gc.dijit.Label" label="Encoder Status" style="z-index: 9999; position: absolute; left: 12px; top: 11.5px;"></label>
+ <img id="encoder_status_image" data-dojo-type="gc.dijit.Image" data-dojo-props="images:['images/green.png','images/yellow.png','images/red.png']" style="z-index: 9999; position: absolute; left: 42.5px; top: 30px;"/>
+
+</div>
+</body>
+</html>
