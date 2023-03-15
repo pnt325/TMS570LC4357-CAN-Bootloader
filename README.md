@@ -12,6 +12,11 @@ Check out to newest code branch `phat-dev`
 ```
 git checkout -b phat-dev
 ```
+ 
+ ## Get github project using Github Desktop
 
+ [Github Desktop](https://desktop.github.com/)
 
+## Install git on windows
 
+[Install git on windows](https://phoenixnap.com/kb/how-to-install-git-windows)
