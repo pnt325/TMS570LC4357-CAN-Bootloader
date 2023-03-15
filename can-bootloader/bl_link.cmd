@@ -105,7 +105,7 @@ SECTIONS
    flashAPI:
    {
      .\source\Fapi_UserDefinedFunctions.obj (.text)
-     .\source\bl_flash.obj (.text)
+     .\source\flash.obj (.text)
      --library= "c:\ti\Hercules\F021 Flash API\02.01.01\F021_API_CortexR4_BE_L2FMC.lib" (.text)
    } palign=8 load = FLASH0 |FLASH1, run = SRAM, LOAD_START(apiLoadStart), RUN_START(apiRunStart), SIZE(apiLoadSize)
 
