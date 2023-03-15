@@ -15,7 +15,7 @@ git checkout -b phat-dev
  
  ## Get github project using Github Desktop
 
- [Github Desktop](https://desktop.github.com/);
+ [Github Desktop](https://desktop.github.com/)
 
 ## Install git on windows
 
