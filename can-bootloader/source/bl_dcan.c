@@ -39,7 +39,7 @@
 #if defined (CAN_ENABLE_UPDATE)
 
 #include "bl_check.h"
-#include "bl_flash.h"
+#include "flash.h"
 #include "bl_can.h"
 #include "bl_commands.h"
 #include "F021.h"

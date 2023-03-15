@@ -33,18 +33,16 @@
  */
 //*****************************************************************************
 
-
 #ifndef __BL_FLASH_H__
 #define __BL_FLASH_H__
 
 #include "bl_config.h"
 
-#if defined (RM57) || defined (TMS570LC43)
+#if defined(RM57) || defined(TMS570LC43)
 #include "HL_sys_common.h"
 #else
 #include "sys_common.h"
 #endif
-
 
 //*****************************************************************************
 //
@@ -56,14 +54,19 @@ extern uint32_t BLInternalFlashSizeGet(void);
 extern uint32_t BLInternalFlashStartAddrCheck(uint32_t ulAddr, uint32_t ulImgSize);
 
 extern uint32_t Fapi_Init(uint32_t ucStartBank, uint32_t ucEndBank);
-extern uint32_t Fapi_BlockProgram( uint32_t Flash_Start_Address, uint32_t Data_Start_Address, uint32_t Size_In_Bytes);
+extern uint32_t Fapi_BlockProgram(uint32_t Flash_Start_Address, uint32_t Data_Start_Address, uint32_t Size_In_Bytes);
 
-extern uint32_t Fapi_BlockErase( uint32_t Flash_Start_Address, uint32_t Size_In_Bytes);
+extern uint32_t Fapi_BlockErase(uint32_t Flash_Start_Address, uint32_t Size_In_Bytes);
 
-extern uint32_t Fapi_UpdateStatusProgram( uint32_t Flash_Start_Address, uint32_t Data_Start_Address, uint32_t Size_In_Bytes);
-                                
+extern uint32_t Fapi_UpdateStatusProgram(uint32_t Flash_Start_Address, uint32_t Data_Start_Address, uint32_t Size_In_Bytes);
+
 extern uint32_t Flash_Erase_Check(uint32_t Start_Address, uint32_t Bytes);
 
 extern uint32_t Flash_Program_Check(uint32_t Program_Start_Address, uint32_t Source_Start_Address, uint32_t No_Of_Bytes);
+
+uint32_t flash_init(void);
+uint32_t flash_write(uint32_t flash_addr, uint32_t data_addr, uint32_t size);
+uint32_t flash_read(uint32_t flash_addr, uint32_t data_addr, uint32_t size);
+uint32_t flash_erase(uint32_t flash_addr, uint32_t size);
 
 #endif // __BL_FLASH_H__
