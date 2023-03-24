@@ -15,54 +15,73 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef enum 
+/** 29 Bit CAN ID */
+typedef enum
 {
-  CAN_ID_SRC = 0x300,     /** Device CAN ID handle */
-  CAN_ID_DST = 0x301,     /** Host CAN ID handle */
+  /**
+   * @brief Send this message ID to start erase flash
+   * Success: CAN_ID_BL_APP_ERASE_APOS
+   * Failure: CAN_ID_BL_APP_ERASE_ANEG
+   * 
+   * @note Message length = 8, with special data
+   */
+  CAN_ID_BL_APP_ERASE       = 0x0CFFD000,   /* app erase cmd */
+  CAN_ID_BL_APP_ERASE_APOS  = 0x0CFFD001,   /* ack positive */
+  CAN_ID_BL_APP_ERASE_ANEG  = 0x0CFFD002,   /* ack negative */
+
+  /**
+   * @brief 
+   * 
+   * @note Message length =  2;
+   */
+  CAN_ID_BL_STOP            = 0x0CFFD003,   /* stop cmd */
+  CAN_ID_BL_STOP_APOS       = 0x0CFFD004,   /* ack positive */
+  CAN_ID_BL_STOP_ANEG       = 0x0CFFD005,   /* ack negative */
+
+  /**
+   * @brief Reset from APP to bootloader
+   * @note After reset to bootloader the device will be response 
+   * the message id: CAN_ID_BL_CPU_RESET_APOS to indicate with host 
+   * reset complete.
+   * @note msg_len = 0
+   */
+  CAN_ID_BL_CPU_RESET       = 0x0CFFD006,   /* cpu reset cmd */
+  CAN_ID_BL_CPU_RESET_APOS  = 0x0CFFD007,   /* ack positive */
+
+  /**
+   * @brief Request current app version info.
+   * @note Message length  = 0
+   * @note version define 
+   * Response message ID: CAN_ID_BL_VER_REQ_RSP
+   * [0] software version
+   * [1] product id
+   * [2] hardware version
+   * [3] bootloader version
+   */
+  CAN_ID_BL_VER_REQ         = 0x0CFFD008,   /* req all version info */
+  CAN_ID_BL_VER_REQ_RSP     = 0x0CFFD009,   /* all ver response */
+
+  /**
+   * @brief Request memory map
+   * @note Message length = 0
+   * @note Repsonse 
+   */
+  CAN_ID_BL_MAP_REQ         = 0x0CFFD00A,   /* req memory map info */
+  CAN_ID_BL_MAP_REQ_RSP_ARM = 0x0CFFD00B,   /* memory map response */
+  CAN_ID_BL_MAP_REQ_RSP_C2K = 0x0CFFD00C,
+
+  CAN_ID_BL_ADDR            = 0x0CFFD020,   /* 32-bit address */
+  CAN_ID_BL_ADDR_APOS       = 0x0CFFD021,   /* ack positive */
+  CAN_ID_BL_ADDR_ANEG       = 0x0CFFD022,   /* ack negative */
+
+  CAN_ID_BL_DATA            = 0x0CFFD023,   /* data */
+  CAN_ID_BL_DATA_APOS       = 0x0CFFD024,   /* ack positive */
+  CAN_ID_BL_DATA_ANEG       = 0x0CFFD025,   /* ack negative */
 } can_id_t;
 
-typedef enum 
-{
-  CAN_MSG_ID_RESET         = 0x00,
-  CAN_MSG_ID_CONNECT       = 0xFF,
-  CAN_MSG_ID_GET_SEED      = 0xF8,
-  CAN_MSG_ID_UNLOCK        = 0xF7,
-  CAN_MSG_ID_START         = 0xD2,   /** Start program */
-  CAN_MSG_ID_ERASE         = 0xD1,   /** Erase flash base on flash size and address */
-  CAN_MSG_ID_MTA           = 0xF6,   /** Send request download: address and size */
-  CAN_MSG_ID_KEY_REQ       = 0x06,
-  CAN_MSG_ID_PROGRAM       = 0xD0,   /** Program data */
-  CAN_MSG_ID_PROGRAM_RESET = 0xCF,   /** Reset device after bootloader success */
-  CAN_MSG_ID_RESP          = 0xFF,   /** Response message to software */
-} can_msg_id_t;
+#define CAN_MSG_APP_ERASE   {11,13,88,55,3,211,177,249}
 
-#define CAN_MSG_RESP_OK   {CAN_MSG_ID_RESP}     /** Response success */
-#define CAN_MSG_RESP_FAIL {CAN_MSG_ID_RESP - 1} /** Response failure */
-
-#define CAN_MSG_RESET     {CAN_MSG_ID_RESET}
-#define CAN_MSG_CONNECT   {CAN_MSG_ID_CONNECT, 0x00}
-#define CAN_MSG_GET_SEED  {CAN_MSG_ID_UNLOCK, 0x00, 0x00}
-#define CAN_MSG_UNLOCK    {CAN_MSG_ID_UNLOCK, 0x06, 'P', 'S', 'S', 'W', 'R', 'D'}
-#define CAN_MSG_START     {CAN_MSG_ID_START}
-#define CAN_MSG_ERASE     {CAN_MSG_ID_ERASE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
-
-// NOTE Flahs size and address is not clear.
-/**
- * @brief Send request to download 
- * [0] = CAN_MSG_ID_MTA
- * [1,3] = ???
- * [4,7] = Address
- */
-#define CAN_MSG_MTA       {CAN_MSG_ID_MTA, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
-
-typedef struct
-{
-  uint8_t id;
-  uint8_t size;
-  uint8_t buf[5];
-} can_msg_program_t;
-
-#define CAN_MSG_PROGRAM_RESET {CAN_MSG_ID_PROGRAM_RESET}
+bool can_is_msg_erase(const uint8_t* buf);
 
 
 #ifdef __cplusplus
