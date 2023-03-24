@@ -107,7 +107,7 @@
 //*****************************************************************************
 // The address to store the update status of the application image
 // It contains Application Start Address, Application Image Size, etc
-//
+// Start address at sector 4, block 0
 //*****************************************************************************
 #define APP_STATUS_ADDRESS       0x00010000   /* This is must the starting address of one of flash sectors */
 
