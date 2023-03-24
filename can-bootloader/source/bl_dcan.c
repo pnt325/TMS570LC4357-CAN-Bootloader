@@ -120,6 +120,8 @@ extern uint32_t g_pulUpdateSuccess[8];
 extern uint32_t g_ulUpdateStatusAddr;
 extern uint32_t g_ulUpdateBufferSize;  //32 bytes or 8 32-bit words
 
+static canBASE_t* can_node;
+
 //*****************************************************************************
 //
 //! This function configures the message object used to receive commands.
@@ -766,3 +768,87 @@ ConfigureCANDevice(canBASE_t *node)
 }
 
 #endif
+
+/**
+ * @brief CAN initialize
+ * @param Point to can node
+ */
+void can_init(canBASE_t* node)
+{
+    if(node == NULL)
+    {
+        return;
+    }
+    can_node = node;
+}
+
+/**
+ * @brief CAN receive message, the function will block application
+ * @param rbuf Point to receive buffer, size should >= 8
+ * @param size Number of data received (in byte)
+ * @return CAN Message ID, if 0 is failure
+ */
+uint32_t can_rx(uint8_t* rbuf, uint32_t* size)
+{
+    /** check that can_node is assigned */
+    if(can_node == NULL)
+    {
+        return 0;
+    }
+
+    uint32_t ulMsgID;
+
+    uint32_t messageBox = 1;
+
+    uint32_t regIndex = (messageBox - 1U) >> 5U;
+    uint32_t bitIndex = 1U << ((messageBox - 1U) & 0x1FU);
+
+    //
+    // Wait until a packet has been received.
+    //
+    while((can_node->NWDATx[regIndex] & bitIndex) == 0)
+    {
+    }
+
+    //
+    // Read the packet.
+    //
+    *size = CANMessageGetRx(can_node, rbuf, &ulMsgID);
+
+    //
+    // Return the message ID of the packet that was received.
+    //
+    return(ulMsgID);
+}
+
+void can_tx(uint32_t msg_id, const uint8_t* buf, uint32_t size)
+{
+    /** check that can_node is assigned */
+    if(can_node == NULL)
+    {
+        return;
+    }
+
+    uint32_t ulIdx;
+
+    uint32_t messageBox = 2;
+
+    uint32_t regIndex = (messageBox - 1U) >> 5U;
+    uint32_t bitIndex = 1U << ((messageBox - 1U) & 0x1FU);
+
+    //
+    // Wait until the previous packet has been sent, providing a time out so
+    // that the boot loader does not hang here.
+    //
+    for(ulIdx = 1000; (ulIdx != 0) && ((can_node->TXRQx[regIndex] & bitIndex) != 0); ulIdx--)
+    {
+    }
+
+    //
+    // If the previous packet was sent, then send this packet.
+    //
+    if(ulIdx != 0)
+    {
+        CANMessageSetTx(can_node, msg_id, buf, size);
+    }
+}

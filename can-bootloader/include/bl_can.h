@@ -119,4 +119,8 @@ static void CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucDa
 static uint32_t CANMessageGetRx(canBASE_t *node, uint8_t *pucData, uint32_t *pulMsgID);
 static void CANMessageSetRx(canBASE_t *node);
 
+void can_init(canBASE_t* node);
+uint32_t can_rx(uint8_t* rbuf, uint32_t* size);
+void can_tx(uint32_t msg_id, const uint8_t* buf, uint32_t size);
+
 #endif // __BL_CAN_H__
