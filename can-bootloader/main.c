@@ -9,10 +9,12 @@
 #include "HL_system.h"
 #include "HL_sys_common.h"
 #include "HL_sys_core.h"
+#include "ti_fee.h"
 
 #include "bl_check.h"
 #include "bl_led_demo.h"
 #include "flash.h"
+#include "can_msg.h"
 
 /*****************************************************************************
  * bl_main
@@ -74,6 +76,8 @@ extern unsigned int constLoadStart;
 extern unsigned int constLoadSize;
 extern unsigned int constRunStart;
 
+static uint8_t eeprom_ram_block[8];
+
 /*****************************************************************************
  *
  * This holds the current address that is being written to during a download
@@ -87,6 +91,8 @@ void delay(unsigned int delayval)
 }
 
 static void flash_example(void);
+static void reset_system(void);
+
 
 // extern void _copyAPI2RAM_(unsigned int* r0, unsigned int* r1, unsigned int* r2);
 
@@ -103,13 +109,46 @@ void main(void)
 	//_copyAPI2RAM_(&constLoadStart, &constRunStart, &constLoadSize);
 	memcpy(&constRunStart, &constLoadStart, (uint32)&constLoadSize);
 
-	UART_putString(UART, "\r Hercules MCU CAN BootLoader ");
+	UART_putString(UART, "CAN BootLoader\r\n");
 
+	/** Just for test the Flash */
+	/** Must remove on future */
 	flash_init();
 	flash_example();
 
+	ConfigureCANDevice(CAN_PORT);
+	can_init(CAN_PORT);
+
+	/** Init EEPROM */
+	TI_Fee_Init();
+
+	uint32_t recv_size;
+	uint8_t* recv_buf = (uint8_t*)g_pulDataBuffer;
 	while (1)
 	{
+	    /** Polling CAN message */
+	    recv_size = 0;
+	    uint32_t msg_id = can_rx(recv_buf, &recv_size);
+
+        switch (msg_id)
+        {
+        case CAN_ID_BL_APP_ERASE:
+            break;
+        case CAN_ID_BL_STOP:
+            break;
+        case CAN_ID_BL_CPU_RESET:
+            break;
+        case CAN_ID_BL_VER_REQ:
+            break;
+        case CAN_ID_BL_MAP_REQ:
+            break;
+        case CAN_ID_BL_ADDR:
+            break;
+        case CAN_ID_BL_DATA:
+            break;
+        default:
+            break;
+        }
 	}
 }
 
@@ -167,4 +206,9 @@ static void flash_example(void)
 	{
 		UART_putString(UART, "Data read not equal with write");
 	}
+}
+
+static void reset_system(void)
+{
+    systemREG1->SYSECR = (0x10) << 14;
 }
