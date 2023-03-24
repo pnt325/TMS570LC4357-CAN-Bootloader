@@ -86,6 +86,9 @@ SECTIONS
     .data    : {} > RAM
     .sysmem  : {} > RAM
 	
+    FEE_TEXT_SECTION  : {} > FLASH0 | FLASH1
+    FEE_CONST_SECTION : {} > FLASH0 | FLASH1
+    FEE_DATA_SECTION  : {} > RAM
 
 /* USER CODE BEGIN (6) */
 /* USER CODE END */
