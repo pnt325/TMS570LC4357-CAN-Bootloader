@@ -76,7 +76,7 @@ extern unsigned int constLoadStart;
 extern unsigned int constLoadSize;
 extern unsigned int constRunStart;
 
-static uint8_t eeprom_ram_block[8];
+//static uint8_t eeprom_ram_block[8];
 
 /*****************************************************************************
  *
@@ -91,7 +91,7 @@ void delay(unsigned int delayval)
 }
 
 static void flash_example(void);
-static void reset_system(void);
+//static void reset_system(void);
 
 
 // extern void _copyAPI2RAM_(unsigned int* r0, unsigned int* r1, unsigned int* r2);
@@ -190,15 +190,16 @@ static void flash_example(void)
 	}
 
 	memset(rbuf, 0, sizeof(rbuf));
-	ret = flash_read(flash_start_addr, (uint32_t)rbuf, len);
-	if (ret != 0)
-	{
-		UART_putString(UART, "Read data from flash failure");
-		return;
-	}
+	uint8_t* _rbuf = (uint8_t*)flash_start_addr;
+//	ret = flash_read(flash_start_addr, (uint32_t)rbuf, len);
+//	if (ret != 0)
+//	{
+//		UART_putString(UART, "Read data from flash failure");
+//		return;
+//	}
 
 	/** Compare read and write data */
-	if (memcmp(rbuf, wbuf, len) == 0)
+	if (memcmp(_rbuf, wbuf, len) == 0)
 	{
 		UART_putString(UART, "Data read equal with write");
 	}
@@ -208,7 +209,7 @@ static void flash_example(void)
 	}
 }
 
-static void reset_system(void)
-{
-    systemREG1->SYSECR = (0x10) << 14;
-}
+//static void reset_system(void)
+//{
+//    systemREG1->SYSECR = (0x10) << 14;
+//}
