@@ -11,5 +11,7 @@
     ".metadata":true,
     ".jxbrowser.userdata":true,
     ".tempFiles":true
-  }
+  },
+  "nrf-connect.topdir": "${nrf-connect.sdk:2.1.1}",
+  "nrf-connect.toolchain.path": "${nrf-connect.toolchain:2.1.1}"
 }

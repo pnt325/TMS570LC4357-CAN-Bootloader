@@ -1,5 +1,0 @@
-clocks per second=1000
-Signal scan time 2
-Determine signals time 0
-Load signals time 17
-Cleanup signals time 0, max signal matcher nodes is 0, push failed 0 times, succeeded 0 times, skipped due to count: 0, Not skipped: 0, Skipped due to small = 0

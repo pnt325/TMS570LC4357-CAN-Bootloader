@@ -1,6 +1,0 @@
-Filename: version.txt
-
-The version of this release is 0.01b.
-
-
-

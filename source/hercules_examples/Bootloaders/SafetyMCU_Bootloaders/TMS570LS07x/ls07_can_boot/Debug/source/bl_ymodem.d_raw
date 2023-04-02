@@ -1,2 +1,0 @@
-source\bl_ymodem.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/source/bl_ymodem.c
-source\bl_ymodem.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/TMS570LS07x/ls07_can_boot/bl_config.h

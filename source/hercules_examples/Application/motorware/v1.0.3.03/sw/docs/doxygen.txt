@@ -1,4 +1,0 @@
-To run doxygen on the directory
-
-1. Change directory to MW_INSTALL_DIR/sw
-2. Run doxygen: doxygen ./docs/doxygen/doxyfile > output.txt 2>&1

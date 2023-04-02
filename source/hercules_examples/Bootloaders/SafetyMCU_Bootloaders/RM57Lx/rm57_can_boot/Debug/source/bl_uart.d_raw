@@ -1,2 +1,0 @@
-source\bl_uart.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/source/bl_uart.c
-source\bl_uart.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/RM57Lx/rm57_can_boot/bl_config.h
