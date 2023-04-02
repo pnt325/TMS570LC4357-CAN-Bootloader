@@ -1,21 +1,35 @@
 /**
- * @file      can_msg.h
- * @brief     CAN Message Header
- * @date      03/23/23
+ * @file       can_msg.h
+ * @copyright  Copyright (C) 2020 Hydratech. All rights reserved.
+ * @license    This project is released under the Hydratech License.
+ * @version    1.0.0
+ * @date       2021-07-31
+ * @author     Thuan Le
+ * @brief      CAN Message Header
+ * @note       None
+ * @example    None
  */
 
-#ifndef CAN_MSG_H_
-#define CAN_MSG_H_
+/* Define to prevent recursive inclusion ------------------------------ */
+#ifndef __CAN_MSG_H
+#define __CAN_MSG_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Includes ----------------------------------------------------------- */
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+/* Public defines ----------------------------------------------------- */
+#define CAN_MSG_APP_ERASE   {11,13,88,55,3,211,177,249}
 
-/** 29 Bit CAN ID */
+/* Public enumerate/structure ----------------------------------------- */
+/**
+ * @brief 29 Bit CAN ID
+ */
 typedef enum
 {
   /**
@@ -77,15 +91,18 @@ typedef enum
   CAN_ID_BL_DATA            = 0x0CFFD023,   /* data */
   CAN_ID_BL_DATA_APOS       = 0x0CFFD024,   /* ack positive */
   CAN_ID_BL_DATA_ANEG       = 0x0CFFD025,   /* ack negative */
-} can_id_t;
+}
+can_id_t;
 
-#define CAN_MSG_APP_ERASE   {11,13,88,55,3,211,177,249}
+/* Private variables -------------------------------------------------- */
 
+/* Public function prototypes ----------------------------------------- */
 bool can_is_msg_erase(const uint8_t* buf);
 
-
+/* -------------------------------------------------------------------------- */
 #ifdef __cplusplus
-}
-#endif /* __cplusplus */
+} // extern "C"
+#endif
+#endif // __CAN_MSG_H
 
-#endif /* CAN_MSG_H_ */
+/* End of file -------------------------------------------------------- */

@@ -76,7 +76,7 @@ extern unsigned int constLoadStart;
 extern unsigned int constLoadSize;
 extern unsigned int constRunStart;
 
-//static uint8_t eeprom_ram_block[8];
+// static uint8_t eeprom_ram_block[8];
 
 /*****************************************************************************
  *
@@ -86,70 +86,69 @@ extern unsigned int constRunStart;
  ******************************************************************************/
 void delay(unsigned int delayval)
 {
-	while (delayval--)
-		;
+  while (delayval--)
+    ;
 }
 
 static void flash_example(void);
-//static void reset_system(void);
-
+// static void reset_system(void);
 
 // extern void _copyAPI2RAM_(unsigned int* r0, unsigned int* r1, unsigned int* r2);
 
 void main(void)
 {
-	/* Initialize SCI Routines to receive Command and transmit data */
-	sciInit();
+  /* Initialize SCI Routines to receive Command and transmit data */
+  sciInit();
 
-	/* Copy the flash APIs to SRAM*/
-	//_copyAPI2RAM_(&apiLoadStart, &apiRunStart, &apiLoadSize);
-	memcpy(&apiRunStart, &apiLoadStart, (uint32)&apiLoadSize);
+  /* Copy the flash APIs to SRAM*/
+  //_copyAPI2RAM_(&apiLoadStart, &apiRunStart, &apiLoadSize);
+  memcpy(&apiRunStart, &apiLoadStart, (uint32)&apiLoadSize);
 
-	/* Copy the .const section */
-	//_copyAPI2RAM_(&constLoadStart, &constRunStart, &constLoadSize);
-	memcpy(&constRunStart, &constLoadStart, (uint32)&constLoadSize);
+  /* Copy the .const section */
+  //_copyAPI2RAM_(&constLoadStart, &constRunStart, &constLoadSize);
+  memcpy(&constRunStart, &constLoadStart, (uint32)&constLoadSize);
 
-	UART_putString(UART, "CAN BootLoader\r\n");
+  UART_putString(UART, "CAN BootLoader\r\n");
 
-	/** Just for test the Flash */
-	/** Must remove on future */
-	flash_init();
-	flash_example();
+  /** Just for test the Flash */
+  /** Must remove on future */
+  flash_init();
+  flash_example();
 
-	ConfigureCANDevice(CAN_PORT);
-	can_init(CAN_PORT);
+  ConfigureCANDevice(CAN_PORT);
+  can_init(CAN_PORT);
 
-	/** Init EEPROM */
-	TI_Fee_Init();
+  /** Init EEPROM */
+  TI_Fee_Init();
 
-	uint32_t recv_size;
-	uint8_t* recv_buf = (uint8_t*)g_pulDataBuffer;
-	while (1)
-	{
-	    /** Polling CAN message */
-	    recv_size = 0;
-	    uint32_t msg_id = can_rx(recv_buf, &recv_size);
+  uint32_t recv_size;
+  uint8_t *recv_buf = (uint8_t *)g_pulDataBuffer;
+  while (1)
+  {
+    /** Polling CAN message */
+    recv_size = 0;
+    uint32_t msg_id = can_rx(recv_buf, &recv_size);
 
-        switch (msg_id)
-        {
-        case CAN_ID_BL_APP_ERASE:
-            break;
-        case CAN_ID_BL_STOP:
-            break;
-        case CAN_ID_BL_CPU_RESET:
-            break;
-        case CAN_ID_BL_VER_REQ:
-            break;
-        case CAN_ID_BL_MAP_REQ:
-            break;
-        case CAN_ID_BL_ADDR:
-            break;
-        case CAN_ID_BL_DATA:
-            break;
-        default:
-            break;
-        }
-	}
+    switch (msg_id)
+    {
+    case CAN_ID_BL_APP_ERASE:
+      break;
+    case CAN_ID_BL_STOP:
+      break;
+    case CAN_ID_BL_CPU_RESET:
+      break;
+    case CAN_ID_BL_VER_REQ:
+      break;
+    case CAN_ID_BL_MAP_REQ:
+      break;
+    case CAN_ID_BL_ADDR:
+      break;
+    case CAN_ID_BL_DATA:
+      break;
+    default:
+      break;
+    }
+  }
 }
 
 /******************************************************************************
@@ -167,49 +166,49 @@ void main(void)
 
 static void flash_example(void)
 {
-	// Write some data to bank 2, sector 0, size = 128KB
-	// flash address = 0x00200000
+  // Write some data to bank 2, sector 0, size = 128KB
+  // flash address = 0x00200000
 #define flash_start_addr 0x00200000
 #define flash_size 0x00020000 /** 128KB */
-	uint32_t ret;
-	ret = flash_erase(flash_start_addr, flash_size);
-	if (ret != 0)
-	{
-		UART_putString(UART, "Erase flash failure");
-		return;
-	}
+  uint32_t ret;
+  ret = flash_erase(flash_start_addr, flash_size);
+  if (ret != 0)
+  {
+    UART_putString(UART, "Erase flash failure");
+    return;
+  }
 
-	char wbuf[] = "Just write sample code to flash";
-	int len = strlen(wbuf);
-	char rbuf[128] = {};
-	ret = flash_write(flash_start_addr, (uint32_t)wbuf, len);
-	if (ret != 0)
-	{
-		UART_putString(UART, "Write data to flash failure");
-		return;
-	}
+  char wbuf[] = "Just write sample code to flash";
+  int len = strlen(wbuf);
+  char rbuf[128] = {};
+  ret = flash_write(flash_start_addr, (uint32_t)wbuf, len);
+  if (ret != 0)
+  {
+    UART_putString(UART, "Write data to flash failure");
+    return;
+  }
 
-	memset(rbuf, 0, sizeof(rbuf));
-	uint8_t* _rbuf = (uint8_t*)flash_start_addr;
-//	ret = flash_read(flash_start_addr, (uint32_t)rbuf, len);
-//	if (ret != 0)
-//	{
-//		UART_putString(UART, "Read data from flash failure");
-//		return;
-//	}
+  memset(rbuf, 0, sizeof(rbuf));
+  uint8_t *_rbuf = (uint8_t *)flash_start_addr;
+  //	ret = flash_read(flash_start_addr, (uint32_t)rbuf, len);
+  //	if (ret != 0)
+  //	{
+  //		UART_putString(UART, "Read data from flash failure");
+  //		return;
+  //	}
 
-	/** Compare read and write data */
-	if (memcmp(_rbuf, wbuf, len) == 0)
-	{
-		UART_putString(UART, "Data read equal with write");
-	}
-	else
-	{
-		UART_putString(UART, "Data read not equal with write");
-	}
+  /** Compare read and write data */
+  if (memcmp(_rbuf, wbuf, len) == 0)
+  {
+    UART_putString(UART, "Data read equal with write");
+  }
+  else
+  {
+    UART_putString(UART, "Data read not equal with write");
+  }
 }
 
-//static void reset_system(void)
+// static void reset_system(void)
 //{
-//    systemREG1->SYSECR = (0x10) << 14;
-//}
+//     systemREG1->SYSECR = (0x10) << 14;
+// }
