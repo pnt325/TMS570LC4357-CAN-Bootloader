@@ -24,4 +24,10 @@
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>F021_FLASH_API</name>
+			<value>file:/C:/ti/Hercules/F021%20Flash%20API/02.01.01</value>
+		</variable>
+	</variableList>
 </projectDescription>
