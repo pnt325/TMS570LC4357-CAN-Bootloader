@@ -83,7 +83,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="source/bl_main.c|TMS570LC43x/source/HL_sys_main.c|TMS570LC43x/source/HL_sys_link.cmd|TMS570LC43xxFlashLnk.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="TMS570LC43x/source/HL_sys_main.c|TMS570LC43x/source/HL_sys_link.cmd|TMS570LC43xxFlashLnk.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -167,7 +167,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="source/flash.c|main.c|source/bl_main.c|TMS570LC43x/source/HL_sys_main.c|TMS570LC43x/source/HL_sys_link.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="source/flash.c|source/bl_main.c|TMS570LC43x/source/HL_sys_main.c|TMS570LC43x/source/HL_sys_link.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
