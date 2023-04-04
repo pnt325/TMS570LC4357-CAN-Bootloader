@@ -255,7 +255,8 @@ CANMessageGetRx(canBASE_t *node, uint8_t *pucData, uint32_t *pulMsgID)
     //
     // Set the 29 bit version of the Identifier for this message object.
     //
-    *pulMsgID = (usArbReg & CAN_IFARB_11ID_M) >> 18;
+    // TODO: Need to test with this one
+    *pulMsgID = (usArbReg & CAN_IFARB_29ID_M);
 
     //
     // See if there is new data available.
@@ -355,7 +356,7 @@ CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucData,
     //
     // Mark the message as valid and set the extended ID bit.
     //
-    usArbReg = (((ulId << 18) & CAN_IFARB_11ID_M) | (CAN_IFARB_DIR | CAN_IFARB_MSGVAL));
+    usArbReg = (ulId | (CAN_IFARB_DIR | CAN_IFARB_MSGVAL | CAN_IFARB_XTD));
 
     //
     // Set the TXRQST bit and the reset the rest of the register.
@@ -490,10 +491,13 @@ UpdaterCAN(canBASE_t *node)
     	//LITE_TOPRIGHT_LED;
 
 		ulBytes = 0;
-		ulCmd = PacketRead(node, g_pucCommandBuffer, &ulBytes);
+		// ulCmd = PacketRead(node, g_pucCommandBuffer, &ulBytes);
 
 		ucStatus = CAN_CMD_SUCCESS;       // 0x00
-		switch(ulCmd)
+
+        PacketWrite(node, CAN_COMMAND_ACK, &ucStatus, 1);
+
+        switch(ulCmd)
 		{
 
             //
