@@ -1,0 +1,53 @@
+@startuml
+
+participant APP as "Flash Raw App"
+participant MCU as "MCU"
+
+skinparam dpi 300
+
+== Request MCU Reset ==
+APP->MCU ++: CAN_ID_BL_CPU_RESET \n- Length: 0
+MCU -> MCU : Wait 200ms
+MCU-->APP : CAN_ID_BL_CPU_RESET_APOS \n- Length: 0
+
+== Get Firmware Version ==
+APP->MCU ++: CAN_ID_BL_VER_REQ \n- Length: 0
+MCU -> MCU : Wait 200ms
+MCU-->APP : CAN_ID_BL_VER_REQ_RSP \n- Length: 4 \n- [0] Software version \n- [1] Product id \n- [2] Hardware version \n- [3] Bootloader version
+
+== Request App Erase ==
+APP->MCU ++: CAN_ID_BL_APP_ERASE  \n- Length: 8 \n- Data ?
+MCU -> MCU : Wait 200ms
+MCU-->APP : True: CAN_ID_BL_APP_ERASE_APOS \n- Length: 0
+MCU-->APP : False: CAN_ID_BL_CPU_RESET_APOS \n- Length: 0
+
+== Get Memory Map ==
+APP->MCU ++: CAN_ID_BL_MAP_REQ  \n- Length: 0
+MCU -> MCU : Wait 200ms
+MCU-->APP : CAN_ID_BL_MAP_REQ_RSP_ARM \n- Length: 8 \n- [0:3] Start address \n- [4:7] End address
+MCU-->APP : CAN_ID_BL_MAP_REQ_RSP_C2K \n- Length: 8 \n- [0:3] Start address \n- [4:7] End address
+
+== Send File ==
+group Transmit Address
+APP->MCU++: CAN_ID_BL_ADDR \n- Length: 5 \n- [0:3] Address \n- [4:5] Length
+MCU-->APP : True: CAN_ID_BL_ADDR_APOS \n- Length: 0
+MCU-->APP : False: CAN_ID_BL_ADDR_ANEG \n- Length: 0
+end
+
+group Transmit Data
+APP->MCU++: CAN_ID_BL_DATA \n- Length: 8 \n- [0:8] Data
+MCU-->APP : True: CAN_ID_BL_DATA_APOS \n- Length: 0
+MCU-->APP : False: CAN_ID_BL_DATA_ANEG \n- Length: 0
+...
+APP->MCU++: CAN_ID_BL_DATA \n- Length: 8 \n- [0:8] Data
+MCU-->APP : True: CAN_ID_BL_DATA_APOS \n- Length: 0
+MCU-->APP : False: CAN_ID_BL_DATA_ANEG \n- Length: 0
+end
+
+== Request Stop ==
+APP->MCU ++: CAN_ID_BL_STOP  \n- Length: 0
+MCU -> MCU : Wait 200ms
+MCU-->APP : True: CAN_ID_BL_STOP_APOS \n- Length: 0
+MCU-->APP : False: CAN_ID_BL_STOP_ANEG \n- Length: 0
+
+@enduml

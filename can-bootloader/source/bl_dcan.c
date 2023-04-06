@@ -45,6 +45,7 @@
 #include "F021.h"
 #include "bl_led_demo.h"
 #include "sci_common.h"
+#include "can_msg.h"
 
 #if defined(RM57) || defined(TMS570LC43)
 #include "HL_can.h"
@@ -494,20 +495,232 @@ void UpdaterCAN(canBASE_t *node)
 
     switch (ulCmd)
     {
-
-    //
-    // This is a ping packet.
-    // This command is used to receive an acknowledge command
-    // from the boot loader indicating that communication has been established.
-    // This command has no data. If the device is present it
-    // will respond with a CAN_COMMAND_PING back to the CAN update application.
-    // CAN_COMMAND_PING = 0x1F02,0000
-    // ACK = 0x1F02,0100
-    case CAN_COMMAND_PING:
+    case CAN_ID_BL_APP_ERASE:
     {
-      PacketWrite(node, CAN_COMMAND_ACK, &ucStatus, 1);
+      // A simple do/while(0) control loop to make error exits easier.
+      do
+      {
+        // See if a full packet was received.
+        if (ulBytes != 8)
+        {
+          // Set the code to an error to indicate that the last
+          // command failed.  This informs the updater program
+          // that the download command failed.
+          ucStatus = CAN_CMD_FAIL;
+
+          // This packet has been handled.
+          goto __LBL_BL_APP_ERASE_END__;
+        }
+
+        // Get the address from the command.
+        // The data is transferred most significant bit (MSB) first. This is used for RM48 which is little endian device
+        g_ulTransferAddress = 0 | (g_pucCommandBuffer[0] << 24) | (g_pucCommandBuffer[1] << 16) | (g_pucCommandBuffer[2] << 8) | (g_pucCommandBuffer[3] << 0);
+
+        oReturnCheck = 0;
+        oReturnCheck = Fapi_BlockErase(g_ulTransferAddress, g_ulTransferSize);
+
+        // Return an error if an access violation occurred.
+        if (oReturnCheck)
+        {
+          ucStatus = CAN_CMD_FAIL;
+        }
+      } while (0);
+
+__LBL_BL_APP_ERASE_END__:
+      // See if the command was successful.
+      if (ucStatus == CAN_CMD_SUCCESS)
+      {
+        PacketWrite(node, CAN_ID_BL_APP_ERASE_APOS, &ucStatus, 1);
+      }
+      else
+      {
+        PacketWrite(node, CAN_ID_BL_APP_ERASE_ANEG, &ucStatus, 1);
+      }
       break;
     }
+    case CAN_ID_BL_STOP:
+    {
+
+      break;
+    }
+
+    //
+    // This is a reset packet.
+    //
+    case CAN_ID_BL_CPU_RESET:
+    {
+      // Perform a software reset request.  This will cause the
+      // microcontroller to reset; no further code will be executed.
+      // Use the reset function in the flash patch if appropriate.
+      PacketWrite(node, CAN_ID_BL_CPU_RESET_APOS, &ucStatus, 1);
+
+      // Perform a software reset request.  This will cause the
+      // microcontroller to reset; no further code will be executed.
+      // Use the reset in SYSECR register.
+      systemREG1->SYSECR = (0x10) << 14;
+
+      // The microcontroller should have reset, so this should never
+      // be reached.  Just in case, loop forever.
+      while (1)
+      {
+      }
+      break;
+    }
+
+    case CAN_ID_BL_VER_REQ:
+    {
+
+      break;
+    }
+
+    case CAN_ID_BL_MAP_REQ:
+    {
+
+      break;
+    }
+
+    //
+    // This is a start download packet. The address must be same as Application Start Address defined in bl_config.h
+    // and same as address used in bootloader linker cmd file.
+    //
+    case CAN_ID_BL_ADDR:
+    {
+      // A simple do/while(0) control loop to make error exits easier.
+      do
+      {
+        // See if a full packet was received.
+        if (ulBytes != 8)
+        {
+          // Set the code to an error to indicate that the last
+          // command failed.  This informs the updater program
+          // that the download command failed.
+          ucStatus = CAN_CMD_FAIL;
+
+          // This packet has been handled.
+          goto __LBL_BL_ADDR_END__;
+        }
+
+        // Get the address and size from the command.
+        // where to swap the bytes?
+        // The data is transferred most significant bit (MSB) first. This is used for RM48 which is little endian device
+        g_ulTransferAddress = 0 | (g_pucCommandBuffer[0] << 24) | (g_pucCommandBuffer[1] << 16) | (g_pucCommandBuffer[2] << 8) | (g_pucCommandBuffer[3] << 0);
+        g_pulUpdateSuccess[1] = g_ulTransferAddress;
+
+        // Tell bootloader how many bytes the host will transfer for the whole application
+        g_ulTransferSize = 0 | (g_pucCommandBuffer[4] << 24) | (g_pucCommandBuffer[5] << 16) | (g_pucCommandBuffer[6] << 8) | (g_pucCommandBuffer[7] << 0);
+        g_pulUpdateSuccess[2] = g_ulTransferSize;
+
+        // Check for a valid starting address and image size.
+        if (!BLInternalFlashStartAddrCheck(g_ulTransferAddress, g_ulTransferSize))
+        {
+          // Set the code to an error to indicate that the last
+          // command failed.  This informs the updater program
+          // that the download command failed.
+          ucStatus = CAN_CMD_FAIL;
+
+          // This packet has been handled.
+          goto __LBL_BL_ADDR_END__;
+        }
+
+        // Initialize the Flash Wrapper registers
+        oReturnCheck = 0;
+        oReturnCheck = Fapi_BlockErase(g_ulTransferAddress, g_ulTransferSize);
+
+        // Return an error if an access violation occurred.
+        if (oReturnCheck)
+        {
+          ucStatus = CAN_CMD_FAIL;
+        }
+      } while (0);
+
+__LBL_BL_ADDR_END__:
+      // See if the command was successful.
+      if (ucStatus == CAN_CMD_SUCCESS)
+      {
+        PacketWrite(node, CAN_ID_BL_ADDR_APOS, &ucStatus, 1);
+      }
+      else
+      {
+        PacketWrite(node, CAN_ID_BL_ADDR_ANEG, &ucStatus, 1);
+
+        // Setting g_ulTransferSize to zero makes COMMAND_SEND_DATA
+        // fail to accept any data.
+        g_ulTransferSize = 0;
+      }
+
+      break;
+    }
+
+    case CAN_ID_BL_DATA:
+    {
+      // Check if there are any more bytes to receive.
+      if (g_ulTransferSize >= ulBytes)
+      {
+        // Initialize the Flash Wrapper registers
+        oReturnCheck = 0;
+        oReturnCheck = Fapi_BlockProgram(g_ulTransferAddress, (uint32_t)&g_pulDataBuffer[0], ulBytes);
+
+        // Return an error if an access violation occurred.
+        if (oReturnCheck)
+        {
+          // Indicate that the flash programming failed.
+          ucStatus = CAN_CMD_FAIL;
+          ucUpdateStatus = 0;
+          UART_putString(UART, "\r Program Flash failed:  ");
+        }
+        else
+        {
+          // Now update the address to program.
+          g_ulTransferSize -= ulBytes;
+          g_ulTransferAddress += ulBytes;
+          ucUpdateStatus = 1;
+        }
+      }
+      else
+      {
+        // This indicates that too much data is being sent to the device.
+        ucStatus = CAN_CMD_FAIL;
+        ucUpdateStatus = 0;
+      }
+
+      if (g_ulTransferSize == 0)
+      {
+        if (ucUpdateStatus == 1)
+        {
+          oReturnCheck = Fapi_UpdateStatusProgram(g_ulUpdateStatusAddr, (uint32_t)&g_pulUpdateSuccess[0], g_ulUpdateBufferSize);
+          UART_putString(UART, "\r Application was loaded successful!  ");
+        }
+      }
+
+__LBL_BL_DATA_END__:
+      // See if the command was successful.
+      if (ucStatus == CAN_CMD_SUCCESS)
+      {
+        PacketWrite(node, CAN_ID_BL_DATA_APOS, &ucStatus, 1);
+      }
+      else
+      {
+        PacketWrite(node, CAN_ID_BL_DATA_ANEG, &ucStatus, 1);
+      }
+
+      break;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     case CAN_COMMAND_RUN: /*0x02*/
     {
@@ -557,184 +770,7 @@ void UpdaterCAN(canBASE_t *node)
     //
     // This is a reset packet.
     //
-    case CAN_COMMAND_RESET:
-    {
-      //
-      // Perform a software reset request.  This will cause the
-      // microcontroller to reset; no further code will be executed.
-      //
-      // Use the reset function in the flash patch if appropriate.
-      //
-      PacketWrite(node, CAN_COMMAND_ACK, &ucStatus, 1);
 
-      //
-      // Perform a software reset request.  This will cause the
-      // microcontroller to reset; no further code will be executed.
-      //
-      // Use the reset in SYSECR register.
-      //
-      systemREG1->SYSECR = (0x10) << 14;
-
-      //
-      // The microcontroller should have reset, so this should never
-      // be reached.  Just in case, loop forever.
-      //
-      // while(1)
-      //{
-      //}
-      break;
-    }
-
-    //
-    // This is a data packet.
-    //
-    case CAN_COMMAND_GET_DATA:
-    {
-
-      // LITE_BOTRIGHT_LED;
-
-      // Check if there are any more bytes to receive.
-      if (g_ulTransferSize >= ulBytes)
-      {
-        /* Initialize the Flash Wrapper registers */
-        oReturnCheck = 0;
-        oReturnCheck = Fapi_BlockProgram(g_ulTransferAddress, (uint32_t)&g_pulDataBuffer[0], ulBytes);
-
-        // Return an error if an access violation occurred.
-        if (oReturnCheck)
-        {
-          // Indicate that the flash programming failed.
-          ucStatus = CAN_CMD_FAIL;
-          ucUpdateStatus = 0;
-          UART_putString(UART, "\r Program Flash failed:  ");
-        }
-        else
-        {
-          // Now update the address to program.
-          g_ulTransferSize -= ulBytes;
-          g_ulTransferAddress += ulBytes;
-          ucUpdateStatus = 1;
-        }
-      }
-      else
-      {
-        // This indicates that too much data is being sent to the device.
-        ucStatus = CAN_CMD_FAIL;
-        ucUpdateStatus = 0;
-      }
-
-      if (g_ulTransferSize == 0)
-      {
-        if (ucUpdateStatus == 1)
-        {
-          oReturnCheck = Fapi_UpdateStatusProgram(g_ulUpdateStatusAddr, (uint32_t)&g_pulUpdateSuccess[0], g_ulUpdateBufferSize);
-          UART_putString(UART, "\r Application was loaded successful!  ");
-
-          LITE_BOTRIGHT_LED;
-        }
-      }
-
-      // Acknowledge that this command was received correctly.  This
-      // does not indicate success, just that the command was received.
-      PacketWrite(node, CAN_COMMAND_ACK, &ucStatus, 1);
-      // Go back and wait for a new command.
-      break;
-    }
-
-    //
-    // This is a start download packet. The address must be same as Application Start Address defined in bl_config.h
-    // and same as address used in bootloader linker cmd file.
-    //
-    case CAN_COMMAND_GET_ADDR_SIZE:
-    {
-      LITE_BOTLEFT_LED;
-
-      // A simple do/while(0) control loop to make error exits easier.
-      do
-      {
-        // See if a full packet was received.
-        if (ulBytes != 8)
-        {
-          //
-          // Set the code to an error to indicate that the last
-          // command failed.  This informs the updater program
-          // that the download command failed.
-          //
-          ucStatus = CAN_CMD_FAIL;
-
-          // This packet has been handled.
-          break;
-        }
-
-        // Get the address and size from the command.
-        // where to swap the bytes?
-        // The data is transferred most significant bit (MSB) first. This is used for RM48 which is little endian device
-        g_ulTransferAddress = 0 | (g_pucCommandBuffer[0] << 24) | (g_pucCommandBuffer[1] << 16) | (g_pucCommandBuffer[2] << 8) | (g_pucCommandBuffer[3] << 0);
-        g_pulUpdateSuccess[1] = g_ulTransferAddress;
-
-        // Tell bootloader how many bytes the host will transfer for the whole application
-        g_ulTransferSize = 0 | (g_pucCommandBuffer[4] << 24) | (g_pucCommandBuffer[5] << 16) | (g_pucCommandBuffer[6] << 8) | (g_pucCommandBuffer[7] << 0);
-        g_pulUpdateSuccess[2] = g_ulTransferSize;
-
-        // Check for a valid starting address and image size.
-        if (!BLInternalFlashStartAddrCheck(g_ulTransferAddress, g_ulTransferSize))
-        {
-          // Set the code to an error to indicate that the last
-          // command failed.  This informs the updater program
-          // that the download command failed.
-          ucStatus = CAN_CMD_FAIL;
-
-          // This packet has been handled.
-          break;
-        }
-
-        /* Initialize the Flash Wrapper registers */
-        oReturnCheck = 0;
-        oReturnCheck = Fapi_BlockErase(g_ulTransferAddress, g_ulTransferSize);
-
-        // Return an error if an access violation occurred.
-        //
-        if (oReturnCheck)
-        {
-          ucStatus = CAN_CMD_FAIL;
-        }
-      } while (0);
-
-      //
-      // See if the command was successful.
-      //
-      if (ucStatus != CAN_CMD_SUCCESS)
-      {
-        //
-        // Setting g_ulTransferSize to zero makes COMMAND_SEND_DATA
-        // fail to accept any data.
-        //
-        g_ulTransferSize = 0;
-      }
-
-      //
-      // Acknowledge that this command was received correctly.  This
-      // does not indicate success, just that the command was
-      // received.
-      //
-      PacketWrite(node, CAN_COMMAND_ACK, &ucStatus, 1);
-      //
-      // Go back and wait for a new command.
-      //
-      break;
-    }
-
-    //
-    // This is an unknown packet.
-    //
-    default:
-    {
-      //
-      // Set the status to indicate a failure.
-      //
-      ucStatus = CAN_CMD_FAIL;
-      break;
-    }
     }
   }
 }
