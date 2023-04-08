@@ -38,7 +38,6 @@
 #include "bl_led_demo.h"
 
 /* Private defines ---------------------------------------------------- */
-
 #define E_PASS      (0)
 #define E_FAIL      (0x1U)
 #define E_TIMEOUT   (0x2U)
