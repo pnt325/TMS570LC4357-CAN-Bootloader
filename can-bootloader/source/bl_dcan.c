@@ -48,7 +48,6 @@
 #define MSG_OBJ_BCAST_TX_ID   (2)
 
 /* Private enumerate/structure ---------------------------------------- */
-static canBASE_t *can_node;
 static uint16_t bl_checksum_received;
 static uint16_t bl_checksum_calculated;
 static uint16_t bl_app_writer_addr;
@@ -112,7 +111,6 @@ static void bl_can_handle_msg_app_erase(canBASE_t *node, uint8_t *data, uint32_t
 void UpdaterCAN(canBASE_t *node)
 {
   uint32_t data_len, msg_id;
-  uint8_t status;
 
   // This ensures proper alignment of the global buffer so that the one byte
   // size parameter used by the packetized format is easily skipped for data
@@ -575,7 +573,6 @@ static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_
     }
   }
 
-__LBL_BL_DATA_END__:
   // See if the command was successful.
   if (status == CAN_CMD_SUCCESS)
   {
@@ -666,10 +663,10 @@ static void bl_can_handle_msg_version_request(canBASE_t *node, uint8_t *data, ui
   version_resp[0] = SOFTWARE_VERSION;
   version_resp[1] = PRODUCT_ID;
   version_resp[2] = HARDWARE_VERSION;
-  version_resp[4] = BOOTLOADER_VERSION;
+  version_resp[3] = BOOTLOADER_VERSION;
 
-  // Send can msg
-  PacketWrite(node, CAN_ID_BL_VER_REQ_RSP, &version_resp, 4);
+  // Send can message
+  PacketWrite(node, CAN_ID_BL_VER_REQ_RSP, version_resp, 4);
 }
 
 static void bl_can_handle_msg_cpu_reset(canBASE_t *node, uint8_t *data, uint32_t len)
@@ -710,7 +707,7 @@ static void bl_can_handle_msg_stop(canBASE_t *node, uint8_t *data, uint32_t len)
       status = CAN_CMD_FAIL;
 
       // This packet has been handled.
-      break;
+      return;
     }
 
     // Branch to the specified address.  This should never return.
