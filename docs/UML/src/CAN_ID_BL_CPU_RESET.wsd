@@ -1,0 +1,14 @@
+@startuml
+
+participant APP as "Flash Raw App"
+participant MCU as "MCU"
+
+skinparam dpi 300
+
+== Get Version Info ==
+APP->MCU ++: CAN_ID_BL_VER_REQ \n- Length: 0
+MCU -> MCU : Wait 200ms
+MCU-->APP : CAN_ID_BL_VER_REQ_RSP \n- Length: 4 \n- [0] Software version \n- [1] Product id \n- [2] Hardware version \n- [3] Bootloader version
+
+
+@enduml

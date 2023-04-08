@@ -1,2 +1,0 @@
-source\sw_hw_ver.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/source/sw_hw_ver.c
-source\sw_hw_ver.obj: C:/Users/a0324020/workspace_v9_Bootloaders/SafetyMCU_Bootloaders/RM48Lx/rm48_can_boot/bl_config.h

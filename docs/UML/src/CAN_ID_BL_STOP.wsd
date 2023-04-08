@@ -1,0 +1,17 @@
+@startuml
+
+participant APP as "Flash Raw App"
+participant MCU as "MCU"
+
+skinparam dpi 300
+
+== Request Stop ==
+APP->MCU ++: CAN_ID_BL_STOP  \n- Length: 2 \n- [0:1] CRC of the Application
+
+MCU -> MCU : Check the CRC with calculated CRC \n - CRC correct: Jump to Application
+MCU-->APP : Response: CAN_ID_BL_STOP_APOS \n- Length: 0
+
+MCU -> MCU : Check the CRC with calculated CRC \n - CRC not correct: Send response
+MCU-->APP : Response: CAN_ID_BL_STOP_ANEG \n- Length: 0
+
+@enduml

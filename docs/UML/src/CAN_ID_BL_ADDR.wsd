@@ -1,0 +1,12 @@
+@startuml
+
+participant APP as "Flash Raw App"
+participant MCU as "MCU"
+
+skinparam dpi 300
+
+== Transmit Address ==
+APP->MCU++: CAN_ID_BL_ADDR \n- Length: 5 \n- [0:3] Address \n- [4:5] Data Length
+MCU-->APP : True: Address, Len are valid \n- Response: CAN_ID_BL_ADDR_APOS \n + Length: 0
+MCU-->APP : False: Address, Len are invalid \n- Response: CAN_ID_BL_ADDR_ANEG \n + Length: 0
+@enduml

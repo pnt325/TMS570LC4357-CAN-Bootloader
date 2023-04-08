@@ -117,6 +117,10 @@ SECTIONS
    .bss     : {} > SRAM
    .sysmem  : {} > SRAM
 
+    FEE_TEXT_SECTION  : {} > FLASH0 | FLASH1
+    FEE_CONST_SECTION : {} > FLASH0 | FLASH1
+    FEE_DATA_SECTION  : {} > SRAM
+
 /* USER CODE BEGIN (6) */
 
 /* USER CODE END */
