@@ -56,8 +56,7 @@ void eeprom_write(uint8_t* data)
 void eeprom_read(uint8_t* buf)
 {
   uint16_t status;
-  Std_ReturnType oResult = E_OK;
-  oResult = TI_Fee_ReadSync(0, 0, buf, 8);
+  TI_Fee_ReadSync(0, 0, buf, 8);
   do
   {
     TI_Fee_MainFunction();

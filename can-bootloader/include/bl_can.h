@@ -94,18 +94,7 @@ extern "C" {
 /* Private variables -------------------------------------------------- */
 /* Public function prototypes ----------------------------------------- */
 void ConfigureCANDevice(canBASE_t *node);
-void AppUpdaterCAN(void);
 void UpdaterCAN(canBASE_t *node);
-static void PacketWrite(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, uint32_t ulSize);
-static uint32_t PacketRead(canBASE_t *node, uint8_t *pucData, uint32_t *pulSize);
-static void ConfigureCANInterface(canBASE_t *node, uint32_t ulSetTiming);
-static void CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucData,uint32_t ulSize);
-static uint32_t CANMessageGetRx(canBASE_t *node, uint8_t *pucData, uint32_t *pulMsgID);
-static void CANMessageSetRx(canBASE_t *node);
-
-void can_init(canBASE_t* node);
-uint32_t can_rx(uint8_t* rbuf, uint32_t* size);
-void can_tx(uint32_t msg_id, const uint8_t* buf, uint32_t size);
 
 /* -------------------------------------------------------------------------- */
 #ifdef __cplusplus
