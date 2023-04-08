@@ -45,7 +45,7 @@ MCU-->APP : False: CAN_ID_BL_DATA_ANEG \n- Length: 0
 end
 
 == Request Stop ==
-APP->MCU ++: CAN_ID_BL_STOP  \n- Length: 0
+APP->MCU ++: CAN_ID_BL_STOP  \n- Length: 2 \n- [0:1] Checksum
 MCU -> MCU : Wait 200ms
 MCU-->APP : True: CAN_ID_BL_STOP_APOS \n- Length: 0
 MCU-->APP : False: CAN_ID_BL_STOP_ANEG \n- Length: 0
