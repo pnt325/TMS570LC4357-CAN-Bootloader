@@ -1,0 +1,13 @@
+@startuml
+
+participant APP as "Flash Raw App"
+participant MCU as "MCU"
+
+skinparam dpi 300
+
+== Transmit Data ==
+APP->MCU++: CAN_ID_BL_DATA \n- Length: 8 \n- [0:8] Data
+MCU-->APP : True: Write data success \n- Response: CAN_ID_BL_DATA_APOS \n + Length: 0
+MCU-->APP : True: Write data fail \n- Response: CAN_ID_BL_DATA_ANEG \n + Length: 0
+
+@enduml
