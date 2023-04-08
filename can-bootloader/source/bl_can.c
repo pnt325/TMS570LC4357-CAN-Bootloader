@@ -108,7 +108,7 @@ static void bl_can_handle_msg_app_erase(canBASE_t *node, uint8_t *data, uint32_t
 // \return None.
 //
 //*****************************************************************************
-void UpdaterCAN(canBASE_t *node)
+void bl_can_run(canBASE_t *node)
 {
   uint32_t data_len, msg_id;
 

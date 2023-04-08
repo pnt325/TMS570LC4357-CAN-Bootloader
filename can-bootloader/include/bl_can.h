@@ -93,8 +93,8 @@ extern "C" {
 /* Public enumerate/structure ----------------------------------------- */
 /* Private variables -------------------------------------------------- */
 /* Public function prototypes ----------------------------------------- */
-void ConfigureCANDevice(canBASE_t *node);
-void UpdaterCAN(canBASE_t *node);
+void bl_can_init(canBASE_t *node);
+void bl_can_run(canBASE_t *node);
 
 /* -------------------------------------------------------------------------- */
 #ifdef __cplusplus

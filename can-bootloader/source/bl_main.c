@@ -107,9 +107,9 @@ void main(void)
   }
 
   // Configure the can device
-  ConfigureCANDevice(CAN_PORT);
+  bl_can_init(CAN_PORT);
 
-  UpdaterCAN(CAN_PORT);
+  bl_can_run(CAN_PORT);
 }
 
 /* Private function definitions ---------------------------------------- */
