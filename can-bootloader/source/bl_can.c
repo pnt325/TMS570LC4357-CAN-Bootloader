@@ -539,7 +539,7 @@ static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_
   if (g_ulTransferSize >= len)
   {
     // Initialize the Flash Wrapper registers
-    return_check = Fapi_BlockProgram(bl_app_writer_addr, (uint32_t)&g_pulDataBuffer[0], len);
+    return_check = Fapi_BlockProgram(bl_app_writer_addr, (uint32_t)&data[0], len);
 
     // Return an error if an access violation occurred.
     if (return_check)
@@ -593,7 +593,7 @@ static void bl_can_handle_msg_set_start_address(canBASE_t *node, uint8_t *data, 
   do
   {
     // See if a full packet was received.
-    if (len != 8)
+    if (len != 5)
     {
       // Set the code to an error to indicate that the last
       // command failed.  This informs the updater program
@@ -604,8 +604,7 @@ static void bl_can_handle_msg_set_start_address(canBASE_t *node, uint8_t *data, 
       goto __LBL_BL_ADDR_END__;
     }
 
-    // Get the address and size from the command.
-    // where to swap the bytes?
+    // Get the address and size from the command. Where to swap the bytes?
     // The data is transferred most significant bit (MSB) first. This is used for RM48 which is little endian device
     g_ulTransferAddress = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3] << 0);
     g_pulUpdateSuccess[1] = g_ulTransferAddress;
