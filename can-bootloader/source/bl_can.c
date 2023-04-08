@@ -89,6 +89,7 @@ static void CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucDa
 static uint32_t PacketRead(canBASE_t *node, uint8_t *pucData, uint32_t *pulSize);
 static void PacketWrite(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, uint32_t ulSize);
 
+static void bl_can_handle_msg_get_memory_map(canBASE_t *node, uint8_t *data, uint32_t len);
 static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_t len);
 static void bl_can_handle_msg_set_start_address(canBASE_t *node, uint8_t *data, uint32_t len);
 static void bl_can_handle_msg_version_request(canBASE_t *node, uint8_t *data, uint32_t len);
@@ -157,7 +158,7 @@ void bl_can_run(canBASE_t *node)
 
     case CAN_ID_BL_MAP_REQ:
     {
-
+      bl_can_handle_msg_get_memory_map(node, g_pucCommandBuffer, data_len);
       break;
     }
 
@@ -188,7 +189,7 @@ void bl_can_run(canBASE_t *node)
 // \return None.
 //
 //*****************************************************************************
-void ConfigureCANDevice(canBASE_t *node)
+void bl_can_init(canBASE_t *node)
 {
   //
   // Init the CAN controller.
@@ -530,6 +531,15 @@ static void PacketWrite(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, 
 }
 
 /* Bootloader CAN Bus handle message ------------------------------------ */
+static void bl_can_handle_msg_get_memory_map(canBASE_t *node, uint8_t *data, uint32_t len)
+{
+  uint8_t mem_map_arm[8];
+  uint8_t mem_map_c2k[8];
+
+  PacketWrite(node, CAN_ID_BL_MAP_REQ_RSP_ARM, mem_map_arm, 8);
+  PacketWrite(node, CAN_ID_BL_MAP_REQ_RSP_C2K, mem_map_c2k, 8);
+}
+
 static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_t len)
 {
   uint32_t return_check;
