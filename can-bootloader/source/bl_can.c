@@ -112,6 +112,7 @@ static void bl_can_handle_msg_app_erase(canBASE_t *node, uint8_t *data, uint32_t
 void bl_can_run(canBASE_t *node)
 {
   uint32_t data_len, msg_id;
+  uint8_t status;
 
   // This ensures proper alignment of the global buffer so that the one byte
   // size parameter used by the packetized format is easily skipped for data
@@ -128,7 +129,7 @@ void bl_can_run(canBASE_t *node)
     msg_id = PacketRead(node, g_pucCommandBuffer, &data_len);
 
     // Only for testing. Should remove
-    // PacketWrite(node, CAN_ID_BL_APP_ERASE_APOS, &status, 1);
+    // PacketWrite(node, CAN_ID_BL_CPU_RESET_APOS, &status, 1);
 
     switch (msg_id)
     {
