@@ -81,11 +81,9 @@ static const uint32_t g_ulCanByteOrder[] = {3U, 2U, 1U, 0U, 7U, 6U, 5U, 4U};
 extern void delay();
 
 static void CANMessageSetRx(canBASE_t *node);
-static uint32_t CANMessageGetRx(canBASE_t *node, uint8_t *pucData, uint32_t *pulMsgID);
 static void CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, uint32_t ulSize);
-static uint32_t PacketRead(canBASE_t *node, uint8_t *pucData, uint32_t *pulSize);
 static uint32_t CANMessageGetRx(canBASE_t *node, uint8_t *pucData, uint32_t *pulMsgID);
-static void CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, uint32_t ulSize);
+
 static uint32_t PacketRead(canBASE_t *node, uint8_t *pucData, uint32_t *pulSize);
 static void PacketWrite(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, uint32_t ulSize);
 
