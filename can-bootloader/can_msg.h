@@ -24,6 +24,8 @@ extern "C" {
 #include <stdbool.h>
 
 /* Public defines ----------------------------------------------------- */
+#define __CONFIG_CAN_ID_29_BITS_ENABLE   (1)
+
 #define CAN_MSG_APP_ERASE   {11,13,88,55,3,211,177,249}
 
 /* Public enumerate/structure ----------------------------------------- */
@@ -32,6 +34,7 @@ extern "C" {
  */
 typedef enum
 {
+#if (__CONFIG_CAN_ID_29_BITS_ENABLE)
   /**
    * @brief Send this message ID to start erase flash
    * Success: CAN_ID_BL_APP_ERASE_APOS
@@ -91,6 +94,33 @@ typedef enum
   CAN_ID_BL_DATA            = 0x0CFFD023,   /* data */
   CAN_ID_BL_DATA_APOS       = 0x0CFFD024,   /* ack positive */
   CAN_ID_BL_DATA_ANEG       = 0x0CFFD025,   /* ack negative */
+#else
+  CAN_ID_BL_APP_ERASE       = 0x0000,  /* app erase cmd */
+  CAN_ID_BL_APP_ERASE_APOS  = 0x0001,  /* ack positive */
+  CAN_ID_BL_APP_ERASE_ANEG  = 0x0002,  /* ack negative */
+
+  CAN_ID_BL_STOP            = 0x0003,  /* stop cmd */
+  CAN_ID_BL_STOP_APOS       = 0x0004,  /* ack positive */
+  CAN_ID_BL_STOP_ANEG       = 0x0005,  /* ack negative */
+
+  CAN_ID_BL_CPU_RESET       = 0x0006,  /* cpu reset cmd */
+  CAN_ID_BL_CPU_RESET_APOS  = 0x0007,  /* ack positive */
+
+  CAN_ID_BL_VER_REQ         = 0x0008,  /* req all version info */
+  CAN_ID_BL_VER_REQ_RSP     = 0x0009,  /* all ver response */
+
+  CAN_ID_BL_MAP_REQ         = 0x000A,  /* req memory map info */
+  CAN_ID_BL_MAP_REQ_RSP_ARM = 0x000B,  /* memory map response */
+  CAN_ID_BL_MAP_REQ_RSP_C2K = 0x000C,
+
+  CAN_ID_BL_ADDR            = 0x0020,  /* 32-bit address */
+  CAN_ID_BL_ADDR_APOS       = 0x0021,  /* ack positive */
+  CAN_ID_BL_ADDR_ANEG       = 0x0022,  /* ack negative */
+
+  CAN_ID_BL_DATA            = 0x0023,  /* data */
+  CAN_ID_BL_DATA_APOS       = 0x0024,  /* ack positive */
+  CAN_ID_BL_DATA_ANEG       = 0x0025   /* ack negative */
+#endif // __CONFIG_CAN_ID_29_BITS_ENABLE
 }
 can_id_t;
 

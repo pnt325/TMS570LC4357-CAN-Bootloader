@@ -81,14 +81,13 @@ static const uint32_t g_ulCanByteOrder[] = {3U, 2U, 1U, 0U, 7U, 6U, 5U, 4U};
 extern void delay();
 
 static void CANMessageSetRx(canBASE_t *node);
-static uint32_t CANMessageGetRx(canBASE_t *node, uint8_t *pucData, uint32_t *pulMsgID);
 static void CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, uint32_t ulSize);
-static uint32_t PacketRead(canBASE_t *node, uint8_t *pucData, uint32_t *pulSize);
 static uint32_t CANMessageGetRx(canBASE_t *node, uint8_t *pucData, uint32_t *pulMsgID);
-static void CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, uint32_t ulSize);
+
 static uint32_t PacketRead(canBASE_t *node, uint8_t *pucData, uint32_t *pulSize);
 static void PacketWrite(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, uint32_t ulSize);
 
+static void bl_can_handle_msg_get_memory_map(canBASE_t *node, uint8_t *data, uint32_t len);
 static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_t len);
 static void bl_can_handle_msg_set_start_address(canBASE_t *node, uint8_t *data, uint32_t len);
 static void bl_can_handle_msg_version_request(canBASE_t *node, uint8_t *data, uint32_t len);
@@ -126,9 +125,6 @@ void bl_can_run(canBASE_t *node)
     data_len = 0;
     msg_id = PacketRead(node, g_pucCommandBuffer, &data_len);
 
-    // Only for testing. Should remove
-    // PacketWrite(node, CAN_ID_BL_APP_ERASE_APOS, &status, 1);
-
     switch (msg_id)
     {
     case CAN_ID_BL_APP_ERASE:
@@ -157,7 +153,7 @@ void bl_can_run(canBASE_t *node)
 
     case CAN_ID_BL_MAP_REQ:
     {
-
+      bl_can_handle_msg_get_memory_map(node, g_pucCommandBuffer, data_len);
       break;
     }
 
@@ -188,7 +184,7 @@ void bl_can_run(canBASE_t *node)
 // \return None.
 //
 //*****************************************************************************
-void ConfigureCANDevice(canBASE_t *node)
+void bl_can_init(canBASE_t *node)
 {
   //
   // Init the CAN controller.
@@ -331,8 +327,11 @@ static uint32_t CANMessageGetRx(canBASE_t *node, uint8_t *pucData, uint32_t *pul
   //
   // Set the 29 bit version of the Identifier for this message object.
   //
-  // TODO: Need to test with this one
+#if (__CONFIG_CAN_ID_29_BITS_ENABLE)
   *pulMsgID = (usArbReg & CAN_IFARB_29ID_M);
+#else
+  *pulMsgID = (usArbReg & CAN_IFARB_11ID_M) >> 18;
+#endif // __CONFIG_CAN_ID_29_BITS_ENABLE
 
   //
   // See if there is new data available.
@@ -430,7 +429,11 @@ static void CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucDa
   //
   // Mark the message as valid and set the extended ID bit.
   //
+#if (__CONFIG_CAN_ID_29_BITS_ENABLE)
   usArbReg = (ulId | (CAN_IFARB_DIR | CAN_IFARB_MSGVAL | CAN_IFARB_XTD));
+#else
+  usArbReg = (((ulId << 18) & CAN_IFARB_11ID_M) | (CAN_IFARB_DIR | CAN_IFARB_MSGVAL));
+#endif // __CONFIG_CAN_ID_29_BITS_ENABLE
 
   //
   // Set the TXRQST bit and the reset the rest of the register.
@@ -530,6 +533,18 @@ static void PacketWrite(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, 
 }
 
 /* Bootloader CAN Bus handle message ------------------------------------ */
+static void bl_can_handle_msg_get_memory_map(canBASE_t *node, uint8_t *data, uint32_t len)
+{
+  uint8_t mem_map_arm[8];
+  uint8_t mem_map_c2k[8];
+
+  mem_map_arm[0] = 10;
+  mem_map_c2k[0] = 10;
+
+  PacketWrite(node, CAN_ID_BL_MAP_REQ_RSP_ARM, mem_map_arm, 8);
+  PacketWrite(node, CAN_ID_BL_MAP_REQ_RSP_C2K, mem_map_c2k, 8);
+}
+
 static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_t len)
 {
   uint32_t return_check;
@@ -680,13 +695,13 @@ static void bl_can_handle_msg_cpu_reset(canBASE_t *node, uint8_t *data, uint32_t
   // Perform a software reset request.  This will cause the
   // microcontroller to reset; no further code will be executed.
   // Use the reset in SYSECR register.
-  systemREG1->SYSECR = (0x10) << 14;
+  // systemREG1->SYSECR = (0x10) << 14;
 
-  // The microcontroller should have reset, so this should never
-  // be reached.  Just in case, loop forever.
-  while (1)
-  {
-  }
+  // // The microcontroller should have reset, so this should never
+  // // be reached.  Just in case, loop forever.
+  // while (1)
+  // {
+  // }
 }
 
 static void bl_can_handle_msg_stop(canBASE_t *node, uint8_t *data, uint32_t len)

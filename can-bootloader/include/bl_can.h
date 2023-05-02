@@ -70,7 +70,7 @@ extern "C" {
 #define CAN_IFARB_DIR          (0x20000000)  // Message Direction
 #define CAN_IFARB_ID_M         (0x1FFFFFFF)  // Message Identifier
 #define CAN_IFARB_11ID_M       (0x1FFC0000)  // Message Identifier
-#define CAN_IFARB_29ID_M       (0x5FFC0000)  // Message Identifier
+#define CAN_IFARB_29ID_M       (0x1FFFFFFF)  // Message Identifier
 #define CAN_IFARB_ID_S         (0)
 
 //*****************************************************************************
