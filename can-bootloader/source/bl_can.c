@@ -334,7 +334,7 @@ static uint32_t CANMessageGetRx(canBASE_t *node, uint8_t *pucData, uint32_t *pul
 #if (__CONFIG_CAN_ID_29_BITS_ENABLE)
   *pulMsgID = (usArbReg & CAN_IFARB_29ID_M);
 #else
-  *pulMsgID = (usArbReg & CAN_IFARB_11ID_M);
+  *pulMsgID = (usArbReg & CAN_IFARB_11ID_M) >> 18;
 #endif // __CONFIG_CAN_ID_29_BITS_ENABLE
 
   //
@@ -696,13 +696,13 @@ static void bl_can_handle_msg_cpu_reset(canBASE_t *node, uint8_t *data, uint32_t
   // Perform a software reset request.  This will cause the
   // microcontroller to reset; no further code will be executed.
   // Use the reset in SYSECR register.
-  systemREG1->SYSECR = (0x10) << 14;
+  // systemREG1->SYSECR = (0x10) << 14;
 
-  // The microcontroller should have reset, so this should never
-  // be reached.  Just in case, loop forever.
-  while (1)
-  {
-  }
+  // // The microcontroller should have reset, so this should never
+  // // be reached.  Just in case, loop forever.
+  // while (1)
+  // {
+  // }
 }
 
 static void bl_can_handle_msg_stop(canBASE_t *node, uint8_t *data, uint32_t len)
