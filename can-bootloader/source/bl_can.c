@@ -436,7 +436,7 @@ static void CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucDa
 #if (__CONFIG_CAN_ID_29_BITS_ENABLE)
   usArbReg = (ulId | (CAN_IFARB_DIR | CAN_IFARB_MSGVAL | CAN_IFARB_XTD));
 #else
-  usArbReg = (ulId | (CAN_IFARB_DIR | CAN_IFARB_MSGVAL));
+  usArbReg = (((ulId << 18) & CAN_IFARB_11ID_M) | (CAN_IFARB_DIR | CAN_IFARB_MSGVAL));
 #endif // __CONFIG_CAN_ID_29_BITS_ENABLE
 
   //
