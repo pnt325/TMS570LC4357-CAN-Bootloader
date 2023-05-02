@@ -125,10 +125,6 @@ void bl_can_run(canBASE_t *node)
     data_len = 0;
     msg_id = PacketRead(node, g_pucCommandBuffer, &data_len);
 
-    // Only for testing. Should remove
-    // uint8_t status;
-    // PacketWrite(node, CAN_ID_BL_CPU_RESET_APOS, &status, 1);
-
     switch (msg_id)
     {
     case CAN_ID_BL_APP_ERASE:
