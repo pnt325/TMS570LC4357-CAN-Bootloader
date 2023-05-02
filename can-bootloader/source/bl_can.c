@@ -542,6 +542,9 @@ static void bl_can_handle_msg_get_memory_map(canBASE_t *node, uint8_t *data, uin
   uint8_t mem_map_arm[8];
   uint8_t mem_map_c2k[8];
 
+  mem_map_arm[0] = 10;
+  mem_map_c2k[0] = 10;
+
   PacketWrite(node, CAN_ID_BL_MAP_REQ_RSP_ARM, mem_map_arm, 8);
   PacketWrite(node, CAN_ID_BL_MAP_REQ_RSP_C2K, mem_map_c2k, 8);
 }
