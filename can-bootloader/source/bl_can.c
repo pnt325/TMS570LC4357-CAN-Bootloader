@@ -110,7 +110,6 @@ static void bl_can_handle_msg_app_erase(canBASE_t *node, uint8_t *data, uint32_t
 void bl_can_run(canBASE_t *node)
 {
   uint32_t data_len, msg_id;
-  uint8_t status;
 
   // This ensures proper alignment of the global buffer so that the one byte
   // size parameter used by the packetized format is easily skipped for data
@@ -127,6 +126,7 @@ void bl_can_run(canBASE_t *node)
     msg_id = PacketRead(node, g_pucCommandBuffer, &data_len);
 
     // Only for testing. Should remove
+    // uint8_t status;
     // PacketWrite(node, CAN_ID_BL_CPU_RESET_APOS, &status, 1);
 
     switch (msg_id)
@@ -331,8 +331,11 @@ static uint32_t CANMessageGetRx(canBASE_t *node, uint8_t *pucData, uint32_t *pul
   //
   // Set the 29 bit version of the Identifier for this message object.
   //
-  // TODO: Need to test with this one
+#if (__CONFIG_CAN_ID_29_BITS_ENABLE)
   *pulMsgID = (usArbReg & CAN_IFARB_29ID_M);
+#else
+  *pulMsgID = (usArbReg & CAN_IFARB_11ID_M);
+#endif // __CONFIG_CAN_ID_29_BITS_ENABLE
 
   //
   // See if there is new data available.
@@ -430,7 +433,11 @@ static void CANMessageSetTx(canBASE_t *node, uint32_t ulId, const uint8_t *pucDa
   //
   // Mark the message as valid and set the extended ID bit.
   //
+#if (__CONFIG_CAN_ID_29_BITS_ENABLE)
   usArbReg = (ulId | (CAN_IFARB_DIR | CAN_IFARB_MSGVAL | CAN_IFARB_XTD));
+#else
+  usArbReg = (ulId | (CAN_IFARB_DIR | CAN_IFARB_MSGVAL));
+#endif // __CONFIG_CAN_ID_29_BITS_ENABLE
 
   //
   // Set the TXRQST bit and the reset the rest of the register.

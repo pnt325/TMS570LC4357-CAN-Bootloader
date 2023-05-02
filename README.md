@@ -11,5 +11,5 @@ git clone https://github.com/pnt325/TMS570LC4357-CAN-Bootloader.git
 ## How to run the Flashraw tool on Window
 
 ```
-flashraw 7 file.hex file.hex
+flashraw 5 test.hex test.hex
 ```
