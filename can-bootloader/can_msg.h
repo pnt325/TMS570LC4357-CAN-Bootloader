@@ -24,7 +24,7 @@ extern "C" {
 #include <stdbool.h>
 
 /* Public defines ----------------------------------------------------- */
-#define __CONFIG_CAN_ID_29_BITS_ENABLE   (0)
+#define __CONFIG_CAN_ID_29_BITS_ENABLE   (1)
 
 #define CAN_MSG_APP_ERASE   {11,13,88,55,3,211,177,249}
 
