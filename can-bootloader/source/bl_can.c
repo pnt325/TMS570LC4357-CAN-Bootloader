@@ -50,7 +50,7 @@
 /* Private enumerate/structure ---------------------------------------- */
 static uint16_t bl_checksum_received;
 static uint16_t bl_checksum_calculated;
-static uint16_t bl_app_writer_addr;
+static uint32_t bl_app_writer_addr;
 
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
@@ -628,7 +628,7 @@ static void bl_can_handle_msg_set_start_address(canBASE_t *node, uint8_t *data, 
     bl_app_writer_addr = g_ulTransferAddress;
 
     // Tell bootloader how many bytes the host will transfer for the whole application
-    g_ulTransferSize = (data[4] << 24) | (data[5] << 16) | (data[6] << 8) | (data[7] << 0);
+    g_ulTransferSize = data[4];
     g_pulUpdateSuccess[2] = g_ulTransferSize;
 
     // Check for a valid starting address and image size.
