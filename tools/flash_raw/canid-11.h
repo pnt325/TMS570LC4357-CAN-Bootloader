@@ -1,4 +1,3 @@
-#if 0
 #define CANID_BL_APP_ERASE       0x0000  /* app erase cmd */
 #define CANID_BL_APP_ERASE_APOS  0x0001  /* ack positive */
 #define CANID_BL_APP_ERASE_ANEG  0x0002  /* ack negative */
@@ -24,8 +23,7 @@
 #define CANID_BL_DATA_APOS       0x0024  /* ack positive */
 #define CANID_BL_DATA_ANEG       0x0025  /* ack negative */
 
-#else
-
+#if 0
 #define CANID_BL_APP_ERASE       0x0CFFD000  /* app erase cmd */
 #define CANID_BL_APP_ERASE_APOS  0x0CFFD001  /* ack positive */
 #define CANID_BL_APP_ERASE_ANEG  0x0CFFD002  /* ack negative */

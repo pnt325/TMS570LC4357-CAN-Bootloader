@@ -53,7 +53,7 @@ usage_check ( int32_t argc, int8_t *argv[] )
   uint8_t cnt;
 
   /* check to make sure the command line is ok */
-  if( argc != 4 )
+  if( argc != 3 )
     return 1;
 
   if( strlen(argv[1]) > 2 )
@@ -70,20 +70,17 @@ usage_check ( int32_t argc, int8_t *argv[] )
 
 
 int32_t
-usage ( int32_t argc, uint8_t *argv[], FILE **file_arm, FILE **file_c2k,
-        uint8_t *cport )
+usage ( int32_t argc, uint8_t *argv[], FILE **file_arm, uint8_t *cport )
 {
   if( usage_check(argc,argv) != 0 ) { 
 
-    printf("usage: flash232_CAN <port> <arm> <c2k>\n");
+    printf("usage: flashRAW <port> <file>\n");
     printf("\n");
     printf("  ver. 1.0\n");
     printf("\n");
     printf("  port: comm port\n");
     printf("\n");
-    printf("  arm: hex file for ARM CPU update\n");
-    printf("\n");
-    printf("  c2k: hex file for C2K CPU update\n");
+    printf("  arm: hex file for CPU update\n");
 
     return 1;
   }
@@ -92,11 +89,6 @@ usage ( int32_t argc, uint8_t *argv[], FILE **file_arm, FILE **file_c2k,
   *cport = (uint8_t)strtol(argv[1], 0, 10);
 
   if( (*file_arm = fopen(argv[2], "rt")) == 0 ) {
-  
-    printf("error: unable to open %s\n", argv[2]);
-    return 1;
-  }
-  if( (*file_c2k = fopen(argv[3], "rt")) == 0 ) {
   
     printf("error: unable to open %s\n", argv[2]);
     return 1;
@@ -158,7 +150,7 @@ main_can_setup ( uint16_t rate )
 ** Transmit 29-bit CAN message.
 */
 void
-main_can_tx_ext ( uint32_t id, uint8_t *buf, uint8_t buf_len )
+main_can_tx ( uint32_t id, uint8_t *buf, uint8_t buf_len )
 {
   uint8_t cnt;
   uint8_t msg[20];
@@ -166,7 +158,7 @@ main_can_tx_ext ( uint32_t id, uint8_t *buf, uint8_t buf_len )
   msg[0] = VNA_MSG_TX_CAN;
   msg[1] = 0;                    // port
   _32tobuf_msb( &msg[2], id );   // load id
-  msg[2] |= 0x80;                // mark as 29-bit frame
+  //msg[2] |= 0x80;                // mark as 29-bit frame
 
   for( cnt = 0; cnt < buf_len; cnt++ )
     msg[6+cnt] = buf[cnt];
@@ -177,7 +169,7 @@ main_can_tx_ext ( uint32_t id, uint8_t *buf, uint8_t buf_len )
 
 
 uint8_t
-main_can_rx_ext ( uint32_t *id, uint8_t *buf, uint8_t *buf_len )
+main_can_rx ( uint32_t *id, uint8_t *buf, uint8_t *buf_len )
 {
   uint8_t cnt;
   uint8_t msg[20];
@@ -186,9 +178,9 @@ main_can_rx_ext ( uint32_t *id, uint8_t *buf, uint8_t *buf_len )
   if( (msg_len = vna_232_rx_msg(msg,(uint16_t)sizeof(msg))) >= 6 ) {
 
     /* check that it is an incoming extended can frame, max 8 bytes in it */
-    if( (msg[0] == VNA_MSG_RX_CAN) && (msg[1] == 0) && (msg[2] & 0x80) && (msg_len <= 14) ) {
+    if( (msg[0] == VNA_MSG_RX_CAN) && (msg[1] == 0) && (msg_len <= 14) ) {
 
-      msg[2] &= ~0x80; 
+      //msg[2] &= ~0x80; 
       *id = bufto32_msb(&msg[2]);
       *buf_len = (uint8_t) msg_len;
       
@@ -218,13 +210,13 @@ main_tx_cpu_reset ( void )
 
   /* send request for version */
   printf("info: tx reset cmd\n"); 
-  main_can_tx_ext( CANID_BL_CPU_RESET, 0, 0 );
+  main_can_tx( CANID_BL_CPU_RESET, 0, 0 );
 
   /* wait up to 200 ms for response */
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_CPU_RESET_APOS ) {
         return 0;
       }
@@ -248,13 +240,13 @@ main_tx_req_ver ( void )
   uint8_t buf_len;
 
   /* send request for version */
-  main_can_tx_ext( CANID_BL_VER_REQ, 0, 0 );
+  main_can_tx( CANID_BL_VER_REQ, 0, 0 );
 
   /* wait up to 200 ms for response */
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_VER_REQ_RSP ) {
         printf("info: software ver: %d\n", buf[0]);
         printf("      product id: %d\n", buf[1]);
@@ -284,13 +276,13 @@ main_tx_app_erase ( void )
 
   /* send request for version */
   printf("info: tx erase app\n"); 
-  main_can_tx_ext( CANID_BL_APP_ERASE, tmp, 8 );
+  main_can_tx( CANID_BL_APP_ERASE, tmp, 8 );
 
   /* erase on 28035 can take up to 10 seconds per sector */
   for( delay = 0; delay < 2000; delay++ ) {
 
     Sleep(10);
-    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_APP_ERASE_APOS ) {
         return 0;
       } else if( id == CANID_BL_APP_ERASE_ANEG ) {
@@ -308,8 +300,7 @@ main_tx_app_erase ( void )
 ** Transmit request for memory map.
 */
 uint8_t
-main_tx_req_map ( uint32_t *start_arm, uint32_t *end_arm,
-                  uint32_t *start_c2k, uint32_t *end_c2k )
+main_tx_req_map ( uint32_t *start, uint32_t *end )
 {
   uint32_t id;
   uint16_t delay;
@@ -317,22 +308,19 @@ main_tx_req_map ( uint32_t *start_arm, uint32_t *end_arm,
   uint8_t buf_len;
 
   /* send request for version */
-  main_can_tx_ext( CANID_BL_MAP_REQ, 0, 0 );
+  main_can_tx( CANID_BL_MAP_REQ, 0, 0 );
 
   /* wait up to 200 ms for response */
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_MAP_REQ_RSP_ARM ) {
-        *start_arm = bufto32_msb(&buf[0]);
-        *end_arm = bufto32_msb(&buf[4]);
-      } else if ( id == CANID_BL_MAP_REQ_RSP_C2K ) {
-        *start_c2k = bufto32_msb(&buf[0]);
-        *end_c2k = bufto32_msb(&buf[4]);
+        *start = bufto32_msb(&buf[0]);
+        *end = bufto32_msb(&buf[4]);
       }
     }
-    if( *start_arm && *start_c2k ) {
+    if( *start ) {
       return 0;
     }
   }
@@ -356,13 +344,13 @@ main_tx_addr ( uint32_t addr, uint8_t len )
   /* send request for version */
   _32tobuf_msb( &buf[0], addr );
   buf[4] = len;
-  main_can_tx_ext( CANID_BL_ADDR, buf, 5 );
+  main_can_tx( CANID_BL_ADDR, buf, 5 );
 
   /* wait up to 200 ms for response */
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx_ext( &id, buf, &buf_len ) == 0 ) {
+    if( main_can_rx( &id, buf, &buf_len ) == 0 ) {
       if( id == CANID_BL_ADDR_APOS ) {
         return 0;
       }
@@ -395,7 +383,7 @@ main_tx_line ( uint32_t addr, uint8_t *buf, uint8_t buf_len )
   while( buf_len ) {
 
     len = (buf_len > 8) ? 8 : buf_len;
-    main_can_tx_ext( CANID_BL_DATA, &buf[i], len );
+    main_can_tx( CANID_BL_DATA, &buf[i], len );
     i += len;
     buf_len -= len;
   }
@@ -404,7 +392,7 @@ main_tx_line ( uint32_t addr, uint8_t *buf, uint8_t buf_len )
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_DATA_APOS ) {
         return 0;
       }
@@ -433,13 +421,13 @@ main_tx_stop ( void )
   cksum = ihex_cksum_calc();
   buf[0] = cksum >> 8;
   buf[1] = (uint8_t)cksum;
-  main_can_tx_ext( CANID_BL_STOP, buf, 2 );
+  main_can_tx( CANID_BL_STOP, buf, 2 );
 
   /* wait up to 200 ms for response */
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_STOP_APOS ) {
         return 0;
       }
@@ -456,15 +444,14 @@ main ( int argc, char *argv[] )
 {
   uint8_t ret;
   uint8_t cport;
-  uint32_t start_arm = 0,start_c2k = 0,end_arm = 0,end_c2k = 0;
-  FILE *fp_arm = 0;
-  FILE *fp_c2k = 0;
+  uint32_t start = 0, end = 0;
+  FILE *fp = 0;
 
   /* assume failure */
   ret = 1;
 
   /* check the command line */
-  if( usage(argc,argv,&fp_arm,&fp_c2k,&cport) )
+  if( usage(argc,argv,&fp,&cport) )
     return;
 
   /* if setup fails, do nothing */
@@ -474,7 +461,7 @@ main ( int argc, char *argv[] )
   /* wait for RS-232 transceiver to stabilize */
   Sleep(100);
 
-  /* setup vna at 1Mbps */
+  /* setup vna at 500kbps */
   main_can_setup( 500 );
 
   /* command node to reset, to force bootloader to start */
@@ -487,11 +474,10 @@ main ( int argc, char *argv[] )
 
       if( main_tx_app_erase() == 0 ) {
 
-        if( main_tx_req_map(&start_arm,&end_arm,&start_c2k,&end_c2k) == 0 ) {
+        if( main_tx_req_map(&start,&end) == 0 ) {
 
            printf("info: sending file\n");
-           if( (ihex_ftx(fp_arm,start_arm,end_arm) == 0) &&
-               (ihex_ftx(fp_c2k,start_c2k,end_c2k) == 0) ) {
+           if( (ihex_ftx(fp,start,end) == 0) ) {
 
              if( (ret = main_tx_stop()) )
                printf("error: sending stop failed\n");
@@ -523,8 +509,7 @@ main ( int argc, char *argv[] )
 
   /* close file and uart */
   printf("info: exiting\n");
-  fclose(fp_arm);
-  fclose(fp_c2k);
+  fclose(fp);
   uart_close();
 
   /* did we fail? */
