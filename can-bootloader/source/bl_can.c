@@ -579,14 +579,14 @@ static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_
     bl_update_status = 0;
   }
 
-  if (g_ulTransferSize == 0)
-  {
-    if (bl_update_status == 1)
-    {
-      return_check = Fapi_UpdateStatusProgram(g_ulUpdateStatusAddr, (uint32_t)&g_pulUpdateSuccess[0], g_ulUpdateBufferSize);
-      UART_putString(UART, "\r Application was loaded successful!  ");
-    }
-  }
+  // if (g_ulTransferSize == 0)
+  // {
+  //   if (bl_update_status == 1)
+  //   {
+  //     return_check = Fapi_UpdateStatusProgram(g_ulUpdateStatusAddr, (uint32_t)&g_pulUpdateSuccess[0], g_ulUpdateBufferSize);
+  //     UART_putString(UART, "\r Application was loaded successful!  ");
+  //   }
+  // }
 
   // See if the command was successful.
   if (status == CAN_CMD_SUCCESS)
