@@ -632,16 +632,16 @@ static void bl_can_handle_msg_set_start_address(canBASE_t *node, uint8_t *data, 
     g_pulUpdateSuccess[2] = g_ulTransferSize;
 
     // Check for a valid starting address and image size.
-    if (!BLInternalFlashStartAddrCheck(g_ulTransferAddress, g_ulTransferSize))
-    {
-      // Set the code to an error to indicate that the last
-      // command failed.  This informs the updater program
-      // that the download command failed.
-      status = CAN_CMD_FAIL;
+    // if (!BLInternalFlashStartAddrCheck(g_ulTransferAddress, g_ulTransferSize))
+    // {
+    //   // Set the code to an error to indicate that the last
+    //   // command failed.  This informs the updater program
+    //   // that the download command failed.
+    //   status = CAN_CMD_FAIL;
 
-      // This packet has been handled.
-      goto __LBL_BL_ADDR_END__;
-    }
+    //   // This packet has been handled.
+    //   goto __LBL_BL_ADDR_END__;
+    // }
 
     // Initialize the Flash Wrapper registers
     return_check = Fapi_BlockErase(g_ulTransferAddress, g_ulTransferSize);
