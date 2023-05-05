@@ -536,19 +536,16 @@ static void PacketWrite(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, 
 static void bl_can_handle_msg_get_memory_map(canBASE_t *node, uint8_t *data, uint32_t len)
 {
   uint8_t mem_map_arm[8];
-  uint8_t mem_map_c2k[8];
 
   mem_map_arm[0] = 10;
-  mem_map_c2k[0] = 10;
 
   PacketWrite(node, CAN_ID_BL_MAP_REQ_RSP_ARM, mem_map_arm, 8);
-  PacketWrite(node, CAN_ID_BL_MAP_REQ_RSP_C2K, mem_map_c2k, 8);
 }
 
 static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_t len)
 {
   uint32_t return_check;
-  uint8_t status, bl_update_status;
+  uint8_t status;
 
   // Check if there are any more bytes to receive.
   if (g_ulTransferSize >= len)
@@ -561,7 +558,6 @@ static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_
     {
       // Indicate that the flash programming failed.
       status = CAN_CMD_FAIL;
-      bl_update_status = 0;
       UART_putString(UART, "\r Program Flash failed:  ");
     }
     else
@@ -569,14 +565,12 @@ static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_
       // Now update the address to program.
       g_ulTransferSize -= len;
       bl_app_writer_addr += len;
-      bl_update_status = 1;
     }
   }
   else
   {
     // This indicates that too much data is being sent to the device.
     status = CAN_CMD_FAIL;
-    bl_update_status = 0;
   }
 
   // if (g_ulTransferSize == 0)
