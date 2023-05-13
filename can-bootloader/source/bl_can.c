@@ -170,12 +170,6 @@ void bl_can_run(canBASE_t *node)
       bl_can_handle_msg_write_data(node, g_pucCommandBuffer, data_len);
       break;
     }
-
-    default:
-    {
-       bl_can_handle_msg_stop(node, g_pucCommandBuffer, data_len);
-       break;
-    }
     }
   }
 }
@@ -553,31 +547,31 @@ static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_
   uint32_t return_check;
   uint8_t status;
 
-  // // Check if there are any more bytes to receive.
-  // if (g_ulTransferSize >= len)
-  // {
-  //   // Initialize the Flash Wrapper registers
-  //   return_check = Fapi_BlockProgram(bl_app_writer_addr, (uint32_t)&data[0], len);
+  // Check if there are any more bytes to receive.
+  if (g_ulTransferSize >= len)
+  {
+    // Initialize the Flash Wrapper registers
+    return_check = Fapi_BlockProgram(bl_app_writer_addr, (uint32_t)&data[0], len);
 
-  //   // Return an error if an access violation occurred.
-  //   if (return_check)
-  //   {
-  //     // Indicate that the flash programming failed.
-  //     status = CAN_CMD_FAIL;
-  //     UART_putString(UART, "\r Program Flash failed:  ");
-  //   }
-  //   else
-  //   {
-  //     // Now update the address to program.
-  //     g_ulTransferSize -= len;
-  //     bl_app_writer_addr += len;
-  //   }
-  // }
-  // else
-  // {
-  //   // This indicates that too much data is being sent to the device.
-  //   status = CAN_CMD_FAIL;
-  // }
+    // Return an error if an access violation occurred.
+    if (return_check)
+    {
+      // Indicate that the flash programming failed.
+      status = CAN_CMD_FAIL;
+      UART_putString(UART, "\r Program Flash failed:  ");
+    }
+    else
+    {
+      // Now update the address to program.
+      g_ulTransferSize -= len;
+      bl_app_writer_addr += len;
+    }
+  }
+  else
+  {
+    // This indicates that too much data is being sent to the device.
+    status = CAN_CMD_FAIL;
+  }
 
   // if (g_ulTransferSize == 0)
   // {
@@ -605,53 +599,53 @@ static void bl_can_handle_msg_set_start_address(canBASE_t *node, uint8_t *data, 
   uint8_t status;
 
   // A simple do/while(0) control loop to make error exits easier.
-  // do
-  // {
-  //   // See if a full packet was received.
-  //   if (len != 5)
-  //   {
-  //     // Set the code to an error to indicate that the last
-  //     // command failed.  This informs the updater program
-  //     // that the download command failed.
-  //     status = CAN_CMD_FAIL;
+  do
+  {
+    // See if a full packet was received.
+    if (len != 5)
+    {
+      // Set the code to an error to indicate that the last
+      // command failed.  This informs the updater program
+      // that the download command failed.
+      status = CAN_CMD_FAIL;
 
-  //     // This packet has been handled.
-  //     goto __LBL_BL_ADDR_END__;
-  //   }
+      // This packet has been handled.
+      goto __LBL_BL_ADDR_END__;
+    }
 
-  //   // Get the address and size from the command. Where to swap the bytes?
-  //   // The data is transferred most significant bit (MSB) first. This is used for RM48 which is little endian device
-  //   g_ulTransferAddress = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3] << 0);
-  //   g_pulUpdateSuccess[1] = g_ulTransferAddress;
+    // Get the address and size from the command. Where to swap the bytes?
+    // The data is transferred most significant bit (MSB) first. This is used for RM48 which is little endian device
+    g_ulTransferAddress = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3] << 0);
+    g_pulUpdateSuccess[1] = g_ulTransferAddress;
 
-  //   // Update writer address
-  //   bl_app_writer_addr = g_ulTransferAddress;
+    // Update writer address
+    bl_app_writer_addr = g_ulTransferAddress;
 
-  //   // Tell bootloader how many bytes the host will transfer for the whole application
-  //   g_ulTransferSize = data[4];
-  //   g_pulUpdateSuccess[2] = g_ulTransferSize;
+    // Tell bootloader how many bytes the host will transfer for the whole application
+    g_ulTransferSize = data[4];
+    g_pulUpdateSuccess[2] = g_ulTransferSize;
 
-  //   // Check for a valid starting address and image size.
-  //   // if (!BLInternalFlashStartAddrCheck(g_ulTransferAddress, g_ulTransferSize))
-  //   // {
-  //   //   // Set the code to an error to indicate that the last
-  //   //   // command failed.  This informs the updater program
-  //   //   // that the download command failed.
-  //   //   status = CAN_CMD_FAIL;
+    // Check for a valid starting address and image size.
+    // if (!BLInternalFlashStartAddrCheck(g_ulTransferAddress, g_ulTransferSize))
+    // {
+    //   // Set the code to an error to indicate that the last
+    //   // command failed.  This informs the updater program
+    //   // that the download command failed.
+    //   status = CAN_CMD_FAIL;
 
-  //   //   // This packet has been handled.
-  //   //   goto __LBL_BL_ADDR_END__;
-  //   // }
+    //   // This packet has been handled.
+    //   goto __LBL_BL_ADDR_END__;
+    // }
 
-  //   // Initialize the Flash Wrapper registers
-  //   return_check = Fapi_BlockErase(g_ulTransferAddress, g_ulTransferSize);
+    // Initialize the Flash Wrapper registers
+    return_check = Fapi_BlockErase(g_ulTransferAddress, g_ulTransferSize);
 
-  //   // Return an error if an access violation occurred.
-  //   if (return_check)
-  //   {
-  //     status = CAN_CMD_FAIL;
-  //   }
-  // } while (0);
+    // Return an error if an access violation occurred.
+    if (return_check)
+    {
+      status = CAN_CMD_FAIL;
+    }
+  } while (0);
 
 __LBL_BL_ADDR_END__:
   // See if the command was successful.
