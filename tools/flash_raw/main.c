@@ -480,16 +480,16 @@ main ( int argc, char *argv[] )
 
         if( main_tx_req_map(&start,&end) == 0 ) {
 
-           // printf("info: sending file\n");
-           // if( (ihex_ftx(fp,start,end) == 0) ) {
+           printf("info: sending file\n");
+           if( (ihex_ftx(fp,start,end) == 0) ) {
 
              if( (ret = main_tx_stop()) )
                printf("error: sending stop failed\n");
 
-           // } else {
+           } else {
 
-           //   printf("error: sending file failed\n");
-           // }
+             printf("error: sending file failed\n");
+           }
 
         } else {
   
