@@ -34,6 +34,13 @@ ihex_cksum_calc( void ) {
   accum = 0;
   size = ihex_addr_end - ihex_addr_start;
 
+  if (ihex_addr_end <= ihex_addr_start)
+  {
+    printf("The memory map receive is not correct. Size %d\n", size);
+    printf("Checksum failed \n");
+    return 0;
+  }
+
   for( cnt = 0; cnt <= size; cnt++ )
     accum += ihex_image[cnt];
 

@@ -406,7 +406,7 @@ main_tx_stop(void)
   printf("sending stop\n");
 
   /* send request for version */
-  // cksum = ihex_cksum_calc(); // TODO: Check this function
+  cksum = ihex_cksum_calc();
   buf[0] = cksum >> 8;
   buf[1] = (uint8_t)cksum;
   main_can_tx_ext(CANID_BL_STOP, 0, 0);
