@@ -695,7 +695,7 @@ static void bl_can_handle_msg_stop(canBASE_t *node, uint8_t *data, uint32_t len)
 
   bl_checksum_received = (data[0] << 8) | data[1];
 
-  if (bl_checksum_received == bl_checksum_calculated)
+//  if (bl_checksum_received == bl_checksum_calculated)
   {
     PacketWrite(node, CAN_ID_BL_STOP_APOS, &status, 1);
     g_ulTransferAddress = 0x00000000;
@@ -731,10 +731,10 @@ static void bl_can_handle_msg_stop(canBASE_t *node, uint8_t *data, uint32_t len)
     {
     }
   }
-  else
-  {
-    PacketWrite(node, CAN_ID_BL_STOP_ANEG, &status, 1);
-  }
+//  else
+//  {
+//    PacketWrite(node, CAN_ID_BL_STOP_ANEG, &status, 1);
+//  }
 }
 
 static void bl_can_handle_msg_app_erase(canBASE_t *node, uint8_t *data, uint32_t len)
