@@ -160,7 +160,6 @@ uart_tx( uint8_t val )
   uint8_t cnt = 0;
   DWORD bytesWritten = 0;
   /* tx character, wait for up to 1 second */
-  printf("%x ", val);
   while( !WriteFile(hSerial, &val, 1, &bytesWritten, NULL) && bytesWritten <= 0 )
   {
     Sleep(5);

@@ -150,7 +150,7 @@ main_can_setup ( uint16_t rate )
 ** Transmit 29-bit CAN message.
 */
 void
-main_can_tx ( uint32_t id, uint8_t *buf, uint8_t buf_len )
+main_can_tx_ext ( uint32_t id, uint8_t *buf, uint8_t buf_len )
 {
   uint8_t cnt;
   uint8_t msg[20];
@@ -158,7 +158,7 @@ main_can_tx ( uint32_t id, uint8_t *buf, uint8_t buf_len )
   msg[0] = VNA_MSG_TX_CAN;
   msg[1] = 0;                    // port
   _32tobuf_msb( &msg[2], id );   // load id
-  //msg[2] |= 0x80;                // mark as 29-bit frame
+  msg[2] |= 0x80;                // mark as 29-bit frame
 
   for( cnt = 0; cnt < buf_len; cnt++ )
     msg[6+cnt] = buf[cnt];
@@ -169,7 +169,7 @@ main_can_tx ( uint32_t id, uint8_t *buf, uint8_t buf_len )
 
 
 uint8_t
-main_can_rx ( uint32_t *id, uint8_t *buf, uint8_t *buf_len )
+main_can_rx_ext ( uint32_t *id, uint8_t *buf, uint8_t *buf_len )
 {
   uint8_t cnt;
   uint8_t msg[20];
@@ -178,9 +178,9 @@ main_can_rx ( uint32_t *id, uint8_t *buf, uint8_t *buf_len )
   if( (msg_len = vna_232_rx_msg(msg,(uint16_t)sizeof(msg))) >= 6 ) {
 
     /* check that it is an incoming extended can frame, max 8 bytes in it */
-    if( (msg[0] == VNA_MSG_RX_CAN) && (msg[1] == 0) && (msg_len <= 14) ) {
+    if( (msg[0] == VNA_MSG_RX_CAN) && (msg[1] == 0) && (msg[2] & 0x80) && (msg_len <= 14) ) {
 
-      //msg[2] &= ~0x80; 
+      msg[2] &= ~0x80; 
       *id = bufto32_msb(&msg[2]);
       *buf_len = (uint8_t) msg_len;
       
@@ -189,7 +189,6 @@ main_can_rx ( uint32_t *id, uint8_t *buf, uint8_t *buf_len )
 
       return 0; 
     }
-    printf("rejected: %d\n",msg[0]);
   }
 
   return 1; 
@@ -210,13 +209,13 @@ main_tx_cpu_reset ( void )
 
   /* send request for version */
   printf("info: tx reset cmd\n"); 
-  main_can_tx( CANID_BL_CPU_RESET, 0, 0 );
+  main_can_tx_ext( CANID_BL_CPU_RESET, 0, 0 );
 
   /* wait up to 200 ms for response */
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_CPU_RESET_APOS ) {
         return 0;
       }
@@ -240,13 +239,13 @@ main_tx_req_ver ( void )
   uint8_t buf_len;
 
   /* send request for version */
-  main_can_tx( CANID_BL_VER_REQ, 0, 0 );
+  main_can_tx_ext( CANID_BL_VER_REQ, 0, 0 );
 
   /* wait up to 200 ms for response */
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_VER_REQ_RSP ) {
         printf("info: software ver: %d\n", buf[0]);
         printf("      product id: %d\n", buf[1]);
@@ -276,13 +275,13 @@ main_tx_app_erase ( void )
 
   /* send request for version */
   printf("info: tx erase app\n"); 
-  main_can_tx( CANID_BL_APP_ERASE, tmp, 8 );
+  main_can_tx_ext( CANID_BL_APP_ERASE, tmp, 8 );
 
   /* erase on 28035 can take up to 10 seconds per sector */
   for( delay = 0; delay < 2000; delay++ ) {
 
     Sleep(10);
-    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_APP_ERASE_APOS ) {
         return 0;
       } else if( id == CANID_BL_APP_ERASE_ANEG ) {
@@ -308,13 +307,13 @@ main_tx_req_map ( uint32_t *start, uint32_t *end )
   uint8_t buf_len;
 
   /* send request for version */
-  main_can_tx( CANID_BL_MAP_REQ, 0, 0 );
+  main_can_tx_ext( CANID_BL_MAP_REQ, 0, 0 );
 
   /* wait up to 200 ms for response */
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_MAP_REQ_RSP_ARM ) {
         *start = bufto32_msb(&buf[0]);
         *end = bufto32_msb(&buf[4]);
@@ -344,13 +343,13 @@ main_tx_addr ( uint32_t addr, uint8_t len )
   /* send request for version */
   _32tobuf_msb( &buf[0], addr );
   buf[4] = len;
-  main_can_tx( CANID_BL_ADDR, buf, 5 );
+  main_can_tx_ext( CANID_BL_ADDR, buf, 5 );
 
   /* wait up to 200 ms for response */
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx( &id, buf, &buf_len ) == 0 ) {
+    if( main_can_rx_ext( &id, buf, &buf_len ) == 0 ) {
       if( id == CANID_BL_ADDR_APOS ) {
         return 0;
       }
@@ -376,6 +375,7 @@ main_tx_line ( uint32_t addr, uint8_t *buf, uint8_t buf_len )
   uint32_t id;
   uint16_t delay;
 
+  printf("addr: %x\n", addr);
   if( main_tx_addr(addr,buf_len) )
     return 1;
 
@@ -383,7 +383,7 @@ main_tx_line ( uint32_t addr, uint8_t *buf, uint8_t buf_len )
   while( buf_len ) {
 
     len = (buf_len > 8) ? 8 : buf_len;
-    main_can_tx( CANID_BL_DATA, &buf[i], len );
+    main_can_tx_ext( CANID_BL_DATA, &buf[i], len );
     i += len;
     buf_len -= len;
   }
@@ -392,8 +392,9 @@ main_tx_line ( uint32_t addr, uint8_t *buf, uint8_t buf_len )
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_DATA_APOS ) {
+        printf("data accepted APOS\n");
         return 0;
       }
     }
@@ -417,18 +418,21 @@ main_tx_stop ( void )
   uint8_t buf[20];
   uint8_t buf_len;
 
+  printf("sending stop\n");
+
   /* send request for version */
   cksum = ihex_cksum_calc();
   buf[0] = cksum >> 8;
   buf[1] = (uint8_t)cksum;
-  main_can_tx( CANID_BL_STOP, buf, 2 );
+  main_can_tx_ext( CANID_BL_STOP, buf, 2 );
 
   /* wait up to 200 ms for response */
   for( delay = 0; delay < 200; delay++ ) {
 
     Sleep(1);
-    if( main_can_rx(&id,buf,&buf_len) == 0 ) {
+    if( main_can_rx_ext(&id,buf,&buf_len) == 0 ) {
       if( id == CANID_BL_STOP_APOS ) {
+        printf("stop accepted\n");
         return 0;
       }
     }
@@ -476,16 +480,16 @@ main ( int argc, char *argv[] )
 
         if( main_tx_req_map(&start,&end) == 0 ) {
 
-           printf("info: sending file\n");
-           if( (ihex_ftx(fp,start,end) == 0) ) {
+           // printf("info: sending file\n");
+           // if( (ihex_ftx(fp,start,end) == 0) ) {
 
              if( (ret = main_tx_stop()) )
                printf("error: sending stop failed\n");
 
-           } else {
+           // } else {
 
-             printf("error: sending file failed\n");
-           }
+           //   printf("error: sending file failed\n");
+           // }
 
         } else {
   
