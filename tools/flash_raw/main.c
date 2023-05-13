@@ -65,7 +65,6 @@ usage(int32_t argc, uint8_t *argv[], FILE **file_arm, uint8_t *cport)
 {
   if (usage_check(argc, argv) != 0)
   {
-
     printf("usage: flashRAW <port> <file>\n");
     printf("\n");
     printf("  ver. 1.0\n");
@@ -82,7 +81,6 @@ usage(int32_t argc, uint8_t *argv[], FILE **file_arm, uint8_t *cport)
 
   if ((*file_arm = fopen(argv[2], "rt")) == 0)
   {
-
     printf("error: unable to open %s\n", argv[2]);
     return 1;
   }
@@ -162,7 +160,6 @@ main_can_rx_ext(uint32_t *id, uint8_t *buf, uint8_t *buf_len)
 
   if ((msg_len = vna_232_rx_msg(msg, (uint16_t)sizeof(msg))) >= 6)
   {
-
     /* check that it is an incoming extended can frame, max 8 bytes in it */
     if ((msg[0] == VNA_MSG_RX_CAN) && (msg[1] == 0) && (msg[2] & 0x80) && (msg_len <= 14))
     {
@@ -199,7 +196,6 @@ main_tx_cpu_reset(void)
   /* wait up to 200 ms for response */
   for (delay = 0; delay < 200; delay++)
   {
-
     Sleep(1);
     if (main_can_rx_ext(&id, buf, &buf_len) == 0)
     {
@@ -230,7 +226,6 @@ main_tx_req_ver(void)
   /* wait up to 200 ms for response */
   for (delay = 0; delay < 200; delay++)
   {
-
     Sleep(1);
     if (main_can_rx_ext(&id, buf, &buf_len) == 0)
     {
@@ -267,7 +262,6 @@ main_tx_app_erase(void)
   /* erase on 28035 can take up to 10 seconds per sector */
   for (delay = 0; delay < 2000; delay++)
   {
-
     Sleep(10);
     if (main_can_rx_ext(&id, buf, &buf_len) == 0)
     {
@@ -302,7 +296,6 @@ main_tx_req_map(uint32_t *start, uint32_t *end)
   /* wait up to 200 ms for response */
   for (delay = 0; delay < 200; delay++)
   {
-
     Sleep(1);
     if (main_can_rx_ext(&id, buf, &buf_len) == 0)
     {
@@ -340,7 +333,6 @@ main_tx_addr(uint32_t addr, uint8_t len)
   /* wait up to 200 ms for response */
   for (delay = 0; delay < 200; delay++)
   {
-
     Sleep(1);
     if (main_can_rx_ext(&id, buf, &buf_len) == 0)
     {
@@ -375,7 +367,6 @@ main_tx_line(uint32_t addr, uint8_t *buf, uint8_t buf_len)
   i = 0;
   while (buf_len)
   {
-
     len = (buf_len > 8) ? 8 : buf_len;
     main_can_tx_ext(CANID_BL_DATA, &buf[i], len);
     i += len;
@@ -385,7 +376,6 @@ main_tx_line(uint32_t addr, uint8_t *buf, uint8_t buf_len)
   /* wait up to 200 ms for response */
   for (delay = 0; delay < 200; delay++)
   {
-
     Sleep(1);
     if (main_can_rx_ext(&id, buf, &buf_len) == 0)
     {
@@ -424,7 +414,6 @@ main_tx_stop(void)
   /* wait up to 200 ms for response */
   for (delay = 0; delay < 200; delay++)
   {
-
     Sleep(1);
     if (main_can_rx_ext(&id, buf, &buf_len) == 0)
     {
@@ -466,61 +455,52 @@ void main(int argc, char *argv[])
   /* command node to reset, to force bootloader to start */
   if (main_tx_cpu_reset() == 0)
   {
-
     /* wait for the reset to happen */
     Sleep(100);
 
     if (main_tx_req_ver() == 0)
     {
-
       if (main_tx_app_erase() == 0)
       {
-
         if (main_tx_req_map(&start, &end) == 0)
         {
-
           printf("info: sending file\n");
           if ((ihex_ftx(fp, start, end) == 0))
           {
             printf("OK: sending file done\n");
-            Sleep(100);
+            Sleep(1000);
 
-            if ((ret = main_tx_stop()))
+            if (main_tx_stop() == 0)
             {
-              printf("error: sending stop failed\n");
+              printf("OK: sending stop done\n");
             }
             else
             {
-              printf("OK: sending stop done\n");
+              printf("error: sending stop failed\n");
             }
           }
           else
           {
-
             printf("error: sending file failed\n");
           }
         }
         else
         {
-
           printf("error: memory map request failed\n");
         }
       }
       else
       {
-
         printf("error: app erase failed\n");
       }
     }
     else
     {
-
       printf("error: version request failed\n");
     }
   }
   else
   {
-
     printf("error: reset cmd failed\n");
   }
 
