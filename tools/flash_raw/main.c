@@ -397,6 +397,32 @@ main_tx_line(uint32_t addr, uint8_t *buf, uint8_t buf_len)
 uint8_t
 main_tx_stop(void)
 {
+  // uint32_t id;
+  // uint16_t delay;
+  // uint16_t cksum;
+  // uint8_t buf[20];
+  // uint8_t buf_len;
+
+  // printf("sending stop\n");
+
+  // /* send request for version */
+  // main_can_tx_ext(CANID_BL_STOP, 0, 0);
+
+  // /* wait up to 200 ms for response */
+  // for (delay = 0; delay < 200; delay++)
+  // {
+  //   Sleep(1);
+  //   if (main_can_rx_ext(&id, buf, &buf_len) == 0)
+  //   {
+  //     if (id == CANID_BL_STOP_APOS)
+  //     {
+  //       return 0;
+  //     }
+  //   }
+  // }
+
+  // return 1;
+
   uint32_t id;
   uint16_t delay;
   uint16_t cksum;
@@ -406,10 +432,10 @@ main_tx_stop(void)
   printf("sending stop\n");
 
   /* send request for version */
-  cksum = ihex_cksum_calc();
-  buf[0] = cksum >> 8;
-  buf[1] = (uint8_t)cksum;
-  main_can_tx_ext(CANID_BL_STOP, buf, 2);
+  // cksum = ihex_cksum_calc();
+  // buf[0] = cksum >> 8;
+  // buf[1] = (uint8_t)cksum;
+  main_can_tx_ext(CANID_BL_STOP, 0, 0);
 
   /* wait up to 200 ms for response */
   for (delay = 0; delay < 200; delay++)
@@ -468,7 +494,7 @@ void main(int argc, char *argv[])
           if ((ihex_ftx(fp, start, end) == 0))
           {
             printf("OK: sending file done\n");
-            Sleep(1000);
+            Sleep(100);
 
             if (main_tx_stop() == 0)
             {
