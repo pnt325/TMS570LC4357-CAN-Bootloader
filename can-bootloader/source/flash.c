@@ -233,7 +233,7 @@ uint32_t Fapi_BlockProgram(uint32_t Flash_Address, uint32_t Data_Address, uint32
 																 (uint32_t)bytes,
 																 0,
 																 0,
-																 Fapi_DataOnly);
+																 Fapi_AutoEccGeneration);
 
 		while (FAPI_CHECK_FSM_READY_BUSY == Fapi_Status_FsmBusy)
 			;
