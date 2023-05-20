@@ -593,16 +593,16 @@ static void bl_can_handle_msg_set_start_address(canBASE_t *node, uint8_t *data, 
   do
   {
     // See if a full packet was received.
-//    if (len != 5)
-//    {
-//      // Set the code to an error to indicate that the last
-//      // command failed.  This informs the updater program
-//      // that the download command failed.
-//      status = CAN_CMD_FAIL;
-//
-//      // This packet has been handled.
-//      goto __LBL_BL_ADDR_END__;
-//    }
+   if (len != 5)
+   {
+     // Set the code to an error to indicate that the last
+     // command failed.  This informs the updater program
+     // that the download command failed.
+     status = CAN_CMD_FAIL;
+
+     // This packet has been handled.
+     goto __LBL_BL_ADDR_END__;
+   }
 
     // Get the address and size from the command. Where to swap the bytes?
     // The data is transferred most significant bit (MSB) first. This is used for RM48 which is little endian device
@@ -614,29 +614,8 @@ static void bl_can_handle_msg_set_start_address(canBASE_t *node, uint8_t *data, 
 
     // Tell bootloader how many bytes the host will transfer for the whole application
     g_ulTransferSize = data[4];
-    g_pulUpdateSuccess[2] = g_ulTransferSize;
-
-    // Check for a valid starting address and image size.
-    // if (!BLInternalFlashStartAddrCheck(g_ulTransferAddress, g_ulTransferSize))
-    // {
-    //   // Set the code to an error to indicate that the last
-    //   // command failed.  This informs the updater program
-    //   // that the download command failed.
-    //   status = CAN_CMD_FAIL;
-
-    //   // This packet has been handled.
-    //   goto __LBL_BL_ADDR_END__;
-    // }
-
-    // Initialize the Flash Wrapper registers
-    // return_check = Fapi_BlockErase(g_ulTransferAddress, g_ulTransferSize);
-
-    // Return an error if an access violation occurred.
-    if (return_check)
-    {
-      status = CAN_CMD_FAIL;
-    }
-  } while (0);
+  }
+  while (0);
 
 __LBL_BL_ADDR_END__:
   // See if the command was successful.
@@ -743,37 +722,37 @@ static void bl_can_handle_msg_app_erase(canBASE_t *node, uint8_t *data, uint32_t
   uint8_t status;
 
   // A simple do/while(0) control loop to make error exits easier.
-//  do
-//  {
-//    // See if a full packet was received.
-//    if (len != 8)
-//    {
-//      // Set the code to an error to indicate that the last
-//      // command failed.  This informs the updater program
-//      // that the download command failed.
-//      status = CAN_CMD_FAIL;
-//
-//      // This packet has been handled.
-//      goto __LBL_BL_APP_ERASE_END__;
-//    }
-//
-//    // Get the address from the command.
-//    // The data is transferred most significant bit (MSB) first. This is used for RM48 which is little endian device
-//    g_ulTransferAddress = 0x00010000;
-//
-//    // Tell bootloader how many bytes the host will transfer for the whole application
-//    g_ulTransferSize = 0x8000;
-//
-//    return_check = Fapi_BlockErase(g_ulTransferAddress, g_ulTransferSize);
-//
-//    // Return an error if an access violation occurred.
-//    if (return_check)
-//    {
-//      status = CAN_CMD_FAIL;
-//    }
-//  } while (0);
-//
-//__LBL_BL_APP_ERASE_END__:
+ do
+ {
+   // See if a full packet was received.
+   if (len != 8)
+   {
+     // Set the code to an error to indicate that the last
+     // command failed.  This informs the updater program
+     // that the download command failed.
+     status = CAN_CMD_FAIL;
+
+     // This packet has been handled.
+     goto __LBL_BL_APP_ERASE_END__;
+   }
+
+   // Get the address from the command.
+   // The data is transferred most significant bit (MSB) first. This is used for RM48 which is little endian device
+   g_ulTransferAddress = 0x00010000;
+
+   // Tell bootloader how many bytes the host will transfer for the whole application
+   g_ulTransferSize = 0x8000;
+
+   return_check = Fapi_BlockErase(g_ulTransferAddress, g_ulTransferSize);
+
+   // Return an error if an access violation occurred.
+   if (return_check)
+   {
+     status = CAN_CMD_FAIL;
+   }
+ } while (0);
+
+__LBL_BL_APP_ERASE_END__:
   // See if the command was successful.
   if (status == CAN_CMD_SUCCESS)
   {

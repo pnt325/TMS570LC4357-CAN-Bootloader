@@ -204,7 +204,6 @@ uint32_t Fapi_BlockErase(uint32_t ulAddr, uint32_t Size)
 			;
 	}
 
-	status = Flash_Erase_Check((uint32_t)ulAddr, Size);
 	return (status);
 }
 
