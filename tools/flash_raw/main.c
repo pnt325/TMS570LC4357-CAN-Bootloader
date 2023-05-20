@@ -253,7 +253,12 @@ main_tx_app_erase(void)
   uint16_t delay;
   uint8_t buf[20];
   uint8_t buf_len;
-  uint8_t tmp[8] = {11, 13, 88, 55, 3, 211, 177, 249};
+  uint8_t tmp[8];
+  uint32_t transfer_addr = 0x00010000;
+  uint32_t transfer_size = 0x8000;
+
+  _32tobuf_msb(&tmp[0], transfer_addr);
+  _32tobuf_msb(&tmp[4], transfer_size);
 
   /* send request for version */
   printf("info: tx erase app\n");
@@ -303,6 +308,9 @@ main_tx_req_map(uint32_t *start, uint32_t *end)
       {
         *start = bufto32_msb(&buf[0]);
         *end = bufto32_msb(&buf[4]);
+
+        printf("Mem Map start: 0x%4X\n", *start);
+        printf("Mem Map end  : 0x%4X\n", *end);
       }
     }
     if (*start)

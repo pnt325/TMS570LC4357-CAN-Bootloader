@@ -47,6 +47,11 @@
 #define MSG_OBJ_BCAST_RX_ID   (1)
 #define MSG_OBJ_BCAST_TX_ID   (2)
 
+// Memory Map
+#define MEM_MAP_START_ADDR    (APP_STATUS_ADDRESS)
+#define MEM_MAP_SIZE          (0x8000)
+#define MEM_MAP_END_ADDR      (MEM_MAP_START_ADDR + MEM_MAP_SIZE)
+
 /* Private enumerate/structure ---------------------------------------- */
 static uint16_t bl_checksum_received;
 static uint16_t bl_checksum_calculated;
@@ -533,11 +538,23 @@ static void PacketWrite(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, 
 }
 
 /* Bootloader CAN Bus handle message ------------------------------------ */
+static void _32tobuf_msb(uint8_t *buf, uint32_t val)
+{
+  buf[3] = (uint8_t)val;
+  val >>= 8;
+  buf[2] = (uint8_t)val;
+  val >>= 8;
+  buf[1] = (uint8_t)val;
+  val >>= 8;
+  buf[0] = (uint8_t)val;
+}
+
 static void bl_can_handle_msg_get_memory_map(canBASE_t *node, uint8_t *data, uint32_t len)
 {
   uint8_t mem_map_arm[8];
 
-  mem_map_arm[0] = 10;
+  _32tobuf_msb(&mem_map_arm[0], MEM_MAP_START_ADDR);
+  _32tobuf_msb(&mem_map_arm[4], MEM_MAP_END_ADDR);
 
   PacketWrite(node, CAN_ID_BL_MAP_REQ_RSP_ARM, mem_map_arm, 8);
 }
@@ -651,6 +668,8 @@ static void bl_can_handle_msg_cpu_reset(canBASE_t *node, uint8_t *data, uint32_t
 {
   uint8_t status;
 
+  // Note: This command should handler int the application code
+
   // Perform a software reset request.  This will cause the
   // microcontroller to reset; no further code will be executed.
   // Use the reset function in the flash patch if appropriate.
@@ -738,10 +757,10 @@ static void bl_can_handle_msg_app_erase(canBASE_t *node, uint8_t *data, uint32_t
 
    // Get the address from the command.
    // The data is transferred most significant bit (MSB) first. This is used for RM48 which is little endian device
-   g_ulTransferAddress = 0x00010000;
+   g_ulTransferAddress = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3] << 0);;
 
    // Tell bootloader how many bytes the host will transfer for the whole application
-   g_ulTransferSize = 0x8000;
+   g_ulTransferSize = (data[4] << 24) | (data[5] << 16) | (data[6] << 8) | (data[7] << 0);;
 
    return_check = Fapi_BlockErase(g_ulTransferAddress, g_ulTransferSize);
 
