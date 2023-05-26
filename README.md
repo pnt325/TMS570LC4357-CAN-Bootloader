@@ -1,22 +1,15 @@
 # TMS570LC4357-CAN-Bootloader
-Development the bootloader over CAN for TMS570LC4357
+Development of the bootloader over CAN for TMS570LC4357
 
-# Install
+## Install
 
 Git clone branch `main` 
 ```
 git clone https://github.com/pnt325/TMS570LC4357-CAN-Bootloader.git
 ```
 
-Check out to newest code branch `phat-dev`
+## How to run the Flashraw tool on Window
+
 ```
-git checkout -b phat-dev
+flashraw 5 test.hex test.hex
 ```
- 
- ## Get github project using Github Desktop
-
- [Github Desktop](https://desktop.github.com/)
-
-## Install git on windows
-
-[Install git on windows](https://phoenixnap.com/kb/how-to-install-git-windows)

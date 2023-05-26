@@ -204,12 +204,6 @@ uint32_t Fapi_BlockErase(uint32_t ulAddr, uint32_t Size)
 			;
 	}
 
-#if defined(RM57) || defined(TMS570LC43)
-	status = 0;
-#else
-	status = Flash_Erase_Check((uint32_t)ulAddr, Size);
-#endif
-
 	return (status);
 }
 
@@ -253,7 +247,8 @@ uint32_t Fapi_BlockProgram(uint32_t Flash_Address, uint32_t Data_Address, uint32
 			bytes = SizeInBytes;
 		}
 	}
-	return (0);
+
+	return Flash_Program_Check(Flash_Address, Data_Address, SizeInBytes);
 }
 
 uint32_t Fapi_UpdateStatusProgram(uint32_t Flash_Start_Address, uint32_t Data_Start_Address, uint32_t Size_In_Bytes)

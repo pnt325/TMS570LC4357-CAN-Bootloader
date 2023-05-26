@@ -1,0 +1,15 @@
+@startuml
+
+participant APP as "Flash Raw App"
+participant MCU as "MCU"
+
+skinparam dpi 300
+
+== Get Memory Map ==
+APP->MCU ++: CAN_ID_BL_MAP_REQ  \n- Length: 0
+MCU -> MCU : Wait 200ms
+MCU-->APP : CAN_ID_BL_MAP_REQ_RSP_ARM \n- Length: 8 \n- [0:3] Start address \n- [4:7] End address
+MCU -> MCU : Wait 10ms
+MCU-->APP : CAN_ID_BL_MAP_REQ_RSP_C2K \n- Length: 8 \n- [0:3] Start address \n- [4:7] End address
+
+@enduml

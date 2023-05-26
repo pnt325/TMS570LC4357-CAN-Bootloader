@@ -63,7 +63,7 @@
 /* USER CODE BEGIN (2) */
 /* USER CODE END */
 
-int _main(void)
+int main(void)
 {
 /* USER CODE BEGIN (3) */
 /* USER CODE END */

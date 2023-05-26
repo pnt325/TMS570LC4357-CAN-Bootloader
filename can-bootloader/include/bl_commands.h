@@ -43,7 +43,7 @@
 // These defines are used to define the range of values that are used for
 // CAN update protocol.
 //*****************************************************************************
-#define CAN_MSGID_MFR           0x5A0
+#define CAN_MSGID_MFR           0x000
 
 //*****************************************************************************
 // The Hercules Firmware Update API definitions.

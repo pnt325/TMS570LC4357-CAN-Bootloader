@@ -1,0 +1,14 @@
+@startuml
+
+participant APP as "Flash Raw App"
+participant MCU as "MCU"
+
+skinparam dpi 300
+
+== Request App Erase ==
+APP->MCU ++: CAN_ID_BL_APP_ERASE  \n- Length: 8 \n- [0:3] Address of the Application \n- [4:8] Length of flash want to erase
+MCU -> MCU : Wait 200ms
+MCU-->APP : True: Erase success \n- Response: CAN_ID_BL_APP_ERASE_APOS \n + Length: 0
+MCU-->APP : False: Erase error \n- Response: CAN_ID_BL_APP_ERASE_ANEG \n + Length: 0
+
+@enduml
