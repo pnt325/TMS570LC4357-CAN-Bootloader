@@ -4,7 +4,7 @@
  * @license    This project is released under the Hydratech License.
  * @version    1.0.0
  * @date       2021-07-31
- * @author     Thuan Le
+ * @author     
  * @brief      The main file for the bootloader
  * @note       None
  * @example    None
