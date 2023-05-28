@@ -1,10 +1,10 @@
 /**
  * @file       bl_main.c
- * @copyright  Copyright (C) 2020 Hydratech. All rights reserved.
- * @license    This project is released under the Hydratech License.
+ * @copyright  
+ * @license    
  * @version    1.0.0
  * @date       2021-07-31
- * @author     Thuan Le
+ * @author     
  * @brief      The main file for the bootloader
  * @note       None
  * @example    None
@@ -94,7 +94,6 @@ void main(void)
   memcpy(&constRunStart, &constLoadStart, (uint32)&constLoadSize);
 
   UART_putString(UART, "\r Hercules MCU CAN BootLoader ");
-  UART_putString(UART, "\r TI DSP Application Team, qjwang@ti.com \r\r");
 
   // See if an update should be performed.
   fnRetValue = CheckForceUpdate();

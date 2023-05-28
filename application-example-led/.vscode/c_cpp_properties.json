@@ -1,0 +1,29 @@
+{
+    "env": {
+        "StdLibPath": "C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS",
+        "compiler": "C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin",
+        "fapi":"C:/ti/Hercules/F021 Flash API/02.01.01"
+    },
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/TMS570LC43x/include",
+                "${StdLibPath}/include",
+                "${fapi}/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "${compiler}/armcl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

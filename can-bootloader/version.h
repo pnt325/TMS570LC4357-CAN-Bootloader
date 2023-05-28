@@ -1,10 +1,10 @@
 /**
  * @file       version.h
- * @copyright  Copyright (C) 2020 Hydratech. All rights reserved.
- * @license    This project is released under the Hydratech License.
+ * @copyright  
+ * @license    
  * @version    1.0.0
  * @date       2021-07-31
- * @author     Thuan Le
+ * @author     
  * @brief      Version
  * @note       None
  * @example    None
