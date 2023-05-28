@@ -54,11 +54,9 @@ static uint8_t util_ascii2dec(int a);
 /* Function definitions ----------------------------------------------- */
 void ihex_cksum_calc(uint32_t addr, uint8_t *buf, uint8_t buf_len)
 {
-  uint8_t cnt;
   static bool first_called = true;
 
   ihex_size = ihex_size + buf_len;
-  printf("Store check sum length: %d\n", buf_len);
 
   if (first_called)
   {
