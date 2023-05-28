@@ -9,7 +9,7 @@ uint32_t ihex_size;
 
 #define IHEX_IMAGE_SIZE (1024UL * 1024UL)
 uint8_t ihex_image[IHEX_IMAGE_SIZE];
-static uint16_t bl_checksum_calculated;
+static uint16_t ihex_checksum_calculated;
 
 static const uint16_t crc16_table[] = {
     0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50A5, 0x60C6, 0x70E7,
@@ -43,34 +43,16 @@ static const uint16_t crc16_table[] = {
     0xFD2E, 0xED0F, 0xDD6C, 0xCD4D, 0xBDAA, 0xAD8B, 0x9DE8, 0x8DC9,
     0x7C26, 0x6C07, 0x5C64, 0x4C45, 0x3CA2, 0x2C83, 0x1CE0, 0x0CC1,
     0xEF1F, 0xFF3E, 0xCF5D, 0xDF7C, 0xAF9B, 0xBFBA, 0x8FD9, 0x9FF8,
-    0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0x0ED1, 0x1EF0};
+    0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0x0ED1, 0x1EF0
+};
 
-uint16_t crc16_incremental(uint16_t crc, uint8_t *data, uint32_t len)
-{
-  const unsigned char *d = (const unsigned char *)data;
-  unsigned int tbl_idx;
+/* Private function prototypes ---------------------------------------- */
+static uint16_t util_crc16_incremental(uint16_t crc, uint8_t *data, uint32_t len);
+static uint16_t util_crc16(uint8_t *data, uint32_t len);
+static uint8_t util_ascii2dec(int a);
 
-  // Ensure that the length is not too long, else we'd try to read data that is not accessible.
-  // This would lead to a memory access error / data abort.
-  if (len > 0xA0000)
-    return 0;
-
-  while (len--)
-  {
-    tbl_idx = ((crc >> 8) ^ *d) & 0xff;
-    crc = (crc16_table[tbl_idx] ^ (crc << 8)) & 0xffff;
-    d++;
-  }
-
-  return crc & 0xffff;
-}
-
-uint16_t crc16(uint8_t *data, uint32_t len)
-{
-  return crc16_incremental(0, data, len);
-}
-
-void ihex_cksum_store(uint32_t addr, uint8_t *buf, uint8_t buf_len)
+/* Function definitions ----------------------------------------------- */
+void ihex_cksum_calc(uint32_t addr, uint8_t *buf, uint8_t buf_len)
 {
   uint8_t cnt;
   static bool first_called = true;
@@ -80,58 +62,27 @@ void ihex_cksum_store(uint32_t addr, uint8_t *buf, uint8_t buf_len)
 
   if (first_called)
   {
-    bl_checksum_calculated = crc16(buf, buf_len);
+    ihex_checksum_calculated = util_crc16(buf, buf_len);
     first_called = false;
   }
   else
   {
-    bl_checksum_calculated = crc16_incremental(bl_checksum_calculated, buf, buf_len);
+    ihex_checksum_calculated = util_crc16_incremental(ihex_checksum_calculated, buf, buf_len);
   }
 }
 
-uint16_t ihex_cksum_calc(void)
+uint16_t ihex_cksum_get(void)
 {
-  uint32_t cnt;
-  uint32_t size;
-  uint16_t accum;
-
-  accum = 0;
-  size = ihex_size;
-
   if (ihex_addr_end <= ihex_addr_start)
   {
-    printf("The memory map receive is not correct. Size %d\n", size);
+    printf("The memory map receive is not correct. Size %d\n", ihex_size);
     printf("Checksum failed \n");
     return 0;
   }
 
-  printf("Check sum: %d\n", bl_checksum_calculated);
+  printf("Check sum: %d\n", ihex_checksum_calculated);
 
-  return bl_checksum_calculated;
-}
-
-uint8_t ascii2dec(int a)
-{
-
-  unsigned ret = 0;
-
-  if ((a >= 'A') && (a <= 'F'))
-  {
-
-    ret = a - 'A' + 10;
-  }
-  else if ((a >= 'a') && (a <= 'f'))
-  {
-
-    ret = a - 'a' + 10;
-  }
-  else if ((a >= '0') && (a <= '9'))
-  {
-
-    ret = a - '0';
-  }
-
-  return ret;
+  return ihex_checksum_calculated;
 }
 
 /*
@@ -164,7 +115,6 @@ uint8_t ihex_ftx(FILE *file, uint32_t start, uint32_t end)
   /* read character from file. if end of file, return ok. */
   while ((tmp = fgetc(file)) != EOF)
   {
-
     /* if end of line read again */
     if (tmp == 10)
       continue;
@@ -177,23 +127,22 @@ uint8_t ihex_ftx(FILE *file, uint32_t start, uint32_t end)
     }
 
     /* get number of bytes */
-    byte_cnt = ascii2dec(fgetc(file)) << 4;
-    byte_cnt += ascii2dec(fgetc(file));
+    byte_cnt = util_ascii2dec(fgetc(file)) << 4;
+    byte_cnt += util_ascii2dec(fgetc(file));
 
     /* get load address */
-    load_addr = ascii2dec(fgetc(file)) << 12L;
-    load_addr += ascii2dec(fgetc(file)) << 8L;
-    load_addr += ascii2dec(fgetc(file)) << 4L;
-    load_addr += ascii2dec(fgetc(file)) << 0L;
+    load_addr = util_ascii2dec(fgetc(file)) << 12L;
+    load_addr += util_ascii2dec(fgetc(file)) << 8L;
+    load_addr += util_ascii2dec(fgetc(file)) << 4L;
+    load_addr += util_ascii2dec(fgetc(file)) << 0L;
 
     /* get record type */
-    rec_type = ascii2dec(fgetc(file)) << 4;
-    rec_type += ascii2dec(fgetc(file));
+    rec_type = util_ascii2dec(fgetc(file)) << 4;
+    rec_type += util_ascii2dec(fgetc(file));
 
     /* get record */
     switch (rec_type)
     {
-
     /* unhandled, just read the line and discard */
     case 2:
     case 3:
@@ -209,7 +158,6 @@ uint8_t ihex_ftx(FILE *file, uint32_t start, uint32_t end)
     /* data record */
     case 0:
     {
-
       /* if not ':' then error */
       if (byte_cnt & 1)
       {
@@ -220,16 +168,15 @@ uint8_t ihex_ftx(FILE *file, uint32_t start, uint32_t end)
       /* get data. there are twice the number of characters than bytes */
       for (cnt = 0; cnt < byte_cnt; cnt++)
       {
-
-        buf[cnt] = ascii2dec(fgetc(file)) << 4;
-        buf[cnt] += ascii2dec(fgetc(file));
+        buf[cnt] = util_ascii2dec(fgetc(file)) << 4;
+        buf[cnt] += util_ascii2dec(fgetc(file));
       }
 
       /* discard checksum */
       fgetc(file);
       fgetc(file);
 
-      ihex_cksum_store(base_addr + load_addr, buf, byte_cnt);
+      ihex_cksum_calc(base_addr + load_addr, buf, byte_cnt);
 
       /* if sending data fails, we stop the download */
       if (main_tx_line(base_addr + load_addr, buf, byte_cnt))
@@ -248,12 +195,11 @@ uint8_t ihex_ftx(FILE *file, uint32_t start, uint32_t end)
     /* extended linear address record */
     case 4:
     {
-
       /* get address of data */
-      base_addr = ascii2dec(fgetc(file)) << 28L;
-      base_addr += ascii2dec(fgetc(file)) << 24L;
-      base_addr += ascii2dec(fgetc(file)) << 20L;
-      base_addr += ascii2dec(fgetc(file)) << 16L;
+      base_addr = util_ascii2dec(fgetc(file)) << 28L;
+      base_addr += util_ascii2dec(fgetc(file)) << 24L;
+      base_addr += util_ascii2dec(fgetc(file)) << 20L;
+      base_addr += util_ascii2dec(fgetc(file)) << 16L;
 
       /* discard checksum */
       fgetc(file);
@@ -264,7 +210,6 @@ uint8_t ihex_ftx(FILE *file, uint32_t start, uint32_t end)
 
     default:
     {
-
       printf("error: invalid record\n");
       return 1;
     }
@@ -272,4 +217,50 @@ uint8_t ihex_ftx(FILE *file, uint32_t start, uint32_t end)
   }
 
   return 0;
+}
+
+/* Private function definitions ---------------------------------------- */
+static uint16_t util_crc16_incremental(uint16_t crc, uint8_t *data, uint32_t len)
+{
+  const unsigned char *d = (const unsigned char *)data;
+  unsigned int tbl_idx;
+
+  // Ensure that the length is not too long, else we'd try to read data that is not accessible.
+  // This would lead to a memory access error / data abort.
+  if (len > 0xA0000)
+    return 0;
+
+  while (len--)
+  {
+    tbl_idx = ((crc >> 8) ^ *d) & 0xff;
+    crc = (crc16_table[tbl_idx] ^ (crc << 8)) & 0xffff;
+    d++;
+  }
+
+  return crc & 0xffff;
+}
+
+static uint16_t util_crc16(uint8_t *data, uint32_t len)
+{
+  return util_crc16_incremental(0, data, len);
+}
+
+static uint8_t util_ascii2dec(int a)
+{
+  unsigned ret = 0;
+
+  if ((a >= 'A') && (a <= 'F'))
+  {
+    ret = a - 'A' + 10;
+  }
+  else if ((a >= 'a') && (a <= 'f'))
+  {
+    ret = a - 'a' + 10;
+  }
+  else if ((a >= '0') && (a <= '9'))
+  {
+    ret = a - '0';
+  }
+
+  return ret;
 }

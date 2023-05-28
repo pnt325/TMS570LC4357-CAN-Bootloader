@@ -13,8 +13,6 @@
 /* Includes ----------------------------------------------------------- */
 #include "bl_config.h"
 
-#if defined(CAN_ENABLE_UPDATE)
-
 #include "bl_check.h"
 #include "flash.h"
 #include "bl_can.h"
@@ -56,7 +54,7 @@
 static uint16_t bl_checksum_received;
 static uint16_t bl_checksum_calculated;
 static uint32_t bl_app_writer_addr;
-static bool start_send_data = true;
+static bool bl_start_programming_application = true;
 
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
@@ -135,6 +133,11 @@ static void bl_can_handle_msg_version_request(canBASE_t *node, uint8_t *data, ui
 static void bl_can_handle_msg_cpu_reset(canBASE_t *node, uint8_t *data, uint32_t len);
 static void bl_can_handle_msg_stop(canBASE_t *node, uint8_t *data, uint32_t len);
 static void bl_can_handle_msg_app_erase(canBASE_t *node, uint8_t *data, uint32_t len);
+
+// Util functions
+static void util_32tobuf_msb(uint8_t *buf, uint32_t val);
+static uint16_t util_crc16_incremental(uint16_t crc, uint8_t *data, uint32_t len);
+static uint16_t util_crc16(uint8_t *data, uint32_t len);
 
 /* Function definitions ----------------------------------------------- */
 //*****************************************************************************
@@ -574,50 +577,14 @@ static void PacketWrite(canBASE_t *node, uint32_t ulId, const uint8_t *pucData, 
 }
 
 /* Bootloader CAN Bus handle message ------------------------------------ */
-static void _32tobuf_msb(uint8_t *buf, uint32_t val)
-{
-  buf[3] = (uint8_t)val;
-  val >>= 8;
-  buf[2] = (uint8_t)val;
-  val >>= 8;
-  buf[1] = (uint8_t)val;
-  val >>= 8;
-  buf[0] = (uint8_t)val;
-}
-
 static void bl_can_handle_msg_get_memory_map(canBASE_t *node, uint8_t *data, uint32_t len)
 {
   uint8_t mem_map_arm[8];
 
-  _32tobuf_msb(&mem_map_arm[0], MEM_MAP_START_ADDR);
-  _32tobuf_msb(&mem_map_arm[4], MEM_MAP_END_ADDR);
+  util_32tobuf_msb(&mem_map_arm[0], MEM_MAP_START_ADDR);
+  util_32tobuf_msb(&mem_map_arm[4], MEM_MAP_END_ADDR);
 
   PacketWrite(node, CAN_ID_BL_MAP_REQ_RSP_ARM, mem_map_arm, 8);
-}
-
-uint16_t crc16_incremental(uint16_t crc, uint8_t *data, uint32_t len)
-{
-  const unsigned char *d = (const unsigned char *)data;
-  unsigned int tbl_idx;
-
-  // Ensure that the length is not too long, else we'd try to read data that is not accessible.
-  // This would lead to a memory access error / data abort.
-  if (len > 0xA0000)
-    return 0;
-
-  while (len--)
-  {
-    tbl_idx = ((crc >> 8) ^ *d) & 0xff;
-    crc = (crc16_table[tbl_idx] ^ (crc << 8)) & 0xffff;
-    d++;
-  }
-
-  return crc & 0xffff;
-}
-
-uint16_t crc16(uint8_t *data, uint32_t len)
-{
-  return crc16_incremental(0, data, len);
 }
 
 static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_t len)
@@ -654,14 +621,14 @@ static void bl_can_handle_msg_write_data(canBASE_t *node, uint8_t *data, uint32_
   // See if the command was successful.
   if (status == CAN_CMD_SUCCESS)
   {
-    if (start_send_data)
+    if (bl_start_programming_application)
     {
-      bl_checksum_calculated = crc16(data, len);
-      start_send_data = false;
+      bl_start_programming_application = false;
+      bl_checksum_calculated = util_crc16(data, len);
     }
     else
     {
-      bl_checksum_calculated = crc16_incremental(bl_checksum_calculated, data, len);
+      bl_checksum_calculated = util_crc16_incremental(bl_checksum_calculated, data, len);
     }
 
     PacketWrite(node, CAN_ID_BL_DATA_APOS, &status, 1);
@@ -740,7 +707,7 @@ static void bl_can_handle_msg_cpu_reset(canBASE_t *node, uint8_t *data, uint32_t
 
   // Note: This command should handler int the application code
 
-  start_send_data = true;
+  bl_start_programming_application = true;
   bl_checksum_received = 0;
 
   // Perform a software reset request.  This will cause the
@@ -846,6 +813,42 @@ __LBL_BL_APP_ERASE_END__:
   }
 }
 
-#endif // CAN_ENABLE_UPDATE
+/* Util function ----------------------------------------------------- */
+static void util_32tobuf_msb(uint8_t *buf, uint32_t val)
+{
+  buf[3] = (uint8_t)val;
+  val >>= 8;
+  buf[2] = (uint8_t)val;
+  val >>= 8;
+  buf[1] = (uint8_t)val;
+  val >>= 8;
+  buf[0] = (uint8_t)val;
+}
+
+static uint16_t util_crc16_incremental(uint16_t crc, uint8_t *data, uint32_t len)
+{
+  const unsigned char *d = (const unsigned char *)data;
+  unsigned int tbl_idx;
+
+  // Ensure that the length is not too long, else we'd try to read data that is not accessible.
+  // This would lead to a memory access error / data abort.
+  if (len > 0xA0000)
+    return 0;
+
+  while (len--)
+  {
+    tbl_idx = ((crc >> 8) ^ *d) & 0xff;
+    crc = (crc16_table[tbl_idx] ^ (crc << 8)) & 0xffff;
+    d++;
+  }
+
+  return crc & 0xffff;
+}
+
+static uint16_t util_crc16(uint8_t *data, uint32_t len)
+{
+  return util_crc16_incremental(0, data, len);
+}
+
 
 /* End of file -------------------------------------------------------- */
