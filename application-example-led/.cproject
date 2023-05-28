@@ -86,8 +86,8 @@
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.OUTPUT_FORMAT.132593617" name="Output format" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.OUTPUT_FORMAT" value="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.OUTPUT_FORMAT.INTEL" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.LINKERFILL.1308569588" name="Include linker fill sections in images (--linkerfill, -linkerfill)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.LINKERFILL" value="false" valueType="boolean"/>
-								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.MEMWIDTH.1601061057" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.MEMWIDTH" value="32" valueType="string"/>
-								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.ROMWIDTH.1226968464" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.ROMWIDTH" value="32" valueType="string"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.MEMWIDTH.1601061057" name="Specify memory width (--memwidth, -memwidth=width)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.MEMWIDTH" value="32" valueType="string"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.ROMWIDTH.1226968464" name="Specify rom width (--romwidth, -romwidth=width)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.ROMWIDTH" value="32" valueType="string"/>
 								<outputType id="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.outputType__BIN.1797840154" name="Binary File" superClass="com.ti.ccstudio.buildDefinitions.TMS470_20.2.hex.outputType__BIN"/>
 							</tool>
 						</toolChain>
