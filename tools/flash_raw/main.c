@@ -407,7 +407,7 @@ uint8_t main_tx_stop(void)
   cksum = ihex_cksum_calc();
   buf[0] = cksum >> 8;
   buf[1] = (uint8_t)cksum;
-  main_can_tx_ext(CANID_BL_STOP, 0, 0);
+  main_can_tx_ext(CANID_BL_STOP, buf, 2);
 
   /* wait up to 200 ms for response */
   for (delay = 0; delay < 200; delay++)
