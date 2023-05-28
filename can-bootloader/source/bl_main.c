@@ -94,7 +94,6 @@ void main(void)
   memcpy(&constRunStart, &constLoadStart, (uint32)&constLoadSize);
 
   UART_putString(UART, "\r Hercules MCU CAN BootLoader ");
-  UART_putString(UART, "\r TI DSP Application Team, qjwang@ti.com \r\r");
 
   // See if an update should be performed.
   fnRetValue = CheckForceUpdate();

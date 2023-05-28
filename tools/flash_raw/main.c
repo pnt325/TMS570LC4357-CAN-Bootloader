@@ -13,8 +13,7 @@
 #include "net.h"
 
 /* converts a msb first buf to unsigned 32 */
-uint32_t
-bufto32_msb(uint8_t *buf)
+uint32_t bufto32_msb(uint8_t *buf)
 {
   uint32_t ret;
 
@@ -40,8 +39,7 @@ void _32tobuf_msb(uint8_t *buf, uint32_t val)
   buf[0] = (uint8_t)val;
 }
 
-int32_t
-usage_check(int32_t argc, int8_t *argv[])
+int32_t usage_check(int32_t argc, int8_t *argv[])
 {
   uint8_t cnt;
 
@@ -60,8 +58,7 @@ usage_check(int32_t argc, int8_t *argv[])
   return 0;
 }
 
-int32_t
-usage(int32_t argc, uint8_t *argv[], FILE **file_arm, uint8_t *cport)
+int32_t usage(int32_t argc, uint8_t *argv[], FILE **file_arm, uint8_t *cport)
 {
   if (usage_check(argc, argv) != 0)
   {
@@ -181,8 +178,7 @@ main_can_rx_ext(uint32_t *id, uint8_t *buf, uint8_t *buf_len)
 /*
 ** Transmit request for version info.
 */
-uint8_t
-main_tx_cpu_reset(void)
+uint8_t main_tx_cpu_reset(void)
 {
   uint32_t id;
   uint16_t delay;
@@ -212,8 +208,7 @@ main_tx_cpu_reset(void)
 /*
 ** Transmit request for version info.
 */
-uint8_t
-main_tx_req_ver(void)
+uint8_t main_tx_req_ver(void)
 {
   uint32_t id;
   uint16_t delay;
@@ -246,8 +241,7 @@ main_tx_req_ver(void)
 /*
 ** Transmit erase application command.
 */
-uint8_t
-main_tx_app_erase(void)
+uint8_t main_tx_app_erase(void)
 {
   uint32_t id;
   uint16_t delay;
@@ -287,8 +281,7 @@ main_tx_app_erase(void)
 /*
 ** Transmit request for memory map.
 */
-uint8_t
-main_tx_req_map(uint32_t *start, uint32_t *end)
+uint8_t main_tx_req_map(uint32_t *start, uint32_t *end)
 {
   uint32_t id;
   uint16_t delay;
@@ -325,8 +318,7 @@ main_tx_req_map(uint32_t *start, uint32_t *end)
 /*
 ** Transmit address.
 */
-uint8_t
-main_tx_addr(uint32_t addr, uint8_t len)
+uint8_t main_tx_addr(uint32_t addr, uint8_t len)
 {
   uint32_t id;
   uint16_t delay;
@@ -360,8 +352,7 @@ main_tx_addr(uint32_t addr, uint8_t len)
 ** RETURN 0: success
 **        1: fail
 */
-uint8_t
-main_tx_line(uint32_t addr, uint8_t *buf, uint8_t buf_len)
+uint8_t main_tx_line(uint32_t addr, uint8_t *buf, uint8_t buf_len)
 {
   uint8_t i;
   uint8_t len;
@@ -402,8 +393,7 @@ main_tx_line(uint32_t addr, uint8_t *buf, uint8_t buf_len)
 /*
 ** Transmit stop command.
 */
-uint8_t
-main_tx_stop(void)
+uint8_t main_tx_stop(void)
 {
   uint32_t id;
   uint16_t delay;
