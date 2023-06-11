@@ -58,6 +58,7 @@ uint32_t g_pulDataBuffer[BUFFER_SIZE];
 // g_pulUpdateSuccess[] are used to store application update status and application image's version etc
 uint32_t g_pulUpdateSuccess[8] = {0x5A5A5A5A, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 uint32_t g_ulUpdateStatusAddr = APP_STATUS_ADDRESS;
+bl_status_t g_bl_status;
 
 // 16 bytes or 4 32-bit words
 uint32_t g_ulUpdateBufferSize = 32; 
@@ -100,9 +101,43 @@ void main(void)
 
   if (!fnRetValue)
   {
-    UART_putString(UART, "\r Jump to application...  ");
-    g_ulTransferAddress = (uint32_t)APP_START_ADDRESS;
-    ((void (*)(void))g_ulTransferAddress)();
+    uint32_t *bl_status;
+    uint16_t crc_calculated;
+    uint8_t data_read_buf[8]
+    uint32_t flash_read_addr = APP_START_ADDRESS;
+    static bool first_call = true;
+
+    bl_status = (uint32_t *)g_ulUpdateStatusAddr;
+
+    // Calculate the CRC from image from flash
+    while (bl_status.image_size)
+    {
+      Fapi_BlockRead(flash_read_addr, data_read_buf, 8);
+
+      if (first_call)
+      {
+        crc_calculated = bl_util_crc16(data_read_buf, 8);
+        first_call = false;
+      }
+      else
+      {
+        crc_calculated = bl_util_crc16_incremental(crc_calculated, data_read_buf, 8);
+      }
+    }
+    else
+    {
+
+      bl_status.image_size -= 8;
+      flash_read_addr =+ 8;
+    }
+
+    // Check CRC before jump to the Application
+    if (crc_calculated == bl_status.image_crc)
+    {
+      UART_putString(UART, "\r Jump to application...  ");
+      g_ulTransferAddress = (uint32_t)APP_START_ADDRESS;
+      ((void (*)(void))g_ulTransferAddress)();
+    }
   }
 
   // Configure the can device

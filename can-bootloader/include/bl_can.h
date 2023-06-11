@@ -91,6 +91,15 @@ extern "C" {
 #define CAN_IFMCTL_DLC_S        (0)
 
 /* Public enumerate/structure ----------------------------------------- */
+typedef struct 
+{
+  uint32_t app_update_status;
+  uint32_t image_version;
+  uint32_t image_size;
+  uint32_t image_crc;
+}
+bl_status_t;
+
 /* Private variables -------------------------------------------------- */
 /* Public function prototypes ----------------------------------------- */
 void bl_can_init(canBASE_t *node);
