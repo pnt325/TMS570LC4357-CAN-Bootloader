@@ -64,6 +64,8 @@ extern uint32_t Flash_Erase_Check(uint32_t Start_Address, uint32_t Bytes);
 
 extern uint32_t Flash_Program_Check(uint32_t Program_Start_Address, uint32_t Source_Start_Address, uint32_t No_Of_Bytes);
 
+uint32_t Fapi_BlockRead(uint32_t Flash_Start_Address, uint32_t Data_Start_Address, uint32_t Size_In_Bytes);
+
 uint32_t flash_init(void);
 uint32_t flash_write(uint32_t flash_addr, uint32_t data_addr, uint32_t size);
 uint32_t flash_read(uint32_t flash_addr, uint32_t data_addr, uint32_t size);

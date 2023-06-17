@@ -34,8 +34,12 @@
 #include "sys_core.h"
 #endif
 
+#include "flash.h"
+#include "F021.h"
+
 #include "bl_check.h"
 #include "bl_led_demo.h"
+#include "bl_util.h"
 
 /* Private defines ---------------------------------------------------- */
 #define E_PASS      (0)
@@ -78,6 +82,8 @@ extern unsigned int constRunStart;
 
 /* Private variables -------------------------------------------------- */
 /* Private function prototypes ---------------------------------------- */
+bool bl_is_application_valid(void);
+
 /* Function definitions ----------------------------------------------- */
 void main(void)
 {
@@ -101,38 +107,7 @@ void main(void)
 
   if (!fnRetValue)
   {
-    uint32_t *bl_status;
-    uint16_t crc_calculated;
-    uint8_t data_read_buf[8]
-    uint32_t flash_read_addr = APP_START_ADDRESS;
-    static bool first_call = true;
-
-    bl_status = (uint32_t *)g_ulUpdateStatusAddr;
-
-    // Calculate the CRC from image from flash
-    while (bl_status.image_size)
-    {
-      Fapi_BlockRead(flash_read_addr, data_read_buf, 8);
-
-      if (first_call)
-      {
-        crc_calculated = bl_util_crc16(data_read_buf, 8);
-        first_call = false;
-      }
-      else
-      {
-        crc_calculated = bl_util_crc16_incremental(crc_calculated, data_read_buf, 8);
-      }
-    }
-    else
-    {
-
-      bl_status.image_size -= 8;
-      flash_read_addr =+ 8;
-    }
-
-    // Check CRC before jump to the Application
-    if (crc_calculated == bl_status.image_crc)
+    if (bl_is_application_valid())
     {
       UART_putString(UART, "\r Jump to application...  ");
       g_ulTransferAddress = (uint32_t)APP_START_ADDRESS;
@@ -147,6 +122,47 @@ void main(void)
 }
 
 /* Private function definitions ---------------------------------------- */
+bool bl_is_application_valid(void)
+{
+  bl_status_t *bl_status;
+  uint32_t *data_read;
+  uint16_t crc_calculated;
+  uint32_t flash_read_addr = APP_START_ADDRESS;
+  uint32_t data_read_buf[10];
+  bool first_call = true;
+  uint32_t read_index = 0;
+
+  bl_status = (bl_status_t *)g_ulUpdateStatusAddr;
+  data_read = (uint32_t *)flash_read_addr;
+
+  // Calculate the CRC from image from flash
+  // while (bl_status->image_size)
+  {
+    // Fapi_BlockRead(flash_read_addr, (uint32_t)&data_read_buf[0], 32);
+
+    if (first_call)
+    {
+      crc_calculated = bl_util_crc16((uint8_t *)data_read, bl_status->image_size);
+      first_call = false;
+    }
+    else
+    {
+      // crc_calculated = bl_util_crc16_incremental(crc_calculated, (uint8_t *)&data_read_buf[0], 32);
+    }
+
+      //  bl_status->image_size -= 32;
+      //  flash_read_addr += 32;
+  }
+
+  // Check CRC before jump to the Application
+  if (crc_calculated != bl_status->image_crc)
+  {
+    return false;
+  }
+
+  return true;
+}
+
 void delay(unsigned int val)
 {
   while (val--)

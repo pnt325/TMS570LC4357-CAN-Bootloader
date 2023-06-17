@@ -88,7 +88,7 @@ uint16_t bl_util_crc16_incremental(uint16_t crc, uint8_t *data, uint32_t len)
 
 uint16_t bl_util_crc16(uint8_t *data, uint32_t len)
 {
-  return util_crc16_incremental(0, data, len);
+  return bl_util_crc16_incremental(0, data, len);
 }
 
 /* Private function definitions ---------------------------------------- */

@@ -79,6 +79,7 @@ uint16_t ihex_cksum_get(void)
   }
 
   printf("Check sum: %d\n", ihex_checksum_calculated);
+  printf("Hex size: %d\n", ihex_size);
 
   return ihex_checksum_calculated;
 }
